@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1180" viewBox="0 0 1500 1180" role="img" aria-labelledby="title desc">
+  <title id="title">PalayTrack Login to Dashboard Flowchart</title>
+  <desc id="desc">A standards-based flowchart using terminator, display, manual input, process, decision, database, and connector symbols.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef7ec"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#0f172a" flood-opacity=".12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#475569"/>
+    </marker>
+    <style>
+      .title { font: 800 34px Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 400 17px Arial, sans-serif; fill: #64748b; }
+      .label { font: 700 18px Arial, sans-serif; fill: #0f172a; text-anchor: middle; dominant-baseline: middle; }
+      .small { font: 600 14px Arial, sans-serif; fill: #475569; text-anchor: middle; }
+      .branch { font: 700 15px Arial, sans-serif; fill: #334155; }
+      .legend { font: 600 14px Arial, sans-serif; fill: #475569; }
+      .flow { fill: none; stroke: #475569; stroke-width: 3; marker-end: url(#arrow); }
+      .lookup { fill: none; stroke: #2563eb; stroke-width: 2.5; stroke-dasharray: 8 6; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1500" height="1180" fill="url(#background)"/>
+  <text x="750" y="48" class="title" text-anchor="middle">PalayTrack: Login to Dashboard Flow</text>
+  <text x="750" y="78" class="subtitle" text-anchor="middle">Standard flowchart symbols for authentication and role-based routing</text>
+
+  <!-- Start: Terminator -->
+  <g filter="url(#shadow)">
+    <rect x="590" y="110" width="320" height="68" rx="34" fill="#dcfce7" stroke="#15803d" stroke-width="3"/>
+    <text x="750" y="144" class="label">Start PalayTrack</text>
+  </g>
+
+  <!-- Login screen: Display -->
+  <g filter="url(#shadow)">
+    <path d="M615 218 Q575 258 615 298 H865 Q925 258 865 218 Z" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+    <text x="750" y="249" class="label">Display Login Page</text>
+    <text x="750" y="276" class="small">Email and password form</text>
+  </g>
+
+  <!-- Credentials: Manual Input -->
+  <g filter="url(#shadow)">
+    <path d="M590 353 L910 325 V413 H590 Z" fill="#fff7ed" stroke="#f59e0b" stroke-width="3"/>
+    <text x="750" y="361" class="label">Enter Credentials</text>
+    <text x="750" y="388" class="small">Manual input by the user</text>
+  </g>
+
+  <!-- Submit/authenticate: Process -->
+  <g filter="url(#shadow)">
+    <rect x="590" y="457" width="320" height="76" fill="#ffffff" stroke="#64748b" stroke-width="3"/>
+    <text x="750" y="486" class="label">Submit Login</text>
+    <text x="750" y="513" class="small">Authenticate credentials</text>
+  </g>
+
+  <!-- User accounts: Database -->
+  <g filter="url(#shadow)">
+    <path d="M1100 447 C1100 426 1260 426 1260 447 V523 C1260 546 1100 546 1100 523 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="3"/>
+    <ellipse cx="1180" cy="447" rx="80" ry="21" fill="#bae6fd" stroke="#0284c7" stroke-width="3"/>
+    <path d="M1100 485 C1100 508 1260 508 1260 485" fill="none" stroke="#0284c7" stroke-width="2"/>
+    <text x="1180" y="473" class="label">Users Database</text>
+    <text x="1180" y="524" class="small">Account, status, and role</text>
+  </g>
+
+  <!-- Credential result: Decision -->
+  <g filter="url(#shadow)">
+    <polygon points="750,580 920,655 750,730 580,655" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+    <text x="750" y="645" class="label">Credentials</text>
+    <text x="750" y="671" class="label">valid?</text>
+  </g>
+
+  <!-- Invalid message: Display -->
+  <g filter="url(#shadow)">
+    <path d="M170 615 Q130 655 170 695 H430 Q490 655 430 615 Z" fill="#fff1f2" stroke="#e11d48" stroke-width="3"/>
+    <text x="300" y="646" class="label">Display Login Error</text>
+    <text x="300" y="674" class="small">Invalid email or password</text>
+  </g>
+
+  <!-- Regenerate session: Process -->
+  <g filter="url(#shadow)">
+    <rect x="590" y="774" width="320" height="72" fill="#ffffff" stroke="#64748b" stroke-width="3"/>
+    <text x="750" y="810" class="label">Regenerate Session</text>
+  </g>
+
+  <!-- Active check: Decision -->
+  <g filter="url(#shadow)">
+    <polygon points="750,884 900,950 750,1016 600,950" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text x="750" y="940" class="label">Account</text>
+    <text x="750" y="966" class="label">active?</text>
+  </g>
+
+  <!-- Inactive logout: Process and display -->
+  <g filter="url(#shadow)">
+    <rect x="170" y="850" width="270" height="64" fill="#ffffff" stroke="#64748b" stroke-width="3"/>
+    <text x="305" y="882" class="label">Log User Out</text>
+    <path d="M175 958 Q140 998 175 1038 H435 Q490 998 435 958 Z" fill="#fff1f2" stroke="#e11d48" stroke-width="3"/>
+    <text x="305" y="989" class="label">Display Access Error</text>
+    <text x="305" y="1017" class="small">Account is inactive</text>
+  </g>
+
+  <!-- Role decision -->
+  <g filter="url(#shadow)">
+    <polygon points="750,1040 870,1095 750,1150 630,1095" fill="#dcfce7" stroke="#15803d" stroke-width="3"/>
+    <text x="750" y="1095" class="label">User role?</text>
+  </g>
+
+  <!-- Dashboard displays -->
+  <g filter="url(#shadow)">
+    <path d="M1030 1038 Q985 1093 1030 1148 H1370 Q1430 1093 1370 1038 Z" fill="#ecfdf5" stroke="#15803d" stroke-width="3"/>
+    <text x="1200" y="1081" class="label">Display Owner Dashboard</text>
+    <text x="1200" y="1112" class="small">Monitoring, analytics, reports, management</text>
+
+    <path d="M130 1038 Q85 1093 130 1148 H470 Q530 1093 470 1038 Z" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+    <text x="300" y="1081" class="label">Display Staff Dashboard</text>
+    <text x="300" y="1112" class="small">Deliveries, milling, POS, inventory</text>
+  </g>
+
+  <!-- Main flow connectors -->
+  <path d="M750 178 V218" class="flow"/>
+  <path d="M750 298 V325" class="flow"/>
+  <path d="M750 413 V457" class="flow"/>
+  <path d="M750 533 V580" class="flow"/>
+  <path d="M910 495 H1100" class="lookup"/>
+  <path d="M1100 523 H980 V555 H810" class="lookup"/>
+
+  <!-- Invalid credentials loop -->
+  <path d="M580 655 H490" class="flow"/>
+  <text x="525" y="638" class="branch">No</text>
+  <path d="M300 615 V560 H520 V258 H585" class="flow"/>
+  <text x="322" y="547" class="branch">Try again</text>
+
+  <!-- Valid path -->
+  <path d="M750 730 V774" class="flow"/>
+  <text x="765" y="758" class="branch">Yes</text>
+  <path d="M750 846 V884" class="flow"/>
+
+  <!-- Inactive path -->
+  <path d="M600 950 H500 V882 H440" class="flow"/>
+  <text x="526" y="932" class="branch">No</text>
+  <path d="M305 914 V958" class="flow"/>
+  <path d="M175 998 H85 V258 H585" class="flow"/>
+  <text x="99" y="982" class="branch">Return to login</text>
+
+  <!-- Active path and role routing -->
+  <path d="M750 1016 V1040" class="flow"/>
+  <text x="765" y="1032" class="branch">Yes</text>
+  <path d="M630 1095 H530" class="flow"/>
+  <text x="550" y="1078" class="branch">Staff</text>
+  <path d="M870 1095 H985" class="flow"/>
+  <text x="895" y="1078" class="branch">Owner</text>
+
+  <!-- Symbol legend -->
+  <g transform="translate(1050,110)">
+    <rect width="350" height="260" rx="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="24" y="34" class="label" text-anchor="start">Symbol Key</text>
+    <rect x="24" y="55" width="72" height="28" rx="14" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+    <text x="112" y="75" class="legend">Terminator — start</text>
+    <path d="M27 101 Q18 115 27 129 H91 Q105 115 91 101 Z" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="112" y="120" class="legend">Display — screen/message</text>
+    <path d="M24 151 L96 143 V175 H24 Z" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
+    <text x="112" y="164" class="legend">Manual input — user entry</text>
+    <rect x="24" y="193" width="72" height="30" fill="#fff" stroke="#64748b" stroke-width="2"/>
+    <text x="112" y="213" class="legend">Process — system action</text>
+    <polygon points="60,230 96,244 60,258 24,244" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="112" y="249" class="legend">Decision — branching check</text>
+  </g>
+</svg>

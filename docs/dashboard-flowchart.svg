@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" role="img" aria-labelledby="title desc">
+  <title id="title">PalayTrack Dashboard Flowchart</title>
+  <desc id="desc">Standard flowchart showing role-based Owner and Staff dashboard navigation after successful login.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#eef7ec"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#0f172a" flood-opacity=".12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#475569"/>
+    </marker>
+    <style>
+      .title{font:800 34px Arial,sans-serif;fill:#0f172a}.subtitle{font:400 17px Arial,sans-serif;fill:#64748b}
+      .label{font:700 18px Arial,sans-serif;fill:#0f172a;text-anchor:middle;dominant-baseline:middle}
+      .small{font:600 14px Arial,sans-serif;fill:#475569;text-anchor:middle}.branch{font:700 15px Arial,sans-serif;fill:#334155}
+      .flow{fill:none;stroke:#475569;stroke-width:3;marker-end:url(#arrow)}
+      .return{fill:none;stroke:#64748b;stroke-width:2.5;stroke-dasharray:8 6;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1600" height="1120" fill="url(#bg)"/>
+  <text x="800" y="48" class="title" text-anchor="middle">PalayTrack: Dashboard Flow</text>
+  <text x="800" y="78" class="subtitle" text-anchor="middle">Role-based navigation after successful authentication</text>
+
+  <!-- Entry terminator -->
+  <g filter="url(#shadow)">
+    <rect x="625" y="108" width="350" height="68" rx="34" fill="#dcfce7" stroke="#15803d" stroke-width="3"/>
+    <text x="800" y="142" class="label">Successful Login</text>
+  </g>
+
+  <!-- Role decision -->
+  <g filter="url(#shadow)">
+    <polygon points="800,215 950,280 800,345 650,280" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+    <text x="800" y="280" class="label">User role?</text>
+  </g>
+
+  <!-- Dashboard displays -->
+  <g filter="url(#shadow)">
+    <path d="M170 400 Q120 450 170 500 H590 Q655 450 590 400 Z" fill="#ecfdf5" stroke="#15803d" stroke-width="3"/>
+    <text x="380" y="438" class="label">Display Owner Dashboard</text>
+    <text x="380" y="470" class="small">Business monitoring and management</text>
+
+    <path d="M1010 400 Q960 450 1010 500 H1430 Q1495 450 1430 400 Z" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+    <text x="1220" y="438" class="label">Display Staff Dashboard</text>
+    <text x="1220" y="470" class="small">Daily rice-mill operations</text>
+  </g>
+
+  <!-- Owner navigation decision -->
+  <g filter="url(#shadow)">
+    <polygon points="380,550 525,615 380,680 235,615" fill="#dcfce7" stroke="#15803d" stroke-width="3"/>
+    <text x="380" y="605" class="label">Select owner</text>
+    <text x="380" y="631" class="label">module</text>
+  </g>
+
+  <!-- Owner processes -->
+  <g filter="url(#shadow)">
+    <rect x="35" y="735" width="250" height="82" fill="#fff" stroke="#15803d" stroke-width="3"/>
+    <text x="160" y="765" class="label">View Overview</text>
+    <text x="160" y="793" class="small">Inventory and deliveries</text>
+
+    <rect x="305" y="735" width="250" height="82" fill="#fff" stroke="#15803d" stroke-width="3"/>
+    <text x="430" y="765" class="label">View Analytics</text>
+    <text x="430" y="793" class="small">Revenue and production</text>
+
+    <rect x="35" y="865" width="250" height="82" fill="#fff" stroke="#15803d" stroke-width="3"/>
+    <text x="160" y="895" class="label">View Reports</text>
+    <text x="160" y="923" class="small">Sales and records</text>
+
+    <rect x="305" y="865" width="250" height="82" fill="#fff" stroke="#15803d" stroke-width="3"/>
+    <text x="430" y="895" class="label">Manage System</text>
+    <text x="430" y="923" class="small">Staff, rice types, settings</text>
+
+    <path d="M110 990 Q75 1028 110 1066 H500 Q550 1028 500 990 Z" fill="#f0fdf4" stroke="#15803d" stroke-width="3"/>
+    <text x="305" y="1028" class="label">Display Selected Owner Page</text>
+  </g>
+
+  <!-- Staff navigation decision -->
+  <g filter="url(#shadow)">
+    <polygon points="1220,550 1365,615 1220,680 1075,615" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text x="1220" y="605" class="label">Select staff</text>
+    <text x="1220" y="631" class="label">task</text>
+  </g>
+
+  <!-- Staff processes -->
+  <g filter="url(#shadow)">
+    <rect x="890" y="735" width="250" height="82" fill="#fff" stroke="#2563eb" stroke-width="3"/>
+    <text x="1015" y="765" class="label">Record Delivery</text>
+    <text x="1015" y="793" class="small">Add palay inventory</text>
+
+    <rect x="1160" y="735" width="250" height="82" fill="#fff" stroke="#2563eb" stroke-width="3"/>
+    <text x="1285" y="765" class="label">Process Milling</text>
+    <text x="1285" y="793" class="small">Record actual output</text>
+
+    <rect x="890" y="865" width="250" height="82" fill="#fff" stroke="#2563eb" stroke-width="3"/>
+    <text x="1015" y="895" class="label">Receive Payment</text>
+    <text x="1015" y="923" class="small">Full payment through POS</text>
+
+    <rect x="1160" y="865" width="250" height="82" fill="#fff" stroke="#2563eb" stroke-width="3"/>
+    <text x="1285" y="895" class="label">Release / Claim</text>
+    <text x="1285" y="923" class="small">Deduct milled inventory</text>
+
+    <path d="M940 990 Q905 1028 940 1066 H1330 Q1380 1028 1330 990 Z" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+    <text x="1135" y="1028" class="label">Display Updated Staff Dashboard</text>
+  </g>
+
+  <!-- Core flow -->
+  <path d="M800 176 V215" class="flow"/>
+  <path d="M650 280 H380 V400" class="flow"/>
+  <text x="494" y="263" class="branch">Owner</text>
+  <path d="M950 280 H1220 V400" class="flow"/>
+  <text x="1060" y="263" class="branch">Staff</text>
+  <path d="M380 500 V550" class="flow"/>
+  <path d="M1220 500 V550" class="flow"/>
+
+  <!-- Owner branches -->
+  <path d="M285 648 H160 V735" class="flow"/>
+  <path d="M430 680 V735" class="flow"/>
+  <path d="M235 615 H85 V865" class="flow"/>
+  <path d="M525 615 H610 V865 H555" class="flow"/>
+  <path d="M160 817 V990" class="flow"/>
+  <path d="M430 817 V990" class="flow"/>
+  <path d="M160 947 V990" class="flow"/>
+  <path d="M430 947 V990" class="flow"/>
+
+  <!-- Staff branches -->
+  <path d="M1125 648 H1015 V735" class="flow"/>
+  <path d="M1285 680 V735" class="flow"/>
+  <path d="M1075 615 H960 V865" class="flow"/>
+  <path d="M1365 615 H1460 V865 H1410" class="flow"/>
+  <path d="M1015 817 V990" class="flow"/>
+  <path d="M1285 817 V990" class="flow"/>
+  <path d="M1015 947 V990" class="flow"/>
+  <path d="M1285 947 V990" class="flow"/>
+
+  <!-- Return-to-dashboard loops -->
+  <path d="M110 1028 H20 V450 H125" class="return"/>
+  <text x="28" y="1008" class="branch">Back</text>
+  <path d="M1380 1028 H1530 V450 H1495" class="return"/>
+  <text x="1492" y="1008" class="branch">Back</text>
+</svg>
