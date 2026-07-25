@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: palaytrack-test
+    runtime: docker
+    plan: free
+    region: singapore
+    autoDeployTrigger: commit
+    healthCheckPath: /up
+    envVars:
+      - key: APP_NAME
+        value: PalayTrack
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_URL
+        sync: false
+      - key: DB_SSLMODE
+        value: require
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: warning
+      - key: SMS_MODE
+        value: simulation
+      - key: RUN_INITIAL_SEEDER
+        value: "true"
+      - key: INITIAL_OWNER_NAME
+        value: Test Owner
+      - key: INITIAL_OWNER_EMAIL
+        sync: false
+      - key: INITIAL_OWNER_PASSWORD
+        sync: false
