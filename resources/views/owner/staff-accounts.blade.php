@@ -44,6 +44,13 @@
         color: #fff;
     }
 
+    .page-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
     .alert-success-custom {
         background: #ecfdf5;
         border: 1px solid #bbf7d0;
@@ -58,21 +65,22 @@
     .staff-card {
         background: #fff;
         border: 1px solid #e3e9e1;
-        border-radius: 22px;
+        border-radius: 20px;
         overflow: hidden;
         box-shadow: 0 14px 35px rgba(15, 23, 42, 0.06);
-        border-top: 4px solid #2f7d32;
     }
 
     .staff-filters {
         display: grid;
-        grid-template-columns: minmax(260px, 1fr) 190px 112px;
+        grid-template-columns: minmax(260px, 1fr) 190px 112px 92px;
         gap: 10px;
-        margin: 0;
-        padding: 15px 20px;
+        margin: 0 0 14px;
+        padding: 14px 16px;
         align-items: center;
-        background: #fbfdfb;
-        border-bottom: 1px solid #edf2ed;
+        background: #fff;
+        border: 1px solid #e3e9e1;
+        border-radius: 16px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
     }
 
     .staff-filter-input {
@@ -84,7 +92,7 @@
         font-weight: 600;
     }
 
-    .filter-btn, .history-link {
+    .filter-btn, .filter-reset, .history-link {
         min-height: 42px;
         border-radius: 10px;
         padding: 8px 13px;
@@ -98,10 +106,14 @@
     }
 
     .filter-btn { border: 0; background: #166534; color: #fff; }
+    .filter-reset { border: 1px solid #cbd5e1; color: #475569; background: #fff; }
+    .filter-reset:hover { color: #1e293b; background: #f8fafc; }
     .history-link { border: 1px solid #bbd7c0; color: #166534; background: #fff; }
     .history-link:hover { color: #14532d; background: #f0fdf4; }
 
-    .staff-card-tools { display: flex; align-items: center; gap: 9px; }
+    .history-link .staff-count {
+        margin-left: 2px;
+    }
     .pagination-row { padding: 12px 16px; border-top: 1px solid #eef2f7; display:flex; justify-content:space-between; align-items:center; gap:12px; color:#64748b; font-size:.82rem; }
     .pagination-actions { display:flex; gap:7px; }
     .page-link-simple { border:1px solid #dbe3ec; border-radius:8px; padding:6px 10px; color:#334155; text-decoration:none; font-weight:700; }
@@ -291,6 +303,9 @@
         }
 
         .staff-filters { grid-template-columns: 1fr; }
+        .page-actions { width: 100%; }
+        .page-actions .history-link,
+        .page-actions .add-btn { flex: 1; }
     }
 </style>
 
@@ -301,10 +316,17 @@
             <p class="page-subtitle">Manage staff access, update account details, and control account status.</p>
         </div>
 
-        <a href="{{ route('owner.staff-accounts.create') }}" class="add-btn">
-            <i data-lucide="user-plus"></i>
-            <span>Add Staff</span>
-        </a>
+        <div class="page-actions">
+            <a class="history-link" href="{{ route('owner.staff-accounts.history') }}">
+                <i data-lucide="history"></i>
+                <span>History</span>
+                <span class="staff-count">{{ $staffAccounts->total() }}</span>
+            </a>
+            <a href="{{ route('owner.staff-accounts.create') }}" class="add-btn">
+                <i data-lucide="user-plus"></i>
+                <span>Add Staff</span>
+            </a>
+        </div>
     </div>
 
     @if (session('success'))
@@ -313,24 +335,21 @@
         </div>
     @endif
 
+    <form method="GET" class="staff-filters">
+        <input class="staff-filter-input" type="search" name="search" value="{{ $search }}" placeholder="Search staff name or email">
+        <select class="staff-filter-input" name="status">
+            <option value="all" {{ $status === 'all' ? 'selected' : '' }}>All Statuses</option>
+            <option value="active" {{ $status === 'active' ? 'selected' : '' }}>Active</option>
+            <option value="inactive" {{ $status === 'inactive' ? 'selected' : '' }}>Inactive</option>
+        </select>
+        <button class="filter-btn" type="submit"><i data-lucide="search"></i> Filter</button>
+        <a class="filter-reset" href="{{ route('owner.staff-accounts') }}">Reset</a>
+    </form>
+
     <div class="staff-card">
         <div class="staff-card-header">
             <h2 class="staff-card-title">Staff Accounts</h2>
-            <div class="staff-card-tools">
-                <a class="history-link" href="{{ route('owner.staff-accounts.history') }}"><i data-lucide="history"></i> History</a>
-                <span class="staff-count">{{ $staffAccounts->total() }}</span>
-            </div>
         </div>
-
-        <form method="GET" class="staff-filters">
-            <input class="staff-filter-input" type="search" name="search" value="{{ $search }}" placeholder="Search staff name or email">
-            <select class="staff-filter-input" name="status">
-                <option value="all" {{ $status === 'all' ? 'selected' : '' }}>All Statuses</option>
-                <option value="active" {{ $status === 'active' ? 'selected' : '' }}>Active</option>
-                <option value="inactive" {{ $status === 'inactive' ? 'selected' : '' }}>Inactive</option>
-            </select>
-            <button class="filter-btn" type="submit"><i data-lucide="search"></i> Filter</button>
-        </form>
 
         <div class="table-wrap">
             <table class="table table-custom align-middle">

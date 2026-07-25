@@ -3,7 +3,7 @@
 @section('content')
 <style>
     .page-shell {
-        max-width: 920px;
+        max-width: 820px;
         margin: 0 auto;
     }
 
@@ -29,19 +29,35 @@
         font-size: 0.95rem;
     }
 
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 9px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 11px;
+        background: #fff;
+        color: #334155;
+        font-size: .88rem;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .back-btn:hover { border-color:#2f5d1e; background:#f8fafc; color:#2f5d1e; }
+
     .staff-card {
         background: #ffffff;
-        border: 1px solid #dfe8de;
-        border-top: 4px solid #2f7d32;
-        border-radius: 22px;
-        box-shadow: 0 16px 38px rgba(15, 23, 42, 0.07);
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
         overflow: hidden;
     }
 
     .staff-card-header {
-        padding: 22px 26px;
+        padding: 17px 20px;
         border-bottom: 1px solid #eef2f7;
-        background: linear-gradient(135deg, #f3faf1 0%, #ffffff 72%);
+        background: #f8fbf8;
         display: flex;
         align-items: center;
         gap: 14px;
@@ -49,26 +65,26 @@
 
     .staff-card-title {
         margin: 0 0 4px;
-        font-size: 1.15rem;
-        font-weight: 900;
+        font-size: 1.05rem;
+        font-weight: 800;
         color: #0f172a;
     }
 
     .staff-card-text {
         margin: 0;
         color: #64748b;
-        font-size: 0.9rem;
+        font-size: 0.84rem;
     }
 
-    .header-icon { width:46px; height:46px; border-radius:14px; display:grid; place-items:center; flex:0 0 46px; color:#fff; background:linear-gradient(145deg,#15803d,#2f6b24); box-shadow:0 8px 18px rgba(21,128,61,.2); }
-    .header-icon i { width:22px; height:22px; }
+    .header-icon { width:40px; height:40px; border-radius:11px; display:grid; place-items:center; flex:0 0 40px; color:#15803d; background:#eaf7eb; }
+    .header-icon i { width:20px; height:20px; }
 
     .staff-card-body {
-        padding: 26px;
+        padding: 20px;
     }
 
     .form-group {
-        margin-bottom: 18px;
+        margin-bottom: 14px;
     }
 
     .form-label-custom {
@@ -80,7 +96,7 @@
 
     .form-control-custom {
         border-radius: 11px;
-        min-height: 48px;
+        min-height: 46px;
         border: 1px solid #d1d5db;
         background: #ffffff;
         padding: 11px 13px;
@@ -106,7 +122,7 @@
     }
 
     .password-note {
-        font-size: 0.82rem;
+        font-size: 0.78rem;
         color: #64748b;
         margin-top: 6px;
     }
@@ -145,6 +161,34 @@
         margin-top: 10px;
         flex-wrap: wrap;
     }
+
+    .access-note {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 16px;
+        padding: 10px 12px;
+        border: 1px solid #dcebdc;
+        border-radius: 10px;
+        background: #f7fbf7;
+        color: #475569;
+        font-size: .8rem;
+    }
+
+    .access-note i { width:17px; height:17px; color:#15803d; flex:0 0 auto; }
+    .access-note strong { color:#166534; }
+
+    .show-passwords {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #475569;
+        font-size: .8rem;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .show-passwords input { width:16px; height:16px; accent-color:#15803d; }
 
     .submit-btn {
         border: none;
@@ -205,6 +249,7 @@
         transform: translateY(0);
     }
 </style>
+@include('partials.form-dark-mode')
 
 <div class="page-shell">
     <div class="page-header">
@@ -212,7 +257,10 @@
             <h1 class="page-title">Create Staff Account</h1>
             <p class="page-subtitle">Add a new staff account for daily system access.</p>
         </div>
-
+        <a href="{{ route('owner.staff-accounts') }}" class="back-btn">
+            <i data-lucide="arrow-left"></i>
+            <span>Back to Staff Accounts</span>
+        </a>
     </div>
 
     @if ($errors->any())
@@ -233,6 +281,11 @@
         <div class="staff-card-body">
             <form id="staffForm" method="POST" action="{{ route('owner.staff-accounts.store') }}">
                 @csrf
+
+                <div class="access-note">
+                    <i data-lucide="shield-check"></i>
+                    <span>This account will be created as <strong>Staff</strong> with <strong>Active</strong> access.</span>
+                </div>
 
                 <div class="row">
                     <div class="col-md-6">
@@ -308,6 +361,11 @@
                     </div>
                 </div>
 
+                <label class="show-passwords">
+                    <input type="checkbox" id="showPasswords">
+                    <span>Show passwords</span>
+                </label>
+
                 <div class="form-actions">
                     <a href="{{ route('owner.staff-accounts') }}" class="cancel-btn">Cancel</a>
                     <button type="submit" id="submitBtn" class="submit-btn">
@@ -329,6 +387,7 @@
     const confirmPassword = document.getElementById('password_confirmation');
     const submitBtn = document.getElementById('submitBtn');
     const toastMessage = document.getElementById('toastMessage');
+    const showPasswords = document.getElementById('showPasswords');
 
     const passwordLengthWarning = document.getElementById('passwordLengthWarning');
     const passwordLengthSuccess = document.getElementById('passwordLengthSuccess');
@@ -379,6 +438,11 @@
 
     password.addEventListener('input', validatePasswordFields);
     confirmPassword.addEventListener('input', validatePasswordFields);
+    showPasswords.addEventListener('change', function () {
+        const inputType = this.checked ? 'text' : 'password';
+        password.type = inputType;
+        confirmPassword.type = inputType;
+    });
 
     staffForm.addEventListener('submit', function(event) {
         if (!validatePasswordFields()) {

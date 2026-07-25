@@ -47,6 +47,69 @@
         margin-bottom: 24px;
     }
 
+    .queue-tabs {
+        display: inline-flex;
+        gap: 4px;
+        padding: 4px;
+        margin-bottom: 18px;
+        background: #ffffff;
+        border: 1px solid #dfe7df;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, .04);
+    }
+
+    .queue-tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 38px;
+        padding: 7px 13px;
+        border-radius: 8px;
+        color: #475569;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .queue-tab.active {
+        background: #166534;
+        color: #ffffff;
+        box-shadow: 0 3px 8px rgba(22, 101, 52, .18);
+    }
+
+    .queue-tab:not(.active):hover {
+        background: #f4f8f3;
+        color: #166534;
+    }
+
+    .queue-count {
+        min-width: 24px;
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: #eef2f7;
+        text-align: center;
+        font-size: 0.76rem;
+    }
+
+    .queue-tab.active .queue-count { background: rgba(255,255,255,.18); color: #ffffff; }
+
+    .filter-grid {
+        display: grid;
+        grid-template-columns: minmax(240px, 1.5fr) minmax(180px, 1fr) minmax(180px, 1fr) auto;
+        gap: 14px;
+        align-items: end;
+    }
+
+    .filter-label {
+        display: block;
+        color: #334155;
+        font-size: 0.88rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .filter-control { min-height: 48px; border-radius: 12px; }
+    .filter-actions { display: flex; gap: 8px; }
+
     .card-title {
         font-size: 1.15rem;
         font-weight: 800;
@@ -155,6 +218,38 @@
         padding: 20px;
         color: #64748b;
     }
+
+    .pagination-wrap { padding-top: 18px; }
+
+    /* Shared compact module styling */
+    .page-header { margin-bottom: 18px; }
+    .page-title { font-size: 1.8rem; }
+    .page-subtitle { font-size: .92rem; }
+    .quick-btn { min-height: 44px; border-radius: 10px; padding: 9px 14px; }
+    .filter-card,
+    .table-card {
+        border: 1px solid #e3e9e1;
+        border-radius: 20px;
+        box-shadow: 0 10px 26px rgba(15, 23, 42, .06);
+    }
+    .filter-card { padding: 14px 16px; margin-bottom: 16px; }
+    .table-card { padding: 18px; }
+    .queue-tabs { margin-bottom: 14px; }
+    .queue-tab { min-height: 38px; }
+    .filter-grid { gap: 12px; }
+    .filter-label { margin-bottom: 6px; }
+    .filter-control { min-height: 44px; border-radius: 11px; }
+    .soft-table tbody td { padding-top: 12px; padding-bottom: 12px; }
+    .pagination-wrap { padding-top: 12px; }
+
+    @media (max-width: 1100px) {
+        .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 700px) {
+        .filter-grid { grid-template-columns: 1fr; }
+        .filter-actions .filter-btn { flex: 1; }
+    }
 </style>
 
 <div class="page-header">
@@ -168,27 +263,52 @@
     </a>
 </div>
 
-<div class="filter-card">
-    <h2 class="card-title">Filter Deliveries</h2>
-    <p class="card-subtitle">Narrow down records by delivery status.</p>
+<nav class="queue-tabs" aria-label="Delivery record view">
+    <a href="{{ route('staff.deliveries', ['view' => 'active']) }}"
+       class="queue-tab {{ $selectedView === 'active' ? 'active' : '' }}">
+        Active Queue <span class="queue-count">{{ $activeCount }}</span>
+    </a>
+    <a href="{{ route('staff.deliveries', ['view' => 'history']) }}"
+       class="queue-tab {{ $selectedView === 'history' ? 'active' : '' }}">
+        Claimed History <span class="queue-count">{{ $claimedCount }}</span>
+    </a>
+</nav>
 
-    <form method="GET" action="{{ url('/staff/deliveries') }}" class="row g-3 align-items-end">
-        <div class="col-md-4">
-            <select name="status" class="form-select custom-select">
-                <option value="">All Statuses</option>
-                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Processing</option>
-                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
-                <option value="claimed" {{ request('status') == 'claimed' ? 'selected' : '' }}>Claimed</option>
+<div class="filter-card">
+    <form method="GET" action="{{ route('staff.deliveries') }}" class="filter-grid">
+        <input type="hidden" name="view" value="{{ $selectedView }}">
+        <div>
+            <label for="delivery-search" class="filter-label">Search Delivery</label>
+            <input id="delivery-search" type="search" name="search" value="{{ request('search') }}"
+                   class="form-control filter-control" placeholder="Client name or delivery ID">
+        </div>
+
+        <div>
+            <label for="delivery-date" class="filter-label">Delivery Date</label>
+            <input id="delivery-date" type="date" name="date" value="{{ request('date') }}"
+                   class="form-control filter-control">
+        </div>
+
+        <div>
+            <label for="delivery-status" class="filter-label">Status</label>
+            <select id="delivery-status" name="status" class="form-select filter-control">
+                @if($selectedView === 'active')
+                    <option value="">All Active Statuses</option>
+                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Processing</option>
+                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                @else
+                    <option value="claimed">Claimed</option>
+                @endif
             </select>
         </div>
 
-        <div class="col-md-4 d-flex gap-2">
-            <button type="submit" class="btn btn-primary filter-btn">
-                Apply
+        <div class="filter-actions">
+            <button type="submit" class="btn btn-success filter-btn">
+                Filter
             </button>
 
-            <a href="/staff/deliveries" class="btn btn-outline-secondary filter-btn">
+            <a href="{{ route('staff.deliveries', ['view' => $selectedView]) }}" class="btn btn-outline-secondary filter-btn">
                 Reset
             </a>
         </div>
@@ -196,8 +316,12 @@
 </div>
 
 <div class="table-card">
-    <h2 class="card-title">Delivery List / Queue</h2>
-    <p class="card-subtitle">First-Come, First-Served (FCFS) delivery monitoring.</p>
+    <h2 class="card-title">{{ $selectedView === 'active' ? 'Active Delivery Queue' : 'Claimed Delivery History' }}</h2>
+    <p class="card-subtitle">
+        {{ $selectedView === 'active'
+            ? 'Pending and processing deliveries follow First-Come, First-Served (FCFS) order.'
+            : 'Released deliveries retained for payment, receipt, inventory, and audit reference.' }}
+    </p>
 
     <div class="table-responsive">
         <table class="table soft-table align-middle">
@@ -207,7 +331,7 @@
                     <th>Client</th>
                     <th>Rice</th>
                     <th>Details</th>
-                    <th>Staff</th>
+                    <th>Recorded By</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -218,6 +342,7 @@
                 <tr>
                     <td>
                         <span class="queue-badge">#{{ $delivery->queue_number }}</span>
+                        <div class="light-text mt-1">Daily queue</div>
                     </td>
 
                     <td>
@@ -229,13 +354,16 @@
 
                     <td>
                         <div><strong>{{ number_format($delivery->palay_weight, 2) }} kg</strong></div>
-                        <div class="sub-text">{{ rtrim(rtrim(number_format((float) $delivery->sacks, 2, '.', ''), '0'), '.') }} sacks • Est: {{ number_format($delivery->estimated_rice, 0) }}</div>
+                        <div class="sub-text">{{ rtrim(rtrim(number_format((float) $delivery->sacks, 2, '.', ''), '0'), '.') }} sacks | Est: {{ number_format($delivery->estimated_rice, 2) }} kg</div>
                         <div class="light-text">
                             {{ $delivery->delivered_at ? \Carbon\Carbon::parse($delivery->delivered_at)->format('M d, Y') : '' }}
                         </div>
                     </td>
 
-                    <td>{{ $delivery->staff?->name ?? 'N/A' }}</td>
+                    <td>
+                        <div>{{ $delivery->staff?->name ?? 'Unknown' }}</div>
+                        <div class="sub-text">{{ $delivery->staff?->role ? ucfirst($delivery->staff->role) : 'Legacy record' }}</div>
+                    </td>
 
                     <td>
                         <span class="status-badge status-{{ $delivery->status }}">
@@ -263,6 +391,10 @@
             </tbody>
         </table>
     </div>
+
+    @if ($deliveries->hasPages())
+        <div class="pagination-wrap">{{ $deliveries->links() }}</div>
+    @endif
 </div>
 
 @endsection

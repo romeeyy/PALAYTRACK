@@ -28,31 +28,33 @@
     }
 
     .summary-card {
-        padding: 22px;
+        padding: 22px 22px 20px;
         height: 100%;
-        border-top: 5px solid #2f5d1e;
+        border-top: none;
         background: linear-gradient(135deg, #ffffff 0%, #f4faf3 100%);
         position: relative;
         overflow: hidden;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .summary-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 32px rgba(15, 23, 42, 0.12);
     }
 
     .summary-card.pending {
-        border-top-color: #eab308;
         background: linear-gradient(135deg, #ffffff 0%, #fffdf0 100%);
     }
 
     .summary-card.processing {
-        border-top-color: #3b82f6;
         background: linear-gradient(135deg, #ffffff 0%, #f3f7ff 100%);
     }
 
     .summary-card.completed {
-        border-top-color: #22c55e;
         background: linear-gradient(135deg, #ffffff 0%, #f4faf3 100%);
     }
 
     .summary-card.claimed {
-        border-top-color: #0f766e;
         background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
     }
 
@@ -95,8 +97,9 @@
 
     .summary-label {
         color: #334155;
-        font-size: 1rem;
+        font-size: 0.98rem;
         font-weight: 800;
+        line-height: 1.5;
         margin: 0;
     }
 
@@ -110,6 +113,12 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+    }
+
+    .summary-icon svg {
+        width: 22px;
+        height: 22px;
+        stroke-width: 2.2;
     }
 
     .summary-card.pending .summary-icon {
@@ -137,15 +146,17 @@
         font-weight: 900;
         color: #0f172a;
         line-height: 1;
-        margin-bottom: 8px;
+        margin: 0;
         position: relative;
         z-index: 1;
+        display: flex;
+        align-items: baseline;
     }
 
     .summary-note {
         color: #64748b;
         font-size: 0.95rem;
-        margin: 0;
+        margin: 8px 0 0;
         position: relative;
         z-index: 1;
     }
@@ -154,6 +165,34 @@
         padding: 22px;
         height: 100%;
         background: linear-gradient(135deg, #ffffff 0%, #fbfdf9 100%);
+    }
+
+    .operations-card {
+        padding: 24px;
+        height: auto;
+        min-height: 0;
+        background: linear-gradient(135deg, #ffffff 0%, #fbfdf9 100%);
+    }
+
+    .operations-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(280px, 0.9fr);
+        gap: 20px;
+        align-items: stretch;
+    }
+
+    .operations-trend {
+        min-width: 0;
+        padding: 20px;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        background: #ffffff;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+    }
+
+    .operations-today {
+        min-width: 0;
+        padding: 4px 0;
     }
 
     .section-title {
@@ -180,7 +219,7 @@
     }
 
     .chart-box {
-        height: 300px;
+        height: 270px;
     }
 
     .chart-insight {
@@ -204,15 +243,21 @@
 
     .today-summary-list {
         display: grid;
-        gap: 12px;
-        margin-top: 14px;
+        gap: 10px;
+        margin-top: 16px;
     }
 
     .today-summary-item {
-        padding: 13px 16px;
+        min-height: 92px;
+        padding: 15px 16px;
         border-radius: 16px;
-        background: linear-gradient(135deg, #f8fafc 0%, #f4faf3 100%);
-        border: 1px solid #eef2f7;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -222,16 +267,45 @@
     }
 
     .today-summary-value {
-        font-size: 1.55rem;
+        margin-top: 7px;
+        font-size: 1.65rem;
         font-weight: 900;
         color: #2f5d1e;
         line-height: 1;
     }
 
     .today-summary-label {
-        margin-top: 6px;
+        margin: 0;
         color: #64748b;
-        font-size: 0.9rem;
+        font-size: 0.84rem;
+        font-weight: 700;
+    }
+
+    .today-summary-icon {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #15803d;
+        background: #dcfce7;
+    }
+
+    .today-summary-icon.processing {
+        color: #2563eb;
+        background: #dbeafe;
+    }
+
+    .today-summary-icon.ready {
+        color: #0f766e;
+        background: #ccfbf1;
+    }
+
+    .today-summary-icon svg {
+        width: 20px;
+        height: 20px;
     }
 
     .table-scroll {
@@ -367,6 +441,21 @@
             height: 250px;
         }
     }
+
+    @media (max-width: 1199px) {
+        .operations-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .operations-trend {
+            padding: 18px;
+        }
+    }
+
+    html[data-theme="dark"] .operations-trend {
+        border-color: #334155;
+        background: #172235;
+    }
 </style>
 
 @php
@@ -397,7 +486,7 @@
                     <i data-lucide="clock-3"></i>
                 </div>
             </div>
-            <div class="summary-value">{{ $pendingCount }}</div>
+            <h2 class="summary-value">{{ $pendingCount }}</h2>
             <p class="summary-note">Waiting to be processed</p>
         </div>
     </div>
@@ -410,7 +499,7 @@
                     <i data-lucide="settings-2"></i>
                 </div>
             </div>
-            <div class="summary-value">{{ $processingCount }}</div>
+            <h2 class="summary-value">{{ $processingCount }}</h2>
             <p class="summary-note">Currently in milling</p>
         </div>
     </div>
@@ -423,7 +512,7 @@
                     <i data-lucide="check-check"></i>
                 </div>
             </div>
-            <div class="summary-value">{{ $completedCount }}</div>
+            <h2 class="summary-value">{{ $completedCount }}</h2>
             <p class="summary-note">Ready for claim</p>
         </div>
     </div>
@@ -436,15 +525,15 @@
                     <i data-lucide="badge-check"></i>
                 </div>
             </div>
-            <div class="summary-value">{{ $claimedCount }}</div>
+            <h2 class="summary-value">{{ $claimedCount }}</h2>
             <p class="summary-note">Released to customer</p>
         </div>
     </div>
 </div>
 
-<div class="row g-4 mb-4">
-    <div class="col-xl-8">
-        <div class="section-card">
+<div class="section-card operations-card mb-4">
+    <div class="operations-grid">
+        <section class="operations-trend">
             <h2 class="section-title">Daily Deliveries Trend</h2>
             <p class="section-subtitle">Deliveries recorded over the last 7 days.</p>
 
@@ -458,11 +547,9 @@
                     Peak: {{ $peakLabel }} ({{ $peakCount }} {{ $peakCount == 1 ? 'delivery' : 'deliveries' }})
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div class="col-xl-4">
-        <div class="section-card">
+        <aside class="operations-today">
             <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
                 <div>
                     <h2 class="section-title">Today’s Summary</h2>
@@ -476,21 +563,36 @@
 
             <div class="today-summary-list">
                 <div class="today-summary-item">
-                    <div class="today-summary-value">{{ $todayDeliveries->count() }}</div>
-                    <div class="today-summary-label">Deliveries today</div>
+                    <div>
+                        <div class="today-summary-label">Deliveries today</div>
+                        <div class="today-summary-value">{{ $todayDeliveries->count() }}</div>
+                    </div>
+                    <div class="today-summary-icon">
+                        <i data-lucide="truck"></i>
+                    </div>
                 </div>
 
                 <div class="today-summary-item">
-                    <div class="today-summary-value">{{ $processingCount }}</div>
-                    <div class="today-summary-label">Currently processing</div>
+                    <div>
+                        <div class="today-summary-label">Currently processing</div>
+                        <div class="today-summary-value">{{ $processingCount }}</div>
+                    </div>
+                    <div class="today-summary-icon processing">
+                        <i data-lucide="settings-2"></i>
+                    </div>
                 </div>
 
                 <div class="today-summary-item">
-                    <div class="today-summary-value">{{ $completedCount }}</div>
-                    <div class="today-summary-label">Ready for claim</div>
+                    <div>
+                        <div class="today-summary-label">Ready for claim</div>
+                        <div class="today-summary-value">{{ $completedCount }}</div>
+                    </div>
+                    <div class="today-summary-icon ready">
+                        <i data-lucide="badge-check"></i>
+                    </div>
                 </div>
             </div>
-        </div>
+        </aside>
     </div>
 </div>
 

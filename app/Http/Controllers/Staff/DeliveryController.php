@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
-use App\Models\Delivery;
 use App\Models\DeliveryNotification;
 use App\Models\RiceType;
-use App\Models\Setting;
 use App\Services\SmsService;
-use App\Services\DeliveryInventoryService;
 use App\Services\DeliveryRecordingService;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,62 +52,6 @@ class DeliveryController extends Controller
             ->with('success', 'Delivery recorded successfully.');
     }
 
-    public function updateStatus(Request $request, Delivery $delivery)
-    {
-        if (!Auth::check() || Auth::user()->role !== 'staff') {
-            return redirect()->route('login');
-        }
-
-        $validated = $request->validate([
-            'status' => 'required|in:pending,processing,completed',
-        ]);
-
-        $oldStatus = $delivery->status;
-
-        if ($validated['status'] === 'completed') {
-            app(DeliveryInventoryService::class)
-                ->complete($delivery, (float) $delivery->actual_rice);
-        } else {
-            $delivery->update(['status' => $validated['status']]);
-        }
-
-        if ($oldStatus !== 'completed' && $validated['status'] === 'completed') {
-            $smsEnabled = Setting::getValue('sms_enabled', '0');
-
-            if ($smsEnabled === '1') {
-                $smsService = new SmsService();
-
-                $message = "Your rice is ready for pickup at JK Diez Rice Mill. Please present your claim stub upon claiming. Thank you!";
-
-                $smsResult = $smsService->send($delivery->contact_number, $message);
-
-                if ($smsResult['success'] ?? false) {
-                    DeliveryNotification::create([
-                        'delivery_id' => $delivery->id,
-                        'method' => 'text',
-                        'notification_status' => 'sent',
-                        'notified_at' => now(),
-                        'remarks' => 'Automatic SMS via Semaphore',
-                    ]);
-
-                    return back()->with('success', 'Delivery completed and SMS sent successfully.');
-                }
-
-                DeliveryNotification::create([
-                    'delivery_id' => $delivery->id,
-                    'method' => 'text',
-                    'notification_status' => 'failed',
-                    'notified_at' => null,
-                    'remarks' => 'Message Failed',
-                ]);
-
-                return back()->with('warning', 'Delivery completed, but SMS failed to send.');
-            }
-        }
-
-        return back()->with('success', 'Delivery status updated successfully.');
-    }
-
     public function resendSms(int $id, SmsService $smsService)
     {
         if (!Auth::check() || Auth::user()->role !== 'staff') {
@@ -122,17 +64,31 @@ class DeliveryController extends Controller
             return back()->with('error', 'Only failed SMS notifications can be resent.');
         }
 
+        if ((string) Setting::getValue('sms_enabled', '0') !== '1') {
+            return back()->with('error', 'Enable automatic SMS in Settings before resending.');
+        }
+
+        if ($notification->delivery->status !== 'completed') {
+            return back()->with('error', 'SMS can only be resent while the delivery is completed and ready for pickup.');
+        }
+
         $delivery = $notification->delivery;
 
         $message = "Your rice is ready for pickup at JK Diez Rice Mill. Please present your claim stub upon claiming. Thank you!";
 
         $smsResult = $smsService->send($delivery->contact_number, $message);
 
-        if ($smsResult['success'] ?? false) {
+        $smsStatus = strtolower($smsResult['status'] ?? 'failed');
+        $sendSucceeded = ($smsResult['success'] ?? false)
+            && !in_array($smsStatus, ['failed', 'error'], true);
+
+        if ($sendSucceeded) {
             $notification->update([
                 'notification_status' => 'sent',
                 'notified_at' => now(),
-                'remarks' => 'SMS resent successfully via Semaphore',
+                'remarks' => $smsStatus === 'simulated'
+                    ? 'SMS resend simulated successfully (no live message was sent).'
+                    : 'SMS resent successfully via Semaphore',
             ]);
 
             return back()->with('success', 'SMS resent successfully.');

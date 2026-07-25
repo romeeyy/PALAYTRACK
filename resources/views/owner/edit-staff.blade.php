@@ -29,6 +29,23 @@
         font-size: 0.95rem;
     }
 
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 9px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 11px;
+        background: #fff;
+        color: #334155;
+        font-size: .88rem;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .back-btn:hover { border-color:#2f5d1e; background:#f8fafc; color:#2f5d1e; }
+
     .staff-card {
         background: #ffffff;
         border: 1px solid #dfe8de;
@@ -252,6 +269,7 @@
         }
     }
 </style>
+@include('partials.form-dark-mode')
 
 <div class="page-shell">
     <div class="page-header">
@@ -259,7 +277,10 @@
             <h1 class="page-title">Edit Staff Account</h1>
             <p class="page-subtitle">Update staff information and account credentials when needed.</p>
         </div>
-
+        <a href="{{ route('owner.staff-accounts') }}" class="back-btn">
+            <i data-lucide="arrow-left"></i>
+            <span>Back to Staff Accounts</span>
+        </a>
     </div>
 
     @if ($errors->any())

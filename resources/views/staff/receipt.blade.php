@@ -54,8 +54,8 @@
     }
 
     .thermal-wrapper {
-        width: 82mm;
-        max-width: 82mm;
+        width: 80mm;
+        max-width: 80mm;
         margin: 0 auto;
         background: #ffffff;
         padding: 16px;
@@ -154,15 +154,17 @@
 
     @media print {
         @page {
-            size: A4 portrait;
-            margin: 10mm;
+            size: 80mm 210mm;
+            margin: 3mm;
         }
 
+        html,
         body {
+            width: 74mm !important;
+            min-width: 74mm !important;
             background: white !important;
             margin: 0 !important;
-            display: flex;
-            justify-content: center;
+            padding: 0 !important;
         }
 
         .sidebar,
@@ -179,8 +181,9 @@
         .receipt-page,
         .receipt-preview-area {
             display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
+            width: 74mm !important;
+            min-width: 74mm !important;
+            max-width: 74mm !important;
             margin: 0 !important;
             padding: 0 !important;
             background: transparent !important;
@@ -189,11 +192,10 @@
         }
 
         .thermal-wrapper {
-            width: 82mm !important;
-            max-width: 82mm !important;
-            transform: scale(1.6);
-            transform-origin: top center;
-            margin: 0 auto !important;
+            width: 74mm !important;
+            max-width: 74mm !important;
+            transform: none !important;
+            margin: 0 !important;
             padding: 0 !important;
             box-shadow: none !important;
             border-radius: 0 !important;
@@ -223,8 +225,8 @@
         </div>
 
         <div class="receipt-actions">
-            <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}" class="btn btn-outline-secondary">
-                ← Back
+            <a href="{{ route('staff.transactions', ['date' => ($transaction->paid_at ?? $transaction->created_at)->toDateString()]) }}" class="btn btn-outline-secondary">
+                &larr; Back to Transactions
             </a>
 
             <button onclick="window.print()" class="btn btn-success">
@@ -339,11 +341,6 @@
                 <div class="value">
                     {{ optional($transaction->user)->name ?? Auth::user()->name }}
                 </div>
-
-                <div class="line"></div>
-
-                <div class="label">NOTES</div>
-                <div class="value">{{ $transaction->notes ?: 'No notes provided.' }}</div>
 
                 <div class="line"></div>
 

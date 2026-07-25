@@ -49,41 +49,48 @@
 
     .queue-tabs {
         display: inline-flex;
-        gap: 6px;
-        padding: 5px;
+        gap: 4px;
+        padding: 4px;
         margin-bottom: 18px;
-        background: #eef2f7;
-        border-radius: 14px;
+        background: #ffffff;
+        border: 1px solid #dfe7df;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, .04);
     }
 
     .queue-tab {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        min-height: 42px;
-        padding: 8px 14px;
-        border-radius: 10px;
+        min-height: 38px;
+        padding: 7px 13px;
+        border-radius: 8px;
         color: #475569;
         font-weight: 700;
         text-decoration: none;
     }
 
     .queue-tab.active {
-        background: #ffffff;
+        background: #166534;
+        color: #ffffff;
+        box-shadow: 0 3px 8px rgba(22, 101, 52, .18);
+    }
+
+    .queue-tab:not(.active):hover {
+        background: #f4f8f3;
         color: #166534;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
     }
 
     .queue-count {
         min-width: 24px;
         padding: 2px 7px;
         border-radius: 999px;
-        background: #e2e8f0;
+        background: #eef2f7;
         text-align: center;
         font-size: 0.76rem;
     }
 
-    .queue-tab.active .queue-count { background: #dcfce7; color: #15803d; }
+    .queue-tab.active .queue-count { background: rgba(255,255,255,.18); color: #ffffff; }
 
     .filter-grid {
         display: grid;
@@ -221,6 +228,27 @@
 
     .pagination-wrap { padding-top: 18px; }
 
+    /* Shared compact module styling */
+    .page-header { margin-bottom: 18px; }
+    .page-title { font-size: 1.8rem; }
+    .page-subtitle { font-size: .92rem; }
+    .quick-btn { min-height: 44px; border-radius: 10px; padding: 9px 14px; }
+    .filter-card,
+    .table-card {
+        border: 1px solid #e3e9e1;
+        border-radius: 20px;
+        box-shadow: 0 10px 26px rgba(15, 23, 42, .06);
+    }
+    .filter-card { padding: 14px 16px; margin-bottom: 16px; }
+    .table-card { padding: 18px; }
+    .queue-tabs { margin-bottom: 14px; }
+    .queue-tab { min-height: 38px; }
+    .filter-grid { gap: 12px; }
+    .filter-label { margin-bottom: 6px; }
+    .filter-control { min-height: 44px; border-radius: 11px; }
+    .soft-table tbody td { padding-top: 12px; padding-bottom: 12px; }
+    .pagination-wrap { padding-top: 12px; }
+
     @media (max-width: 1100px) {
         .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -254,9 +282,6 @@
 </nav>
 
 <div class="filter-card">
-    <h2 class="card-title">Filter Deliveries</h2>
-    <p class="card-subtitle">Search a delivery or narrow the list by date and status.</p>
-
     <form method="GET" action="{{ route('owner.deliveries') }}" class="filter-grid">
         <input type="hidden" name="view" value="{{ $selectedView }}">
         <div>
@@ -286,8 +311,8 @@
         </div>
 
         <div class="filter-actions">
-            <button type="submit" class="btn btn-primary filter-btn">
-                Apply
+            <button type="submit" class="btn btn-success filter-btn">
+                Filter
             </button>
 
             <a href="{{ route('owner.deliveries', ['view' => $selectedView]) }}" class="btn btn-outline-secondary filter-btn">

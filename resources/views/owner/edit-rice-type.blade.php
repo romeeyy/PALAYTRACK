@@ -5,7 +5,10 @@
 <style>
     .page-shell {
         max-width: 900px;
+        margin: 0 auto;
     }
+
+    .form-page-header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:20px; }
 
     .back-btn {
         display: inline-flex;
@@ -18,7 +21,6 @@
         color: #111827;
         text-decoration: none;
         font-weight: 600;
-        margin-bottom: 20px;
         transition: all 0.2s ease;
     }
 
@@ -46,7 +48,7 @@
     .form-subtitle {
         color: #64748b;
         font-size: 1rem;
-        margin-bottom: 26px;
+        margin: 0;
     }
 
     .field-label {
@@ -151,6 +153,9 @@
     }
 
     @media (max-width: 768px) {
+        .form-page-header { align-items:stretch; flex-direction:column; }
+        .back-btn { align-self:flex-start; }
+
         .form-card {
             padding: 22px 18px;
         }
@@ -166,15 +171,18 @@
 </style>
 
 <div class="page-shell">
-    <a href="/owner/rice-types" class="back-btn">
-        <i data-lucide="arrow-left"></i>
-        <span>Back to Rice Types</span>
-    </a>
+    <div class="form-page-header">
+        <div>
+            <h1 class="form-title">Edit Rice Type</h1>
+            <p class="form-subtitle">Update rice variety details and its assigned recovery rate.</p>
+        </div>
+        <a href="/owner/rice-types" class="back-btn">
+            <i data-lucide="arrow-left"></i>
+            <span>Back to Rice Types</span>
+        </a>
+    </div>
 
     <div class="form-card">
-        <h1 class="form-title">Edit Rice Type</h1>
-        <p class="form-subtitle">Update rice variety details, assigned recovery rate, and milling fee.</p>
-
         <form method="POST" action="/owner/edit-rice-type/{{ $riceType->id }}">
             @csrf
 

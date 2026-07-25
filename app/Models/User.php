@@ -11,12 +11,21 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $attributes = [
+        'theme_preference' => 'classic',
+        'display_mode' => 'light',
+    ];
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
         'is_active',
+        'profile_photo_path',
+        'theme_preference',
+        'display_mode',
+        'notifications_read_at',
     ];
 
     protected $hidden = [
@@ -30,6 +39,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
+            'notifications_read_at' => 'datetime',
         ];
     }
 

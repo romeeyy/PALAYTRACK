@@ -11,10 +11,10 @@
 @endphp
 
 <style>
-    .page-header { margin-bottom: 28px; }
+    .page-header { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
 
     .details-page-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
         font-weight: 900;
         color: #0f172a;
         margin: 0 0 6px;
@@ -30,14 +30,14 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        padding: 10px 16px;
-        border: 1px solid #d1d5db;
-        border-radius: 12px;
+        min-height: 42px;
+        padding: 9px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 11px;
         background: #ffffff;
         color: #111827;
         text-decoration: none;
         font-weight: 700;
-        margin-bottom: 20px;
     }
 
     .back-btn:hover {
@@ -46,56 +46,58 @@
     }
 
     .section-card {
-        background: linear-gradient(135deg, #ffffff 0%, #fbfdf9 100%);
-        border: none;
-        border-radius: 22px;
-        padding: 24px;
-        margin-bottom: 24px;
-        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 20px;
+        margin-bottom: 18px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
     }
 
     .section-title {
-        font-size: 1.25rem;
-        font-weight: 900;
+        font-size: 1.15rem;
+        font-weight: 800;
         color: #111827;
-        margin-bottom: 20px;
+        margin-bottom: 5px;
     }
+
+    .section-subtitle { color:#64748b; font-size:.88rem; margin:0 0 15px; }
 
     .info-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
+        gap: 12px;
     }
 
     .info-box {
         background: #f8fafc;
         border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        padding: 16px;
-        min-height: 92px;
+        border-radius: 12px;
+        padding: 12px 14px;
+        min-height: 74px;
     }
 
     .info-label {
-        font-size: 0.88rem;
+        font-size: 0.8rem;
         color: #64748b;
         font-weight: 800;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
     }
 
     .info-value {
-        font-size: 1.02rem;
+        font-size: 0.92rem;
         color: #0f172a;
-        font-weight: 900;
+        font-weight: 700;
         word-break: break-word;
     }
 
     .note-box {
         background: #f8fafc;
         border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        padding: 16px;
+        border-radius: 12px;
+        padding: 12px 14px;
         color: #111827;
-        font-size: 1rem;
+        font-size: .9rem;
         line-height: 1.6;
     }
 
@@ -128,10 +130,11 @@
     .sms-none { background: #e5e7eb; color: #475569; }
 
     .highlight-box {
-        border-radius: 18px;
-        padding: 18px;
+        border-radius: 12px;
+        padding: 14px 16px;
         background: #eef6ea;
         border: 1px solid #d9ead3;
+        min-height: 104px;
     }
 
     .highlight-label {
@@ -143,18 +146,60 @@
 
     .highlight-value {
         color: #2f5d1e;
-        font-size: 2rem;
+        font-size: 1.55rem;
         font-weight: 900;
         line-height: 1;
     }
 
     .difference-box {
-        border-radius: 16px;
-        padding: 16px;
+        border-radius: 12px;
+        padding: 14px 16px;
         background: #fff7ed;
         border: 1px solid #fdba74;
         color: #9a3412;
         font-weight: 800;
+        min-height: 104px;
+    }
+
+    .measurement-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .difference-label {
+        color: #9a3412;
+        font-size: .82rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .difference-value {
+        color: #9a3412;
+        font-size: 1.02rem;
+        font-weight: 900;
+        line-height: 1.35;
+    }
+
+    .support-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+        gap: 18px;
+        align-items: stretch;
+    }
+
+    .support-grid .section-card {
+        height: 100%;
+        margin-bottom: 0;
+    }
+
+    .claim-card {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .claim-card .btn-main {
+        margin-top: auto;
     }
 
     .readonly-note {
@@ -181,29 +226,34 @@
 
     @media (max-width: 992px) {
         .info-grid { grid-template-columns: repeat(2, 1fr); }
+        .measurement-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .support-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 576px) {
         .info-grid { grid-template-columns: 1fr; }
+        .measurement-grid { grid-template-columns: 1fr; }
         .details-page-title { font-size: 1.7rem; }
         .section-card { padding: 20px; }
     }
 </style>
 
-<a href="/owner/deliveries" class="back-btn">
-    <i data-lucide="arrow-left"></i>
-    <span>Back to Deliveries</span>
-</a>
-
 <div class="page-header">
-    <h1 class="details-page-title">Delivery Details</h1>
-    <p class="details-page-subtitle">
-        Queue #{{ $delivery->queue_number }} | Delivery ID: {{ $delivery->delivery_id }}
-    </p>
+    <div>
+        <h1 class="details-page-title">Delivery Details</h1>
+        <p class="details-page-subtitle">
+            View the complete delivery and milling record.
+        </p>
+    </div>
+    <a href="/owner/deliveries" class="back-btn">
+        <i data-lucide="arrow-left"></i>
+        <span>Back to Deliveries</span>
+    </a>
 </div>
 
 <div class="section-card">
     <h2 class="section-title">Delivery Information</h2>
+    <p class="section-subtitle">Basic delivery, client, and milling information.</p>
 
     <div class="info-grid">
         <div class="info-box">
@@ -285,27 +335,24 @@
 
 <div class="section-card">
     <h2 class="section-title">Milled Rice Measurement</h2>
+    <p class="section-subtitle">Estimated and actual output comparison for this delivery.</p>
 
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="highlight-box">
-                <div class="highlight-label">Estimated Milled Rice</div>
-                <div class="highlight-value">{{ number_format($delivery->estimated_rice, 2) }} kg</div>
+    <div class="measurement-grid">
+        <div class="highlight-box">
+            <div class="highlight-label">Estimated Milled Rice</div>
+            <div class="highlight-value">{{ number_format($delivery->estimated_rice, 2) }} kg</div>
+        </div>
+
+        <div class="highlight-box">
+            <div class="highlight-label">Actual Milled Rice</div>
+            <div class="highlight-value">
+                {{ $actualRice !== null ? number_format($actualRice, 2) . ' kg' : 'Not yet recorded' }}
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="highlight-box">
-                <div class="highlight-label">Actual Milled Rice</div>
-                <div class="highlight-value">
-                    {{ $actualRice !== null ? number_format($actualRice, 2) . ' kg' : 'N/A' }}
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="difference-box">
-                Difference:
+        <div class="difference-box">
+            <div class="difference-label">Difference</div>
+            <div class="difference-value">
                 @if($actualRice !== null)
                     {{ number_format($difference, 2) }} kg
                     @if($difference > 0)
@@ -327,10 +374,10 @@
     </p>
 </div>
 
-<div class="row g-4">
-    <div class="col-xl-8">
+<div class="support-grid">
         <div class="section-card">
             <h2 class="section-title">Farmer Notification</h2>
+            <p class="section-subtitle">Latest notification details for customer pickup.</p>
 
             <div class="info-grid">
                 <div class="info-box">
@@ -368,13 +415,11 @@
                 Notification records are shown for monitoring and verification. Staff or the system handles notification actions.
             </p>
         </div>
-    </div>
 
-    <div class="col-xl-4">
-        <div class="section-card">
+        <div class="section-card claim-card">
             <h2 class="section-title">Claim Stub Access</h2>
 
-            <p class="readonly-note mt-0">
+            <p class="section-subtitle">
                 Open the claim stub for verification or reprinting.
             </p>
 
@@ -384,7 +429,6 @@
                 Open Claim Stub
             </a>
         </div>
-    </div>
 </div>
 
 @endsection

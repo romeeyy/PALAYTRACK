@@ -7,6 +7,7 @@ use App\Http\Controllers\Owner\StaffAccountController;
 use App\Http\Controllers\Owner\DeliveryRecordingController;
 use App\Http\Controllers\Owner\SettingsController;
 use App\Http\Controllers\Owner\ProfileController;
+use App\Http\Controllers\AppearanceController;
 use App\Http\Controllers\Staff\PosController;
 use App\Http\Controllers\Staff\TransactionController;
 use App\Models\Delivery;
@@ -30,6 +31,17 @@ use Carbon\Carbon;
 use App\Http\Controllers\Owner\ClientController;
 use App\Models\Transaction;
 use App\Models\RiceTypeRecoveryRateHistory;
+
+Route::get('/appearance', [AppearanceController::class, 'edit'])->name('appearance.edit');
+Route::post('/appearance', [AppearanceController::class, 'update'])->name('appearance.update');
+
+Route::post('/notifications/read', function (Request $request) {
+    abort_unless(Auth::check(), 403);
+
+    Auth::user()->forceFill(['notifications_read_at' => now()])->save();
+
+    return $request->expectsJson() ? response()->noContent() : back();
+})->middleware('auth')->name('notifications.read');
 
 if (!function_exists('autoNotifyDeliveryCompleted')) {
 function autoNotifyDeliveryCompleted($delivery)
@@ -62,19 +74,18 @@ function autoNotifyDeliveryCompleted($delivery)
         logger('SEMAPHORE RESULT:', $result);
 
         $semaphoreStatus = strtolower($result['status'] ?? 'failed');
-
-        if ($semaphoreStatus === 'pending' || $semaphoreStatus === 'queued' || $semaphoreStatus === 'sent') {
-            $notificationStatus = 'sent';
-        } else {
-            $notificationStatus = 'failed';
-        }
+        $sendSucceeded = ($result['success'] ?? false)
+            && !in_array($semaphoreStatus, ['failed', 'error'], true);
+        $notificationStatus = $sendSucceeded ? 'sent' : 'failed';
 
         $delivery->notifications()->create([
             'method' => 'text',
             'notification_status' => $notificationStatus,
             'remarks' => $notificationStatus === 'failed'
                 ? 'Message Failed'
-                : $message,
+                : ($semaphoreStatus === 'simulated'
+                    ? 'SMS simulated successfully (no live message was sent).'
+                    : $message),
             'notified_at' => $notificationStatus === 'sent' ? now() : null,
         ]);
         logger('Notification log created for delivery ID: ' . $delivery->id);
@@ -145,6 +156,7 @@ Route::prefix('owner')->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('owner.profile');
     Route::post('/profile', [ProfileController::class, 'update'])->name('owner.profile.update');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('owner.profile.password');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('owner.dashboard');
 
@@ -219,16 +231,28 @@ Route::prefix('owner')->group(function () {
         return view('owner.milling-fee-history', compact('histories', 'type'));
     })->name('owner.milling-fee-history');
 
-    Route::get('/recovery-rate-history', function () {
+    Route::get('/recovery-rate-history', function (Request $request) {
         if (!Auth::check() || Auth::user()->role !== 'owner') {
             return redirect()->route('login');
         }
 
-        $histories = RiceTypeRecoveryRateHistory::with('riceType')
-            ->latest('changed_at')
-            ->paginate(15);
+        $riceTypeId = $request->input('rice_type_id', 'all');
 
-        return view('owner.recovery-rate-history', compact('histories'));
+        if ($riceTypeId !== 'all' && !RiceType::whereKey($riceTypeId)->exists()) {
+            return redirect()->route('owner.recovery-rate-history')
+                ->with('error', 'The selected rice type is invalid.');
+        }
+
+        $riceTypes = RiceType::orderBy('name')->get(['id', 'name']);
+        $query = RiceTypeRecoveryRateHistory::with('riceType')->latest('changed_at');
+
+        if ($riceTypeId !== 'all') {
+            $query->where('rice_type_id', $riceTypeId);
+        }
+
+        $histories = $query->paginate(15)->withQueryString();
+
+        return view('owner.recovery-rate-history', compact('histories', 'riceTypes', 'riceTypeId'));
     })->name('owner.recovery-rate-history');
 
     Route::get('/payment-records', [PaymentRecordController::class, 'index'])
@@ -632,6 +656,10 @@ Route::get('/reports/export/excel', function (Request $request) {
 |--------------------------------------------------------------------------
 */
 Route::prefix('staff')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('staff.profile');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('staff.profile.update');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('staff.profile.password');
+
     Route::get('/dashboard', function () {
         if (!Auth::check() || Auth::user()->role !== 'staff') {
             return redirect()->route('login');
@@ -688,15 +716,57 @@ Route::prefix('staff')->group(function () {
             return redirect()->route('login');
         }
 
-        $query = Delivery::with(['riceType', 'staff'])->latest();
+        $validated = $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+            'status' => ['nullable', 'in:pending,processing,completed,claimed'],
+            'date' => ['nullable', 'date_format:Y-m-d'],
+            'view' => ['nullable', 'in:active,history'],
+        ]);
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
+        $selectedView = $validated['view'] ?? 'active';
+        $activeCount = Delivery::whereIn('status', ['pending', 'processing', 'completed'])->count();
+        $claimedCount = Delivery::where('status', 'claimed')->count();
+        $query = Delivery::query()->with(['riceType', 'staff']);
+
+        if ($selectedView === 'history') {
+            $query->where('status', 'claimed');
+        } else {
+            $query->whereIn('status', ['pending', 'processing', 'completed']);
         }
 
-        $deliveries = $query->get();
+        if (!empty($validated['search'])) {
+            $search = trim($validated['search']);
+            $query->where(function ($deliveryQuery) use ($search) {
+                $deliveryQuery
+                    ->where('client_name', 'like', "%{$search}%")
+                    ->orWhere('delivery_id', 'like', "%{$search}%");
+            });
+        }
 
-        return view('staff.deliveries', compact('deliveries'));
+        if (!empty($validated['status'])
+            && (($selectedView === 'history' && $validated['status'] === 'claimed')
+                || ($selectedView === 'active' && $validated['status'] !== 'claimed'))) {
+            $query->where('status', $validated['status']);
+        }
+
+        if (!empty($validated['date'])) {
+            $query->whereDate('delivered_at', $validated['date']);
+        }
+
+        if ($selectedView === 'history') {
+            $query->orderByDesc('claimed_at')->orderByDesc('delivered_at');
+        } else {
+            $query
+                ->orderByRaw("CASE WHEN status IN ('pending', 'processing') THEN 0 ELSE 1 END")
+                ->orderBy('delivered_at')
+                ->orderBy('queue_number');
+        }
+
+        $deliveries = $query->paginate(15)->withQueryString();
+
+        return view('staff.deliveries', compact(
+            'deliveries', 'selectedView', 'activeCount', 'claimedCount'
+        ));
     })->name('staff.deliveries');
 
     Route::get('/delivery-details/{id}', function ($id) {
@@ -713,51 +783,18 @@ Route::prefix('staff')->group(function () {
             return redirect()->route('login');
         }
 
-        $request->validate([
-            'status' => 'required|in:pending,processing,completed,claimed'
-        ]);
+        $request->validate(['status' => ['required', 'in:processing']]);
 
         $delivery = Delivery::findOrFail($id);
-        $newStatus = $request->status;
-        $currentStatus = $delivery->status;
-
-        if ($newStatus === 'processing' && $currentStatus !== 'pending') {
+        if ($delivery->status !== 'pending') {
             return redirect()->back()->withErrors([
                 'status' => 'Only pending deliveries can be moved to processing.'
             ]);
         }
 
-        if ($newStatus === 'completed') {
-            if ($currentStatus !== 'processing') {
-                return redirect()->back()->withErrors([
-                    'status' => 'Only processing deliveries can be marked completed.'
-                ]);
-            }
+        $delivery->update(['status' => 'processing']);
 
-            if (is_null($delivery->actual_rice)) {
-                return redirect()->back()->withErrors([
-                    'status' => 'Enter actual rice before marking as completed.'
-                ]);
-            }
-        }
-
-        if ($newStatus === 'claimed' && $currentStatus !== 'completed') {
-            return redirect()->back()->withErrors([
-                'status' => 'Only completed deliveries can be marked as claimed.'
-            ]);
-        }
-
-        if ($newStatus === 'completed') {
-            app(DeliveryInventoryService::class)->complete($delivery, (float) $delivery->actual_rice);
-            autoNotifyDeliveryCompleted($delivery);
-        } elseif ($newStatus === 'claimed') {
-            app(DeliveryInventoryService::class)->claim($delivery);
-        } else {
-            $delivery->status = $newStatus;
-            $delivery->save();
-        }
-
-        return redirect()->back()->with('success', 'Status updated successfully.');
+        return redirect()->back()->with('success', 'Delivery moved to processing. Enter the actual milled rice when milling is finished.');
     })->name('staff.delivery-status');
 
     Route::post('/actual-rice/{id}', function (Request $request, $id) {
@@ -797,13 +834,25 @@ Route::prefix('staff')->group(function () {
         }
 
         $request->validate([
-            'method' => 'required|in:call,text,in_person,sms',
+            'method' => 'required|in:call,text,in_person',
             'notification_status' => 'required|in:sent,reached,failed',
-            'remarks' => 'nullable|string',
-            'notified_at' => 'required|date',
+            'remarks' => 'nullable|string|max:1000',
+            'notified_at' => 'required|date|before_or_equal:now',
         ]);
 
         $delivery = Delivery::findOrFail($id);
+
+        if ($delivery->status !== 'completed') {
+            return redirect()->back()->with('error', 'The farmer can only be notified after milling is completed.');
+        }
+
+        if ((string) Setting::getValue('sms_enabled', '0') === '1') {
+            return redirect()->back()->with('error', 'Automatic SMS is enabled for this delivery.');
+        }
+
+        if ($delivery->notifications()->exists()) {
+            return redirect()->back()->with('error', 'A notification has already been recorded for this delivery.');
+        }
 
         $delivery->notifications()->create([
             'method' => $request->method,

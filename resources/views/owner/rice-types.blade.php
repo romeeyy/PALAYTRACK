@@ -33,14 +33,15 @@
     }
 
     .btn-main {
-        min-height: 52px;
-        border-radius: 12px;
-        padding: 12px 20px;
+        min-height: 42px;
+        border-radius: 10px;
+        padding: 9px 14px;
         background: linear-gradient(135deg, #2f5d1e 0%, #3f7a28 100%);
         border: none;
         color: #fff;
+        font-size: .86rem;
         font-weight: 800;
-        box-shadow: 0 10px 18px rgba(47, 93, 30, 0.18);
+        box-shadow: 0 8px 16px rgba(47, 93, 30, 0.16);
     }
 
     .btn-main:hover {
@@ -178,23 +179,36 @@
     .history-link {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 7px;
         color: #15803d;
         font-size: 0.86rem;
         font-weight: 800;
         text-decoration: none;
-        padding: 7px 0;
+        min-height: 42px;
+        padding: 9px 14px;
+        border: 1px solid #bbd7c0;
+        border-radius: 10px;
+        background: #fff;
         white-space: nowrap;
     }
 
     .history-link:hover {
         color: #166534;
-        text-decoration: underline;
+        background: #f0fdf4;
+        text-decoration: none;
     }
 
     .history-link svg {
         width: 17px;
         height: 17px;
+    }
+
+    .page-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
     }
 
     .section-title {
@@ -311,11 +325,12 @@
 
     .modal-box {
         width: 100%;
-        max-width: 650px;
+        max-width: 620px;
         background: #ffffff;
-        border-radius: 20px;
-        padding: 28px;
-        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 24px;
+        box-shadow: 0 22px 54px rgba(15, 23, 42, 0.22);
         animation: modalFade 0.2s ease;
     }
 
@@ -336,27 +351,27 @@
         justify-content: space-between;
         align-items: flex-start;
         gap: 16px;
-        margin-bottom: 22px;
-        padding-bottom: 16px;
+        margin-bottom: 18px;
+        padding-bottom: 14px;
         border-bottom: 1px solid #eef2f7;
     }
 
     .modal-title-custom {
-        font-size: 1.45rem;
-        font-weight: 900;
+        font-size: 1.35rem;
+        font-weight: 800;
         color: #0f172a;
         margin: 0 0 4px;
     }
 
     .modal-subtitle-custom {
         color: #64748b;
-        font-size: 0.94rem;
+        font-size: 0.88rem;
         margin: 0;
     }
 
     .close-modal-btn {
-        width: 38px;
-        height: 38px;
+        width: 36px;
+        height: 36px;
         border-radius: 10px;
         border: 1px solid #e5e7eb;
         background: #ffffff;
@@ -372,10 +387,10 @@
     }
 
     .field-label {
-        font-size: 0.92rem;
-        font-weight: 800;
-        color: #111827;
-        margin-bottom: 8px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 6px;
     }
 
     .custom-input,
@@ -383,16 +398,17 @@
     .custom-textarea {
         border: 1px solid #dfe7ef;
         background: #f8fafc;
-        border-radius: 13px;
-        min-height: 50px;
-        padding: 12px 14px;
+        border-radius: 11px;
+        min-height: 46px;
+        padding: 10px 13px;
         color: #111827;
+        font-size: .9rem;
         font-weight: 500;
         transition: 0.2s ease;
     }
 
     .custom-textarea {
-        min-height: 95px;
+        min-height: 78px;
         resize: vertical;
     }
 
@@ -405,29 +421,29 @@
     }
 
     .help-text {
-        font-size: 0.88rem;
+        font-size: 0.8rem;
         color: #64748b;
-        margin-top: 7px;
+        margin-top: 4px;
     }
 
     .preview-box {
         background: #f0fdf4;
         border: 1px solid #86efac;
-        border-radius: 14px;
-        padding: 15px 16px;
-        min-height: 82px;
+        border-radius: 11px;
+        padding: 12px 14px;
+        min-height: 72px;
     }
 
     .preview-label {
-        font-size: 0.88rem;
-        font-weight: 700;
+        font-size: 0.8rem;
+        font-weight: 600;
         color: #475569;
         margin-bottom: 5px;
     }
 
     .preview-value {
-        font-size: 1.55rem;
-        font-weight: 900;
+        font-size: 1.4rem;
+        font-weight: 800;
         color: #15803d;
         line-height: 1.1;
     }
@@ -436,18 +452,19 @@
         display: flex;
         justify-content: flex-end;
         gap: 10px;
-        margin-top: 24px;
+        margin-top: 18px;
         flex-wrap: wrap;
     }
 
     .btn-save {
-        min-height: 48px;
-        border-radius: 12px;
-        padding: 11px 18px;
+        min-height: 44px;
+        border-radius: 10px;
+        padding: 9px 16px;
         background: #2f5d1e;
         border: none;
         color: #ffffff;
-        font-weight: 800;
+        font-size: .86rem;
+        font-weight: 700;
     }
 
     .btn-save:hover {
@@ -456,13 +473,14 @@
     }
 
     .btn-cancel {
-        min-height: 48px;
-        border-radius: 12px;
-        padding: 11px 18px;
+        min-height: 44px;
+        border-radius: 10px;
+        padding: 9px 16px;
         background: #ffffff;
         border: 1px solid #d1d5db;
         color: #111827;
-        font-weight: 800;
+        font-size: .86rem;
+        font-weight: 700;
     }
 
     .btn-cancel:hover {
@@ -497,6 +515,7 @@
         }
     }
 </style>
+@include('partials.form-dark-mode')
 
 <div class="page-header">
     <div>
@@ -504,7 +523,11 @@
         <p class="page-subtitle">Manage rice varieties and assigned recovery rates.</p>
     </div>
 
-    <div>
+    <div class="page-actions">
+        <a href="{{ route('owner.recovery-rate-history') }}" class="history-link">
+            <i data-lucide="history"></i>
+            History
+        </a>
         <button type="button" class="btn btn-main d-flex align-items-center gap-2" onclick="openAddModal()">
             <i data-lucide="plus"></i>
             Add Rice Type
@@ -559,10 +582,6 @@
             <h2 class="section-title">Rice Type List</h2>
             <p class="section-subtitle">Recovery rates are used to estimate milled rice output during delivery recording.</p>
         </div>
-        <a href="{{ route('owner.recovery-rate-history') }}" class="history-link">
-            <i data-lucide="history"></i>
-            View History
-        </a>
     </div>
 
     <div class="table-responsive">
@@ -631,7 +650,7 @@
                 <p class="modal-subtitle-custom">Create a new rice variety and assign its recovery rate.</p>
             </div>
 
-            <button type="button" class="close-modal-btn" onclick="closeAddModal()">×</button>
+            <button type="button" class="close-modal-btn" onclick="closeAddModal()" aria-label="Close">&times;</button>
         </div>
 
         <form method="POST" action="/owner/add-rice-type">
@@ -713,7 +732,7 @@
                 <p class="modal-subtitle-custom">Update rice type details without leaving this page.</p>
             </div>
 
-            <button type="button" class="close-modal-btn" onclick="closeEditModal()">×</button>
+            <button type="button" class="close-modal-btn" onclick="closeEditModal()" aria-label="Close">&times;</button>
         </div>
 
         <form id="editRiceTypeForm" method="POST">

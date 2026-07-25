@@ -30,12 +30,12 @@
     }
 
     .hero-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8fbf7 100%);
-        border-radius: 24px;
-        padding: 28px 28px 24px;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-        border: 1px solid #edf2f7;
-        margin-bottom: 22px;
+        background: transparent;
+        border-radius: 0;
+        padding: 0;
+        box-shadow: none;
+        border: 0;
+        margin-bottom: 16px;
     }
 
     .hero-top {
@@ -47,9 +47,9 @@
     }
 
     .hero-title {
-        font-size: 2rem;
+        font-size: 1.75rem;
         font-weight: 900;
-        margin: 0 0 8px;
+        margin: 0 0 4px;
         color: #0f172a;
         letter-spacing: -0.4px;
     }
@@ -57,41 +57,28 @@
     .hero-subtitle {
         margin: 0;
         color: #64748b;
-        font-size: 1rem;
+        font-size: 0.92rem;
         max-width: 700px;
     }
 
-    .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 14px;
-        border-radius: 999px;
-        background: #eef6ea;
-        color: #2f5d1e;
-        font-size: 0.88rem;
-        font-weight: 900;
-        white-space: nowrap;
-    }
-
-    .hero-badge i {
-        width: 17px;
-        height: 17px;
-    }
-
     .filter-panel {
-        margin-top: 22px;
-        background: linear-gradient(135deg, #f8fafc 0%, #f4faf3 100%);
+        margin-top: 15px;
+        background: #ffffff;
         border: 1px solid #e2eadf;
-        border-radius: 20px;
-        padding: 18px 20px;
+        border-radius: 16px;
+        padding: 13px 15px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
     }
 
     .filter-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px 12px;
         align-items: end;
+    }
+
+    .filter-search-group {
+        grid-column: span 3;
     }
 
     .filter-label {
@@ -99,33 +86,71 @@
         align-items: center;
         gap: 8px;
         font-size: 0.92rem;
-        font-weight: 900;
-        color: #334155;
-        margin-bottom: 10px;
+        font-weight: 700;
+        color: #475569;
+        margin-bottom: 6px;
     }
 
     .filter-label i {
         width: 16px;
         height: 16px;
-        color: #2f5d1e;
+        color: #64748b;
     }
 
     .filter-date,
-    .filter-select {
+    .filter-select,
+    .filter-search {
         max-width: none;
         width: 100%;
-        border-radius: 14px;
-        min-height: 52px;
+        border-radius: 11px;
+        min-height: 44px;
         border: 1px solid #dbe3ec;
         background: #ffffff;
         box-shadow: 0 4px 10px rgba(15, 23, 42, 0.03);
-        font-weight: 700;
+        font-weight: 600;
+        color: #334155;
+    }
+
+    .filter-search::placeholder {
+        color: #94a3b8;
+        font-weight: 500;
     }
 
     .filter-date:focus,
-    .filter-select:focus {
+    .filter-select:focus,
+    .filter-search:focus {
         border-color: #2f5d1e;
         box-shadow: 0 0 0 3px rgba(47, 93, 30, 0.12);
+    }
+
+    .filter-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .filter-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 44px;
+        padding: 8px 14px;
+        border-radius: 11px;
+        font-weight: 800;
+        font-size: 0.92rem;
+        white-space: nowrap;
+    }
+
+    .filter-btn i {
+        width: 16px;
+        height: 16px;
+    }
+
+    .reset-btn {
+        background: #ffffff;
+        color: #475569;
+        border-color: #cbd5e1;
     }
 
     .table-shell {
@@ -279,6 +304,10 @@
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        .filter-search-group {
+            grid-column: span 2;
+        }
+
         .filter-date,
         .filter-select {
             max-width: 100%;
@@ -288,6 +317,18 @@
     @media (max-width: 640px) {
         .filter-grid {
             grid-template-columns: 1fr;
+        }
+
+        .filter-search-group {
+            grid-column: span 1;
+        }
+
+        .filter-actions {
+            justify-content: stretch;
+        }
+
+        .filter-actions > * {
+            flex: 1;
         }
     }
 
@@ -313,18 +354,30 @@
             <div>
                 <h1 class="hero-title">Transaction Records</h1>
                 <p class="hero-subtitle">
-                    Detailed transaction logs for monitoring receipts, payments, staff-recorded transactions, and audit checking.
+                    Review payments, receipts, and cashier activity.
                 </p>
             </div>
 
-            <div class="hero-badge">
-                <i data-lucide="receipt-text"></i>
-                <span>Audit Monitoring</span>
-            </div>
         </div>
 
         <form method="GET" class="filter-panel">
             <div class="filter-grid">
+                <div class="filter-search-group">
+                    <label for="search" class="filter-label">
+                        <i data-lucide="search"></i>
+                        Search
+                    </label>
+
+                    <input
+                        id="search"
+                        type="search"
+                        name="search"
+                        value="{{ $search }}"
+                        class="form-control filter-search"
+                        placeholder="Client, delivery, or receipt"
+                    >
+                </div>
+
                 <div>
                     <label for="date" class="filter-label">
                         <i data-lucide="calendar-days"></i>
@@ -337,7 +390,6 @@
                         name="date"
                         value="{{ $date }}"
                         class="form-control filter-date"
-                        onchange="this.form.submit()"
                     >
                 </div>
 
@@ -351,11 +403,28 @@
                         id="milling_type"
                         name="milling_type"
                         class="form-select filter-select"
-                        onchange="this.form.submit()"
                     >
                         <option value="all" {{ ($millingType ?? 'all') == 'all' ? 'selected' : '' }}>All Types</option>
                         <option value="menudo" {{ ($millingType ?? '') == 'menudo' ? 'selected' : '' }}>Menudo</option>
                         <option value="commercial" {{ ($millingType ?? '') == 'commercial' ? 'selected' : '' }}>Commercial</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="payment_method" class="filter-label">
+                        <i data-lucide="wallet-cards"></i>
+                        Payment Method
+                    </label>
+
+                    <select
+                        id="payment_method"
+                        name="payment_method"
+                        class="form-select filter-select"
+                    >
+                        <option value="all" {{ $paymentMethod === 'all' ? 'selected' : '' }}>All Methods</option>
+                        <option value="cash" {{ $paymentMethod === 'cash' ? 'selected' : '' }}>Cash</option>
+                        <option value="gcash" {{ $paymentMethod === 'gcash' ? 'selected' : '' }}>GCash</option>
+                        <option value="maya" {{ $paymentMethod === 'maya' ? 'selected' : '' }}>Maya</option>
                     </select>
                 </div>
 
@@ -369,7 +438,6 @@
                         id="staff_id"
                         name="staff_id"
                         class="form-select filter-select"
-                        onchange="this.form.submit()"
                     >
                         <option value="all" {{ $staffId === 'all' ? 'selected' : '' }}>All Cashiers</option>
                         @foreach($staffUsers as $staff)
@@ -378,6 +446,19 @@
                             </option>
                         @endforeach
                     </select>
+                </div>
+
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-success filter-btn">
+                        <i data-lucide="search"></i>
+                        Filter
+                    </button>
+                    <a href="{{ route('owner.payment-records', ['date' => now()->toDateString()]) }}"
+                       class="btn btn-outline-secondary filter-btn reset-btn"
+                       aria-label="Reset all transaction filters">
+                        <i data-lucide="rotate-ccw"></i>
+                        Reset
+                    </a>
                 </div>
             </div>
         </form>

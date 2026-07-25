@@ -8,12 +8,12 @@
         align-items: flex-start;
         gap: 16px;
         flex-wrap: wrap;
-        margin-bottom: 28px;
+        margin-bottom: 20px;
     }
 
     .page-title {
-        font-size: 2rem;
-        font-weight: 800;
+        font-size: 1.8rem;
+        font-weight: 900;
         color: #0f172a;
         margin: 0 0 6px;
         line-height: 1.2;
@@ -26,10 +26,13 @@
     }
 
     .back-btn {
-        min-height: 46px;
-        border-radius: 12px;
-        padding: 10px 16px;
-        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 42px;
+        border-radius: 11px;
+        padding: 9px 14px;
+        font-weight: 800;
     }
 
     .alert-custom {
@@ -42,51 +45,53 @@
 
     .section-card {
         background: #ffffff;
-        border: none;
-        border-radius: 20px;
-        padding: 24px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-        margin-bottom: 24px;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        margin-bottom: 18px;
     }
 
     .section-title {
         font-size: 1.15rem;
         font-weight: 800;
         color: #111827;
-        margin-bottom: 6px;
+        margin-bottom: 5px;
         line-height: 1.3;
     }
 
     .section-subtitle {
         color: #64748b;
-        font-size: 0.95rem;
-        margin-bottom: 20px;
+        font-size: 0.88rem;
+        margin-bottom: 15px;
     }
 
     .info-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 18px 22px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
     }
 
     .info-item {
         background: #f8fafc;
-        border-radius: 16px;
-        padding: 14px 16px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 12px 14px;
+        min-height: 74px;
     }
 
     .info-label {
-        font-size: 0.84rem;
+        font-size: 0.8rem;
         font-weight: 700;
         color: #64748b;
         margin-bottom: 6px;
     }
 
     .info-value {
-        font-size: 1rem;
+        font-size: .92rem;
         font-weight: 700;
         color: #111827;
-        line-height: 1.5;
+        line-height: 1.4;
     }
 
     .info-item.full {
@@ -129,15 +134,15 @@
     .custom-textarea {
         border: 1px solid #e5e7eb;
         background: #f8fafc;
-        border-radius: 14px;
-        min-height: 52px;
-        padding: 14px 16px;
+        border-radius: 11px;
+        min-height: 44px;
+        padding: 10px 13px;
         color: #111827;
         box-shadow: none;
     }
 
     .custom-textarea {
-        min-height: 100px;
+        min-height: 58px;
         resize: vertical;
     }
 
@@ -153,7 +158,7 @@
         font-size: 0.92rem;
         font-weight: 700;
         color: #111827;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
         display: block;
     }
 
@@ -236,10 +241,10 @@
 
     .action-card {
         background: #ffffff;
-        border: none;
-        border-radius: 22px;
-        padding: 28px;
-        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
     }
 
     .action-card.equal-height {
@@ -263,7 +268,7 @@
     .action-card-body {
         display: flex;
         flex-direction: column;
-        gap: 18px;
+        gap: 12px;
         height: 100%;
     }
 
@@ -272,11 +277,11 @@
     }
 
     .action-btn-lg {
-        min-height: 58px;
-        border-radius: 16px;
-        font-size: 1.02rem;
+        min-height: 46px;
+        border-radius: 11px;
+        font-size: .9rem;
         font-weight: 800;
-        padding: 14px 18px;
+        padding: 10px 15px;
     }
 
     .btn-dark-soft {
@@ -293,8 +298,8 @@
     .payment-status-box {
         background: #f8fafc;
         border: 1px solid #dbe3ee;
-        border-radius: 16px;
-        padding: 16px 18px;
+        border-radius: 11px;
+        padding: 11px 13px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -325,8 +330,8 @@
     .claim-highlight {
         background: linear-gradient(135deg, #f8fafc 0%, #eef6ee 100%);
         border: 1px solid #dbe7db;
-        border-radius: 18px;
-        padding: 20px;
+        border-radius: 12px;
+        padding: 13px 15px;
     }
 
     .claim-highlight-title {
@@ -350,7 +355,7 @@
         border-radius: 999px;
         font-size: 0.85rem;
         font-weight: 700;
-        min-height: 38px;
+        min-height: 32px;
         white-space: nowrap;
     }
 
@@ -431,13 +436,121 @@
     transition: all 0.2s ease;
 }
 
-.btn-resend-sms:hover {
+    .btn-resend-sms:hover {
     transform: translateY(-1px);
     background: linear-gradient(135deg, #d97706, #ea580c);
 }
 
+@media (max-width: 992px) {
+    .info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.compact-section .helper-box {
+    margin-bottom: 0;
+    padding: 11px 13px;
+}
+
+.notification-card .helper-box {
+    margin-bottom: 10px;
+    padding: 10px 12px;
+}
+
+.notification-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.notification-heading .section-title {
+    margin: 0;
+}
+
+.notification-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #64748b;
+    font-size: .8rem;
+    font-weight: 700;
+}
+
+.notification-notice {
+    margin: 0 0 12px;
+    padding: 8px 10px;
+    border-left: 3px solid #f59e0b;
+    border-radius: 7px;
+    background: #fffaf2;
+    color: #9a3412;
+    font-size: .8rem;
+}
+
+.notification-card .section-subtitle {
+    margin-bottom: 10px;
+}
+
+.notification-fields {
+    display: grid;
+    grid-template-columns: .9fr .9fr 1fr 1.35fr auto;
+    gap: 10px;
+    align-items: end;
+}
+
+.notification-action {
+    min-width: 150px;
+}
+
+.notification-action .action-btn {
+    min-height: 44px;
+    border: 0;
+    background: #15803d;
+    color: #fff;
+}
+
+.notification-action .action-btn:hover {
+    background: #166534;
+    color: #fff;
+}
+
+.notification-card .custom-textarea {
+    height: 44px;
+    min-height: 44px;
+    resize: none;
+}
+
+.notification-history-card .empty-state {
+    padding: 14px 10px;
+}
+
+.notification-history-card .section-subtitle {
+    margin-bottom: 8px;
+}
+
+.claim-action-card .claim-highlight {
+    height: 100%;
+}
+
+.delivery-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+@media (max-width: 1100px) {
+    .delivery-actions-grid { grid-template-columns: 1fr; }
+    .notification-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .notification-action { min-width: 0; }
+}
+
 /* mobile fix */
 @media (max-width: 576px) {
+    .info-grid { grid-template-columns: 1fr; }
+    .page-title { font-size: 1.7rem; }
+    .section-card { padding: 18px; }
+    .notification-fields { grid-template-columns: 1fr; }
+    .notification-heading { align-items:flex-start; flex-direction:column; }
+
     .failed-notification-box {
         flex-direction: column;
         align-items: flex-start;
@@ -487,10 +600,13 @@
 <div class="page-header">
     <div>
         <h1 class="page-title">Delivery Details</h1>
-        <p class="page-subtitle">View and process the selected delivery record.</p>
+        <p class="page-subtitle">
+            View and process the complete delivery record.
+        </p>
     </div>
 
     <a href="/staff/deliveries" class="btn btn-outline-secondary back-btn">
+        <i data-lucide="arrow-left"></i>
         Back to Deliveries
     </a>
 </div>
@@ -523,9 +639,9 @@
     </div>
 @endif
 
-<div class="section-card">
+<div class="section-card compact-section">
     <h2 class="section-title">Delivery Information</h2>
-    <p class="section-subtitle">Basic details and milling information for this delivery.</p>
+    <p class="section-subtitle">Basic delivery, client, and milling information.</p>
 
     <div class="info-grid">
         <div class="info-item">
@@ -534,8 +650,15 @@
         </div>
 
         <div class="info-item">
-            <div class="info-label">Queue Number</div>
+            <div class="info-label">Daily Queue Number</div>
             <div class="info-value">#{{ $delivery->queue_number }}</div>
+        </div>
+
+        <div class="info-item">
+            <div class="info-label">Delivery Date</div>
+            <div class="info-value">
+                {{ $delivery->delivered_at ? \Carbon\Carbon::parse($delivery->delivered_at)->format('m/d/Y') : 'N/A' }}
+            </div>
         </div>
 
         <div class="info-item">
@@ -549,7 +672,7 @@
         </div>
 
         <div class="info-item">
-            <div class="info-label">Processed By</div>
+            <div class="info-label">Recorded By</div>
             <div class="info-value">{{ $delivery->staff?->name ?? 'N/A' }}</div>
         </div>
 
@@ -604,13 +727,6 @@
             </div>
         @endif
 
-        <div class="info-item">
-            <div class="info-label">Delivered At</div>
-            <div class="info-value">
-                {{ $delivery->delivered_at ? \Carbon\Carbon::parse($delivery->delivered_at)->format('M d, Y h:i A') : 'N/A' }}
-            </div>
-        </div>
-
         <div class="info-item full">
             <div class="info-label">Notes</div>
             <div class="info-value">{{ $delivery->notes ?: 'No notes provided.' }}</div>
@@ -618,39 +734,43 @@
     </div>
 </div>
 
-<div class="section-card">
-    <h2 class="section-title">Update Delivery Status</h2>
-    <p class="section-subtitle">Change the current status of this delivery.</p>
+<div class="section-card compact-section">
+    <h2 class="section-title">Workflow Status</h2>
 
-    <form method="POST" action="{{ url('/staff/delivery-status/' . $delivery->id) }}">
-        @csrf
-
-        <div class="row g-3 align-items-end">
-            <div class="col-md-4">
-                <label class="field-label">Status</label>
-                <select name="status" class="form-select custom-select" required>
-                    <option value="">Select Status</option>
-                    <option value="pending" {{ $delivery->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="processing" {{ $delivery->status == 'processing' ? 'selected' : '' }}>Processing</option>
-                    <option value="completed" {{ $delivery->status == 'completed' ? 'selected' : '' }}>Completed</option>
-                </select>
-            </div>
-
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-primary action-btn w-100">
-                    Update Status
-                </button>
-            </div>
+    @if($delivery->status === 'pending')
+        <p class="section-subtitle">Start milling when this delivery reaches the front of the active queue.</p>
+        <form method="POST" action="{{ url('/staff/delivery-status/' . $delivery->id) }}"
+              data-confirm-title="Start Processing?"
+              data-confirm-message="Move this delivery from Pending to Processing?"
+              data-confirm-button="Start Processing">
+            @csrf
+            <input type="hidden" name="status" value="processing">
+            <button type="submit" class="btn btn-primary action-btn">Start Processing</button>
+        </form>
+    @elseif($delivery->status === 'processing')
+        <div class="helper-box helper-dark mb-0">
+            Milling is in progress. Enter the actual milled rice below when processing is finished.
         </div>
-    </form>
+    @elseif($delivery->status === 'completed')
+        <div class="helper-box helper-dark mb-0">
+            Milling is complete. Continue to payment, then release the rice to the customer.
+        </div>
+    @else
+        <div class="helper-box helper-dark mb-0">
+            This delivery is finalized and retained as a read-only historical record.
+        </div>
+    @endif
 </div>
 
 @if($canEditActualRice)
-    <div class="section-card">
+    <div class="section-card compact-section">
         <h2 class="section-title">Update Actual Milled Rice</h2>
         <p class="section-subtitle">Record the actual milled rice output for inventory tracking.</p>
 
-        <form method="POST" action="{{ url('/staff/actual-rice/' . $delivery->id) }}">
+        <form method="POST" action="{{ url('/staff/actual-rice/' . $delivery->id) }}"
+              data-confirm-title="Complete Milling?"
+              data-confirm-message="Save the actual milled rice and mark this delivery as Completed? Inventory will be updated."
+              data-confirm-button="Save & Complete">
             @csrf
 
             <div class="row g-3 align-items-end">
@@ -669,7 +789,7 @@
 
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-success action-btn w-100">
-                        Save Actual Milled Rice
+                        Save & Complete Milling
                     </button>
                 </div>
             </div>
@@ -682,7 +802,7 @@
         @endif
     </div>
 @else
-    <div class="section-card">
+    <div class="section-card compact-section">
         <h2 class="section-title">Actual Milled Rice Record</h2>
         <p class="section-subtitle">Recorded actual milled rice output for this delivery.</p>
 
@@ -704,16 +824,16 @@
     </div>
 @endif
 
-<div class="section-card">
-    <h2 class="section-title">Log Farmer Notification</h2>
-
+@if(!$latestNotification && $delivery->status === 'completed')
+<div class="section-card notification-card">
     @php
         $smsEnabled = \App\Models\Setting::getValue('sms_enabled', '0');
     @endphp
 
-    <div class="helper-box helper-dark">
-        <strong>Latest SMS Status:</strong>
-
+    <div class="notification-heading">
+        <h2 class="section-title">Log Farmer Notification</h2>
+        <div class="notification-status">
+            <span>Latest status</span>
         @if($smsStatus)
             <span class="sms-status-badge
                 {{ $smsStatus === 'sent' ? 'sms-sent' : '' }}
@@ -725,26 +845,21 @@
         @else
             <span class="sms-status-badge sms-none">No SMS yet</span>
         @endif
+        </div>
     </div>
 
     @if($smsEnabled === '1')
-        <div class="helper-box helper-dark">
-           SMS notification is enabled. When the delivery becomes <strong>Completed</strong>, the system automatically sends a real SMS through Semaphore and logs it below.
-        </div>
+        <p class="notification-notice">Automatic SMS is enabled and will be logged when the delivery becomes Completed.</p>
     @else
-        <div class="helper-box helper-warning">
-            SMS notification is disabled. Please notify the farmer manually and record it below.
-        </div>
+        <p class="notification-notice">SMS is disabled. Notify the farmer manually and record it below.</p>
     @endif
 
-    @if((string) $smsEnabled !== '1' && !$latestNotification)
-    <p class="section-subtitle">Record how and when the farmer was notified.</p>
-
-    <form method="POST" action="{{ url('/staff/delivery-notification/' . $delivery->id) }}">
+    @if((string) $smsEnabled !== '1')
+    <form method="POST" action="{{ url('/staff/delivery-notification/' . $delivery->id) }}" class="notification-form">
         @csrf
 
-        <div class="row g-3">
-            <div class="col-md-3">
+        <div class="notification-fields">
+            <div>
                 <label class="field-label">Method</label>
                 <select name="method" class="form-select custom-select" required>
                     <option value="">Select Method</option>
@@ -754,7 +869,7 @@
                 </select>
             </div>
 
-            <div class="col-md-3">
+            <div>
                 <label class="field-label">Notification Status</label>
                 <select name="notification_status" class="form-select custom-select" required>
                     <option value="">Select Status</option>
@@ -764,7 +879,7 @@
                 </select>
             </div>
 
-            <div class="col-md-3">
+            <div>
                 <label class="field-label">Notified At</label>
                 <input
                     type="datetime-local"
@@ -775,18 +890,18 @@
                 >
             </div>
 
-            <div class="col-12">
+            <div>
                 <label class="field-label">Remarks</label>
                 <textarea
                     name="remarks"
                     class="form-control custom-textarea"
-                    rows="3"
+                    rows="1"
                     placeholder="Optional remarks..."
                 >{{ old('remarks') }}</textarea>
             </div>
 
-                               <div class="col-md-3">
-                <button type="submit" class="btn btn-info text-white action-btn w-100">
+            <div class="notification-action">
+                <button type="submit" class="btn action-btn w-100">
                     Save Notification
                 </button>
             </div>
@@ -794,8 +909,9 @@
     </form>
 @endif
 </div>
+@endif
 
-<div class="section-card">
+<div class="section-card notification-history-card">
     <h2 class="section-title">Notification History</h2>
     <p class="section-subtitle">Previous notification logs for this delivery.</p>
 
@@ -883,100 +999,69 @@
     @endif
 </div>
 
-<div class="row g-4 mb-4">
-    <div class="col-lg-6">
-        <div class="action-card equal-height">
-            <div class="action-card-body">
-                <div class="action-card-top">
-                    <h2 class="action-card-title">Claim Stub Access</h2>
-                    <p class="action-card-subtitle">
-                        Open and review the printable claim stub for this delivery.
-                    </p>
-                </div>
-
-                <a href="{{ url('/staff/claim-stub/' . $delivery->id) }}"
-                   class="btn btn-main action-btn-lg w-100 d-flex align-items-center justify-content-center gap-2 mt-auto">
-                    <i data-lucide="file-text"></i>
-                    Open Claim Stub
-                </a>
+<div class="delivery-actions-grid">
+    <div class="action-card equal-height">
+        <div class="action-card-body">
+            <div class="action-card-top">
+                <h2 class="action-card-title">Claim Stub</h2>
+                <p class="action-card-subtitle">Open or reprint the customer’s claim ticket.</p>
             </div>
+            <a href="{{ url('/staff/claim-stub/' . $delivery->id) }}"
+               class="btn btn-main action-btn-lg w-100 d-flex align-items-center justify-content-center gap-2 mt-auto">
+                <i data-lucide="file-text"></i>
+                Open Claim Stub
+            </a>
         </div>
     </div>
 
-    <div class="col-lg-6">
-        <div class="action-card equal-height">
-            <div class="action-card-body">
-                <div class="action-card-top">
-                    <h2 class="action-card-title">Billing & Payment (POS)</h2>
-                    <p class="action-card-subtitle">
-                        Review billing details, record payment, and view the receipt when available.
-                    </p>
-                </div>
-
-                @if($delivery->transaction)
-                    <div class="d-flex flex-column gap-3 mt-auto">
-                        <div class="payment-status-box">
-                            <p class="payment-status-label mb-0">Payment Status</p>
-                            <span class="payment-pill">Already Paid</span>
-                        </div>
-
-                        <a href="{{ url('/staff/receipt/' . $delivery->id) }}"
-                           class="btn btn-main action-btn-lg w-100 d-flex justify-content-center align-items-center gap-2">
-                            <i data-lucide="file-text"></i>
-                            View Receipt
-                        </a>
+    <div class="action-card equal-height">
+        <div class="action-card-body">
+            <div class="action-card-top">
+                <h2 class="action-card-title">Billing &amp; Payment</h2>
+                <p class="action-card-subtitle">Record payment or open the completed receipt.</p>
+            </div>
+            @if($delivery->transaction)
+                <div class="d-flex flex-column gap-2 mt-auto">
+                    <div class="payment-status-box">
+                        <p class="payment-status-label mb-0">Payment</p>
+                        <span class="payment-pill">Paid</span>
                     </div>
-                @elseif($delivery->status === 'completed')
-                    <a href="{{ url('/staff/pos/' . $delivery->id) }}"
-                       class="btn btn-success action-btn-lg w-100 mt-auto">
-                        Proceed to Payment
+                    <a href="{{ url('/staff/receipt/' . $delivery->id) }}"
+                       class="btn btn-main action-btn-lg w-100 d-flex justify-content-center align-items-center gap-2">
+                        <i data-lucide="file-text"></i>
+                        View Receipt
                     </a>
-                @else
-                    <div class="helper-box helper-warning mb-0 mt-auto">
-                        Complete delivery first before payment.
-                    </div>
-                @endif
-            </div>
+                </div>
+            @elseif($delivery->status === 'completed')
+                <a href="{{ url('/staff/pos/' . $delivery->id) }}"
+                   class="btn btn-success action-btn-lg w-100 mt-auto">Proceed to Payment</a>
+            @else
+                <div class="helper-box helper-warning mb-0 mt-auto">Complete milling before payment.</div>
+            @endif
         </div>
     </div>
-</div>
 
-<div class="action-card">
-    <div class="row g-4 align-items-center">
-        <div class="col-lg-8">
-            <div class="claim-highlight">
-                <div class="claim-highlight-title">Claim Delivery</div>
-                <p class="claim-highlight-text">
-                    Finalize the release of the delivery to the customer after all processing and payment steps are complete.
-                </p>
+    <div class="action-card equal-height">
+        <div class="action-card-body">
+            <div class="action-card-top">
+                <h2 class="action-card-title">Release Delivery</h2>
+                <p class="action-card-subtitle">Mark the rice as claimed after payment and release.</p>
             </div>
-        </div>
-
-        <div class="col-lg-4">
             @if($delivery->status === 'claimed')
-                <div class="helper-box helper-dark mb-0">
-                    This delivery has already been claimed.
-                </div>
+                <div class="helper-box helper-dark mb-0 mt-auto">This delivery has already been claimed.</div>
             @elseif($delivery->status === 'completed' && $delivery->transaction)
                 <form method="POST" action="{{ url('/staff/claim-delivery/' . $delivery->id) }}"
-                    data-confirm-title="Mark as Claimed?"
-                    data-confirm-message="Confirm that the milled rice has been released to the customer."
-                    data-confirm-button="Mark as Claimed">
-    @csrf
-
-    <button type="submit"
-            class="btn btn-dark-soft action-btn-lg w-100">
-        Mark as Claimed
-    </button>
-</form>
+                      class="mt-auto"
+                      data-confirm-title="Mark as Claimed?"
+                      data-confirm-message="Confirm that the milled rice has been released to the customer."
+                      data-confirm-button="Mark as Claimed">
+                    @csrf
+                    <button type="submit" class="btn btn-dark-soft action-btn-lg w-100">Mark as Claimed</button>
+                </form>
             @elseif($delivery->status === 'completed' && !$delivery->transaction)
-                <div class="helper-box helper-warning mb-0">
-                    Payment must be completed first before this delivery can be claimed.
-                </div>
+                <div class="helper-box helper-warning mb-0 mt-auto">Complete payment before releasing this delivery.</div>
             @else
-                <div class="helper-box helper-warning mb-0">
-                    Delivery must be completed first before it can be claimed.
-                </div>
+                <div class="helper-box helper-warning mb-0 mt-auto">Complete milling before releasing this delivery.</div>
             @endif
         </div>
     </div>

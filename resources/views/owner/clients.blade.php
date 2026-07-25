@@ -80,14 +80,14 @@
 
     .table tbody td {
         vertical-align: middle;
-        padding: 14px 18px;
+        padding: 10px 18px;
         white-space: nowrap;
     }
 
     .badge-regular {
         background: #fef3c7;
         color: #92400e;
-        padding: 8px 12px;
+        padding: 6px 10px;
         border-radius: 999px;
         font-size: 0.82rem;
         font-weight: 800;
@@ -96,18 +96,19 @@
     .badge-commercial {
         background: #dcfce7;
         color: #166534;
-        padding: 8px 12px;
+        padding: 6px 10px;
         border-radius: 999px;
         font-size: 0.82rem;
         font-weight: 800;
     }
 
     .btn-save {
-        border-radius: 10px;
-        min-height: 42px;
+        border-radius: 9px;
+        min-height: 38px;
         font-weight: 800;
-        padding-left: 14px;
-        padding-right: 14px;
+        padding-left: 12px;
+        padding-right: 12px;
+        font-size: .9rem;
     }
 
     .record-pill {
@@ -122,13 +123,17 @@
 
     .header-tools { display:flex; align-items:center; gap:10px; }
     .history-btn, .edit-btn { border:1px solid #bcd8c0; color:#166534; background:#fff; border-radius:11px; padding:9px 13px; font-weight:800; text-decoration:none; white-space:nowrap; }
-    .edit-btn { padding:10px 12px; display:inline-flex; align-items:center; }
-    .client-person { display:flex; align-items:center; gap:11px; }
-    .client-avatar { width:38px; height:38px; border-radius:12px; display:grid; place-items:center; flex:0 0 38px; background:#edf8e9; color:#166534; font-size:.8rem; font-weight:900; }
+    .edit-btn { min-height:38px; padding:8px 11px; display:inline-flex; align-items:center; font-size:.9rem; }
+    .client-person { display:flex; align-items:center; gap:10px; }
+    .client-avatar { width:34px; height:34px; border-radius:10px; display:grid; place-items:center; flex:0 0 34px; background:#edf8e9; color:#166534; font-size:.75rem; font-weight:900; }
     .client-name { font-weight:800; color:#0f172a; }
-    .manage-form .custom-select { min-width:145px; }
+    .manage-form .custom-select { min-width:145px; min-height:40px; padding-top:6px; padding-bottom:6px; font-size:.92rem; }
     .content-card .table { margin-bottom:0; }
     .pagination-wrap { padding:12px 18px; border-top:1px solid #edf2f7; }
+    .pagination-wrap nav { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .pagination-wrap .pagination { margin:0; gap:5px; }
+    .pagination-wrap .page-link { min-width:36px; min-height:36px; display:grid; place-items:center; border-radius:9px; color:#166534; font-weight:700; }
+    .pagination-wrap .page-item.active .page-link { background:#168344; border-color:#168344; color:#fff; }
     .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:9999}.modal-overlay.show{display:flex}.client-modal{width:100%;max-width:520px;background:#fff;border-radius:18px;box-shadow:0 22px 55px rgba(15,23,42,.22);overflow:hidden}.modal-head{padding:19px 21px;border-bottom:1px solid #edf2f7;display:flex;justify-content:space-between;gap:12px}.modal-title{font-size:1.2rem;font-weight:900;margin:0 0 3px}.modal-sub{font-size:.84rem;color:#64748b;margin:0}.modal-close{border:0;background:#f1f5f9;width:34px;height:34px;border-radius:9px;font-size:1.25rem}.modal-body{padding:21px}.modal-field{margin-bottom:16px}.modal-field label{font-weight:800;font-size:.88rem;margin-bottom:7px}.modal-field input{min-height:48px;border-radius:11px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.modal-cancel,.modal-save{border-radius:10px;padding:10px 15px;font-weight:800}.modal-cancel{background:#fff;border:1px solid #d1d5db}.modal-save{background:#15803d;color:#fff;border:0}
     @media(max-width:768px){.page-title{font-size:1.65rem}.header-tools{width:100%}.manage-form{flex-wrap:wrap}}
 </style>
@@ -279,7 +284,7 @@
     </div>
 
     @if($clients->hasPages())
-        <div class="pagination-wrap">{{ $clients->links() }}</div>
+        <div class="pagination-wrap">{{ $clients->links('pagination::bootstrap-5') }}</div>
     @endif
 </div>
 </div>

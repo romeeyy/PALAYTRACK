@@ -8,7 +8,7 @@
         align-items: flex-start;
         gap: 16px;
         flex-wrap: wrap;
-        margin-bottom: 24px;
+        margin-bottom: 18px;
     }
 
     .pos-page-title {
@@ -26,19 +26,22 @@
     }
 
     .back-btn {
-        min-height: 46px;
-        border-radius: 12px;
-        padding: 10px 16px;
+        min-height: 44px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 9px 15px;
         font-weight: 700;
+        color: #334155;
+        background: #fff;
     }
 
     .pos-card {
         background: #ffffff;
-        border: none;
-        border-radius: 22px;
-        padding: 24px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-        margin-bottom: 24px;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+        margin-bottom: 18px;
     }
 
     .card-title {
@@ -51,7 +54,7 @@
     .card-subtitle {
         color: #64748b;
         font-size: 0.95rem;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
     }
 
     .field-label {
@@ -59,7 +62,7 @@
         font-size: 0.92rem;
         font-weight: 700;
         color: #111827;
-        margin-bottom: 10px;
+        margin-bottom: 7px;
     }
 
     .custom-input,
@@ -67,15 +70,15 @@
     .custom-textarea {
         border: 1px solid #e5e7eb;
         background: #f8fafc;
-        border-radius: 14px;
-        min-height: 52px;
-        padding: 14px 16px;
+        border-radius: 11px;
+        min-height: 46px;
+        padding: 11px 14px;
         color: #111827;
         box-shadow: none;
     }
 
     .custom-textarea {
-        min-height: 100px;
+        min-height: 72px;
         resize: vertical;
     }
 
@@ -90,8 +93,8 @@
     .info-box {
         background: #f8fafc;
         border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        padding: 14px 16px;
+        border-radius: 12px;
+        padding: 11px 14px;
         height: 100%;
     }
 
@@ -136,8 +139,8 @@
     .summary-box {
         background: #f8fafc;
         border: 1px solid #e5e7eb;
-        border-radius: 18px;
-        padding: 18px;
+        border-radius: 14px;
+        padding: 14px 16px;
     }
 
     .summary-row {
@@ -145,7 +148,7 @@
         justify-content: space-between;
         align-items: center;
         gap: 12px;
-        padding: 10px 0;
+        padding: 8px 0;
         border-bottom: 1px solid #e5e7eb;
         color: #334155;
         font-size: 0.96rem;
@@ -175,7 +178,8 @@
         color: #fff;
         border: none;
         border-radius: 14px;
-        min-height: 52px;
+        min-height: 46px;
+        padding: 10px 22px;
         font-weight: 800;
         box-shadow: 0 8px 16px rgba(47, 93, 30, 0.16);
     }
@@ -194,6 +198,20 @@
         box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
     }
 
+    .payment-submit {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .payment-submit .btn-main {
+        min-width: 190px;
+    }
+
+    .payment-summary-card {
+        position: sticky;
+        top: 18px;
+    }
+
     @media (max-width: 768px) {
         .pos-page-title {
             font-size: 1.7rem;
@@ -202,17 +220,26 @@
         .pos-card {
             padding: 18px;
         }
+
+        .payment-summary-card {
+            position: static;
+        }
+
+        .payment-submit .btn-main {
+            width: 100%;
+        }
     }
 </style>
+@include('partials.form-dark-mode')
 
 <div class="pos-page-header">
     <div>
-        <h1 class="pos-page-title">Billing & Payment (POS)</h1>
+        <h1 class="pos-page-title">Billing &amp; Payment</h1>
         <p class="pos-page-subtitle">Record payment for this completed delivery.</p>
     </div>
 
     <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}" class="btn btn-outline-secondary back-btn">
-        Back to Delivery
+        &larr; Back to Delivery
     </a>
 </div>
 
@@ -239,7 +266,7 @@
     data-commercial-fee="{{ (float) $commercialFee }}">
 </div>
 
-<div class="row g-4">
+<div class="row g-3">
     <div class="col-lg-7">
         <div class="pos-card">
             <h2 class="card-title">Transaction Details</h2>
@@ -381,8 +408,8 @@
                             placeholder="Required when adding other charges or a discount">{{ old('notes') }}</textarea>
                     </div>
 
-                    <div class="col-12 pt-2">
-                        <button type="submit" class="btn btn-main w-100">
+                    <div class="col-12 pt-2 payment-submit">
+                        <button type="submit" class="btn btn-main">
                             Save Payment
                         </button>
                     </div>
@@ -392,7 +419,7 @@
     </div>
 
     <div class="col-lg-5">
-        <div class="pos-card">
+        <div class="pos-card payment-summary-card">
             <h2 class="card-title">Payment Summary</h2>
             <p class="card-subtitle">Review the computed charges before saving payment.</p>
 

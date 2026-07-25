@@ -182,8 +182,8 @@
 
     .adjustment-line { display: block; }
     .adjustment-line + .adjustment-line { margin-top: 6px; }
-    .adjustment-amount { display: block; color: #0f172a; font-weight: 900; }
-    .adjustment-kind { display: block; margin-top: 2px; color: #64748b; font-size: 0.7rem; font-weight: 700; }
+    .adjustment-amount { display: block; color: #0f172a; font-size: 0.82rem; font-weight: 700; }
+    .adjustment-kind { display: block; margin-top: 1px; color: #64748b; font-size: 0.66rem; font-weight: 600; }
     .adjustment-charge,
     .adjustment-discount { color: #334155; }
 
@@ -508,7 +508,8 @@
         }
 
         .section-title {
-            font-size: 14px;
+            font-size: 13px !important;
+            line-height: 1.2 !important;
             margin-bottom: 2px;
         }
 
@@ -550,6 +551,9 @@
             color: #111827;
             text-align: left !important;
         }
+
+        .adjustment-amount { font-size: 8px !important; font-weight: 700 !important; }
+        .adjustment-kind { font-size: 7px !important; font-weight: 400 !important; }
 
         .type-pill {
             background: transparent !important;
@@ -717,11 +721,11 @@
         <div class="table-wrap">
             <table class="sales-table">
                 <colgroup>
-                    <col style="width: 15%">
+                    <col style="width: 14%">
                     <col style="width: 12%">
-                    <col style="width: 11%">
                     <col style="width: 13%">
-                    <col style="width: 10%">
+                    <col style="width: 13%">
+                    <col style="width: 9%">
                     <col style="width: 14%">
                     <col style="width: 13%">
                     <col style="width: 12%">
@@ -785,9 +789,6 @@
                                         <span class="adjustment-kind">Discount</span>
                                     </span>
                                 @endif
-                                @if((float) $sale->other_charges == 0 && (float) $sale->discount == 0)
-                                    <span class="adjustment-line">None</span>
-                                @endif
                             </td>
 
                             <td class="text-right amount-text">
@@ -800,7 +801,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7">
+                            <td colspan="8">
                                 <div class="empty-state">
                                     No sales records found for the selected date.
                                 </div>

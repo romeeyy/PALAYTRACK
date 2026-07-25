@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-accent="{{ Auth::check() ? (Auth::user()->theme_preference ?? 'classic') : 'classic' }}" data-display-preference="{{ Auth::check() ? (Auth::user()->display_mode ?? 'light') : 'light' }}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PalayTrack - Owner</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @include('components.theme-loader')
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -302,6 +303,13 @@
             justify-content: center;
             font-size: 12px;
             font-weight: 800;
+            overflow: hidden;
+        }
+
+        .avatar-small img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .profile-trigger svg {
@@ -544,14 +552,16 @@
         <main class="main-content">
             <header class="topbar">
                 <div class="topbar-actions">
-                    <button class="top-icon-btn" type="button" title="Notifications">
-                        <i data-lucide="bell"></i>
-                    </button>
+                    @include('components.notification-center')
 
                     <div class="profile-dropdown">
                         <button class="profile-trigger" type="button" onclick="toggleProfileMenu()">
                             <span class="avatar-small">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                                @if(Auth::user()->profile_photo_path)
+                                    <img src="{{ asset(Auth::user()->profile_photo_path) }}" alt="{{ Auth::user()->name }}">
+                                @else
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                                @endif
                             </span>
                             <i data-lucide="chevron-down"></i>
                         </button>
@@ -567,12 +577,16 @@
                                 My Profile
                             </a>
 
-                            <a href="{{ route('owner.settings') }}">
-                                <i data-lucide="settings"></i>
-                                Account Settings
+                            <a href="{{ route('appearance.edit') }}">
+                                <i data-lucide="palette"></i>
+                                Appearance
                             </a>
 
-                            <form method="POST" action="{{ route('logout') }}">
+                            <form method="POST" action="{{ route('logout') }}"
+                                  data-confirm-title="Log out of PalayTrack?"
+                                  data-confirm-message="Are you sure you want to log out of your account?"
+                                  data-confirm-button="Yes, Log Out"
+                                  data-confirm-variant="danger">
                                 @csrf
                                 <button type="submit" class="logout-item">
                                     <i data-lucide="log-out"></i>
@@ -585,6 +599,7 @@
             </header>
 
             @yield('content')
+            @include('components.theme-styles')
         </main>
     </div>
 
@@ -603,6 +618,13 @@
 
             if (dropdown && !dropdown.contains(event.target)) {
                 menu.classList.remove('show');
+            }
+
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            const notificationMenu = document.getElementById('notificationMenu');
+            if (notificationDropdown && !notificationDropdown.contains(event.target)) {
+                notificationMenu.classList.remove('show');
+                document.querySelector('.notification-trigger')?.setAttribute('aria-expanded', 'false');
             }
         });
     </script>

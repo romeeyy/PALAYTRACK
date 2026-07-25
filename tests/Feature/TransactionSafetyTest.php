@@ -88,8 +88,65 @@ class TransactionSafetyTest extends TestCase
             ->assertDontSee('Private Client');
 
         $this->actingAs($firstStaff)
+            ->get(route('staff.receipt', $firstDelivery))
+            ->assertOk()
+            ->assertSee('Back to Transactions')
+            ->assertSee(route('staff.transactions', ['date' => now()->toDateString()]), false);
+
+        $this->actingAs($firstStaff)
             ->get(route('staff.receipt', $secondDelivery))
             ->assertForbidden();
+    }
+
+    public function test_owner_transaction_filters_accept_all_and_filter_by_cashier_and_milling_type(): void
+    {
+        $owner = User::factory()->create(['role' => 'owner', 'is_active' => true]);
+        $firstStaff = User::factory()->create(['name' => 'First Cashier', 'role' => 'staff', 'is_active' => true]);
+        $secondStaff = User::factory()->create(['name' => 'Second Cashier', 'role' => 'staff', 'is_active' => true]);
+        $firstDelivery = $this->delivery($firstStaff, 200, 1, 'Menudo Client');
+        $secondDelivery = $this->delivery($secondStaff, 200, 2, 'Commercial Client');
+
+        $this->transaction($firstDelivery, $firstStaff, 'cash');
+        $commercial = $this->transaction($secondDelivery, $secondStaff, 'maya', '987654');
+        $commercial->update(['milling_type' => 'commercial']);
+
+        $filters = [
+            'date' => now()->toDateString(),
+            'milling_type' => 'all',
+            'staff_id' => 'all',
+        ];
+
+        $this->actingAs($owner)
+            ->get(route('owner.payment-records', $filters))
+            ->assertOk()
+            ->assertSee('Menudo Client')
+            ->assertSee('Commercial Client');
+
+        $this->actingAs($owner)
+            ->get(route('owner.payment-records', array_merge($filters, [
+                'staff_id' => $firstStaff->id,
+            ])))
+            ->assertOk()
+            ->assertSee('Menudo Client')
+            ->assertDontSee('Commercial Client');
+
+        $this->actingAs($owner)
+            ->get(route('owner.payment-records', array_merge($filters, [
+                'milling_type' => 'commercial',
+                'payment_method' => 'maya',
+                'search' => 'Commercial Client',
+            ])))
+            ->assertOk()
+            ->assertSee('Commercial Client')
+            ->assertDontSee('Menudo Client');
+
+        $this->actingAs($owner)
+            ->get(route('owner.payment-records', array_merge($filters, [
+                'payment_method' => 'cash',
+            ])))
+            ->assertOk()
+            ->assertSee('Menudo Client')
+            ->assertDontSee('Commercial Client');
     }
 
     private function delivery(User $staff, float $weight, int $queue, string $clientName = 'Test Client'): Delivery

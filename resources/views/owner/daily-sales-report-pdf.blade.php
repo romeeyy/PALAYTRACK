@@ -62,7 +62,6 @@
                 <td class="adjustment">
                     @if((float) $sale->other_charges > 0)+₱{{ number_format($sale->other_charges, 2) }}<small>Charge</small>@endif
                     @if((float) $sale->discount > 0)−₱{{ number_format($sale->discount, 2) }}<small>Discount</small>@endif
-                    @if((float) $sale->other_charges == 0 && (float) $sale->discount == 0)None@endif
                 </td>
                 <td class="right">₱{{ number_format($sale->total_amount, 2) }}</td>
                 <td>{{ $sale->staff_name ?? 'Staff' }}</td>

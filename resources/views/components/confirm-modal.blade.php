@@ -10,6 +10,11 @@
     .system-confirm-submit{border:0;background:#15803d;color:#fff}
     .system-confirm-submit.danger{background:#b42318}
     .system-confirm-submit:disabled{opacity:.65;cursor:not-allowed}
+    html[data-theme="dark"] .system-confirm-overlay{background:rgba(2,6,23,.72)}
+    html[data-theme="dark"] .system-confirm-box{background:#172033;border:1px solid #35445a;box-shadow:0 22px 55px rgba(0,0,0,.4)}
+    html[data-theme="dark"] .system-confirm-title{color:#f1f5f9}
+    html[data-theme="dark"] .system-confirm-message{color:#aebdd0}
+    html[data-theme="dark"] .system-confirm-cancel{background:#111827;border-color:#52637b;color:#e2e8f0}
 </style>
 
 <div id="systemConfirmModal" class="system-confirm-overlay" aria-hidden="true">
