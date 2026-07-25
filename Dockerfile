@@ -22,17 +22,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && a2enmod rewrite headers \
     && rm -rf /var/lib/apt/lists/*
 
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-
-RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
-        /etc/apache2/sites-available/*.conf \
-        /etc/apache2/apache2.conf \
-        /etc/apache2/conf-available/*.conf \
-    && sed -ri 's/Listen 80/Listen 10000/' /etc/apache2/ports.conf \
-    && sed -ri 's/<VirtualHost \\*:80>/<VirtualHost *:10000>/' /etc/apache2/sites-available/*.conf
-
+COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY docker/apache-laravel.conf /etc/apache2/conf-available/palaytrack.conf
-RUN a2enconf palaytrack
+RUN sed -ri 's/^Listen 80$/Listen 10000/' /etc/apache2/ports.conf \
+    && a2enconf palaytrack
 
 WORKDIR /var/www/html
 
