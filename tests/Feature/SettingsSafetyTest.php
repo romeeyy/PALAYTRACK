@@ -51,6 +51,10 @@ class SettingsSafetyTest extends TestCase
             'menudo_fee' => 3.00, 'commercial_fee' => 1.50,
         ]);
         $oldDelivery->update(['status' => 'completed']);
+        $oldDelivery->notifications()->create([
+            'method' => 'call', 'source' => 'manual',
+            'notification_status' => 'reached', 'notified_at' => now(),
+        ]);
         $this->actingAs($staff)->post(route('staff.pos.store', $oldDelivery), [
             'payment_method' => 'cash', 'amount_received' => 400,
         ]);
@@ -77,6 +81,41 @@ class SettingsSafetyTest extends TestCase
         $this->assertDatabaseHas('system_setting_histories', [
             'key' => 'sms_enabled', 'old_value' => '0', 'new_value' => '1', 'changed_by' => $owner->id,
         ]);
+    }
+
+    public function test_sms_setting_never_changes_a_delivery_workflow_status(): void
+    {
+        $owner = User::factory()->create(['role' => 'owner', 'is_active' => true]);
+        $staff = User::factory()->create(['role' => 'staff', 'is_active' => true]);
+        $rice = RiceType::create([
+            'name' => 'Workflow Guard Rice', 'recovery_rate' => 70, 'status' => 'active',
+        ]);
+        $delivery = Delivery::create([
+            'delivery_id' => 'DEL-SMSGUARD',
+            'staff_id' => $staff->id,
+            'queue_number' => 1,
+            'queue_date' => now()->toDateString(),
+            'client_name' => 'Workflow Guard Client',
+            'contact_number' => '09123456789',
+            'rice_type_id' => $rice->id,
+            'sacks' => 2,
+            'palay_weight' => 100,
+            'recovery_rate' => 70,
+            'estimated_rice' => 70,
+            'actual_rice' => null,
+            'status' => 'processing',
+            'delivered_at' => now(),
+        ]);
+        Setting::setValue('sms_enabled', '0');
+
+        $this->actingAs($owner)
+            ->post(route('owner.sms-settings'), ['sms_enabled' => '1'])
+            ->assertSessionHasNoErrors();
+
+        $delivery->refresh();
+        $this->assertSame('processing', $delivery->status);
+        $this->assertNull($delivery->actual_rice);
+        $this->assertNull($delivery->completed_at);
     }
 
     public function test_owner_profile_is_normalized_and_duplicate_email_is_rejected(): void

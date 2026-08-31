@@ -136,6 +136,8 @@
     .pagination-wrap .page-item.active .page-link { background:#168344; border-color:#168344; color:#fff; }
     .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:9999}.modal-overlay.show{display:flex}.client-modal{width:100%;max-width:520px;background:#fff;border-radius:18px;box-shadow:0 22px 55px rgba(15,23,42,.22);overflow:hidden}.modal-head{padding:19px 21px;border-bottom:1px solid #edf2f7;display:flex;justify-content:space-between;gap:12px}.modal-title{font-size:1.2rem;font-weight:900;margin:0 0 3px}.modal-sub{font-size:.84rem;color:#64748b;margin:0}.modal-close{border:0;background:#f1f5f9;width:34px;height:34px;border-radius:9px;font-size:1.25rem}.modal-body{padding:21px}.modal-field{margin-bottom:16px}.modal-field label{font-weight:800;font-size:.88rem;margin-bottom:7px}.modal-field input{min-height:48px;border-radius:11px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.modal-cancel,.modal-save{border-radius:10px;padding:10px 15px;font-weight:800}.modal-cancel{background:#fff;border:1px solid #d1d5db}.modal-save{background:#15803d;color:#fff;border:0}
     @media(max-width:768px){.page-title{font-size:1.65rem}.header-tools{width:100%}.manage-form{flex-wrap:wrap}}
+    .modal-field input.is-invalid{border-color:#ef4444;background:#fffafa;box-shadow:0 0 0 .16rem rgba(239,68,68,.08)}
+    .modal-field .invalid-feedback{display:block;margin-top:6px;color:#b42318;font-size:.8rem;font-weight:600}
 </style>
 
 <div class="clients-shell">
@@ -156,12 +158,6 @@
 @if(session('success'))
     <div class="alert alert-success rounded-4 shadow-sm border-0">
         {{ session('success') }}
-    </div>
-@endif
-
-@if($errors->any())
-    <div class="alert alert-danger rounded-4 shadow-sm border-0">
-        {{ $errors->first() }}
     </div>
 @endif
 
@@ -266,6 +262,7 @@
                                     Save
                                 </button>
                                 <button type="button" class="edit-btn js-edit-client"
+                                    data-client-id="{{ $client->id }}"
                                     data-name="{{ $client->name }}"
                                     data-contact="{{ $client->contact_number }}"
                                     data-action="{{ route('owner.clients.update', $client) }}">Edit</button>
@@ -297,9 +294,10 @@
             data-confirm-message="Save these client profile changes?"
             data-confirm-button="Save Changes">
             @csrf
+            <input type="hidden" id="editClientId" name="_edit_client_id" value="{{ old('_edit_client_id') }}">
             <div class="modal-body">
-                <div class="modal-field"><label class="form-label" for="editClientName">Full Name</label><input id="editClientName" class="form-control" name="name" required maxlength="255"></div>
-                <div class="modal-field"><label class="form-label" for="editClientContact">Contact Number</label><input id="editClientContact" class="form-control" name="contact_number" required placeholder="09XXXXXXXXX"></div>
+                <div class="modal-field"><label class="form-label" for="editClientName">Full Name</label><input id="editClientName" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required maxlength="255">@error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror</div>
+                <div class="modal-field"><label class="form-label" for="editClientContact">Contact Number</label><input id="editClientContact" class="form-control @error('contact_number') is-invalid @enderror" name="contact_number" value="{{ old('contact_number') }}" required placeholder="09XXXXXXXXX">@error('contact_number')<div class="invalid-feedback">{{ $message }}</div>@enderror</div>
                 <div class="modal-actions"><button type="button" class="modal-cancel js-close-edit">Cancel</button><button type="submit" class="modal-save">Save Changes</button></div>
             </div>
         </form>
@@ -311,15 +309,23 @@
     const editForm = document.getElementById('editClientForm');
     const editName = document.getElementById('editClientName');
     const editContact = document.getElementById('editClientContact');
+    const editClientId = document.getElementById('editClientId');
 
     document.querySelectorAll('.js-edit-client').forEach(button => button.addEventListener('click', () => {
         editForm.action = button.dataset.action;
+        editClientId.value = button.dataset.clientId;
         editName.value = button.dataset.name;
         editContact.value = button.dataset.contact;
         editModal.classList.add('show');
         editModal.setAttribute('aria-hidden', 'false');
         editName.focus();
     }));
+    @if(old('_edit_client_id') && $errors->any())
+        editForm.action = @json(route('owner.clients.update', old('_edit_client_id')));
+        editModal.classList.add('show');
+        editModal.setAttribute('aria-hidden', 'false');
+        window.setTimeout(() => document.querySelector('#editClientModal .is-invalid')?.focus(), 100);
+    @endif
     document.querySelectorAll('.js-close-edit').forEach(button => button.addEventListener('click', () => editModal.classList.remove('show')));
 
     editModal.addEventListener('click', event => { if (event.target === editModal) editModal.classList.remove('show'); });

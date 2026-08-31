@@ -8,14 +8,14 @@
         align-items: flex-start;
         gap: 16px;
         flex-wrap: wrap;
-        margin-bottom: 18px;
+        margin-bottom: 12px;
     }
 
     .pos-page-title {
-        font-size: 2rem;
+        font-size: 1.85rem;
         font-weight: 800;
         color: #0f172a;
-        margin: 0 0 6px;
+        margin: 0 0 3px;
         line-height: 1.2;
     }
 
@@ -26,10 +26,10 @@
     }
 
     .back-btn {
-        min-height: 44px;
+        min-height: 40px;
         border: 1px solid #cbd5e1;
         border-radius: 10px;
-        padding: 9px 15px;
+        padding: 7px 13px;
         font-weight: 700;
         color: #334155;
         background: #fff;
@@ -39,9 +39,9 @@
         background: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 18px;
-        padding: 20px;
+        padding: 16px 18px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
-        margin-bottom: 18px;
+        margin-bottom: 12px;
     }
 
     .card-title {
@@ -54,7 +54,7 @@
     .card-subtitle {
         color: #64748b;
         font-size: 0.95rem;
-        margin-bottom: 16px;
+        margin-bottom: 10px;
     }
 
     .field-label {
@@ -62,7 +62,7 @@
         font-size: 0.92rem;
         font-weight: 700;
         color: #111827;
-        margin-bottom: 7px;
+        margin-bottom: 5px;
     }
 
     .custom-input,
@@ -71,14 +71,14 @@
         border: 1px solid #e5e7eb;
         background: #f8fafc;
         border-radius: 11px;
-        min-height: 46px;
-        padding: 11px 14px;
+        min-height: 42px;
+        padding: 8px 12px;
         color: #111827;
         box-shadow: none;
     }
 
     .custom-textarea {
-        min-height: 72px;
+        min-height: 54px;
         resize: vertical;
     }
 
@@ -90,11 +90,21 @@
         box-shadow: 0 0 0 0.18rem rgba(47, 93, 30, 0.12);
     }
 
+    .custom-input.is-invalid,
+    .custom-select.is-invalid,
+    .custom-textarea.is-invalid {
+        border-color: #ef4444;
+        background-color: #fffafa;
+        box-shadow: 0 0 0 0.16rem rgba(239, 68, 68, 0.08);
+    }
+
+    .invalid-feedback { display:block; margin-top:6px; color:#b42318; font-size:.8rem; font-weight:600; }
+
     .info-box {
         background: #f8fafc;
         border: 1px solid #e5e7eb;
         border-radius: 12px;
-        padding: 11px 14px;
+        padding: 9px 12px;
         height: 100%;
     }
 
@@ -102,14 +112,14 @@
         font-size: 0.82rem;
         font-weight: 700;
         color: #64748b;
-        margin-bottom: 6px;
+        margin-bottom: 3px;
     }
 
     .info-value {
         font-size: 1rem;
         font-weight: 700;
         color: #111827;
-        line-height: 1.5;
+        line-height: 1.3;
     }
 
     .pricing-badge {
@@ -117,7 +127,7 @@
         align-items: center;
         justify-content: center;
         width: fit-content;
-        padding: 9px 14px;
+        padding: 7px 12px;
         border-radius: 999px;
         font-size: 0.88rem;
         font-weight: 900;
@@ -140,7 +150,7 @@
         background: #f8fafc;
         border: 1px solid #e5e7eb;
         border-radius: 14px;
-        padding: 14px 16px;
+        padding: 10px 14px;
     }
 
     .summary-row {
@@ -148,7 +158,7 @@
         justify-content: space-between;
         align-items: center;
         gap: 12px;
-        padding: 8px 0;
+        padding: 6px 0;
         border-bottom: 1px solid #e5e7eb;
         color: #334155;
         font-size: 0.96rem;
@@ -165,7 +175,7 @@
 
     .summary-total {
         font-size: 1.05rem;
-        padding-top: 14px;
+        padding-top: 9px;
         margin-top: 4px;
     }
 
@@ -212,6 +222,44 @@
         top: 18px;
     }
 
+    .transaction-info-grid {
+        margin-bottom: 12px !important;
+    }
+
+    .pos-card form > .row {
+        --bs-gutter-y: .7rem;
+    }
+
+    .pricing-fields-stack {
+        display: grid;
+        gap: 10px;
+    }
+
+    .proof-upload {
+        border: 1px dashed #94a3b8;
+        border-radius: 12px;
+        background: #f8fafc;
+        padding: 12px;
+    }
+
+    .proof-help {
+        color: #64748b;
+        font-size: .8rem;
+        margin: 6px 0 0;
+    }
+
+    .proof-preview {
+        display: none;
+        width: 100%;
+        max-width: 250px;
+        max-height: 180px;
+        object-fit: contain;
+        margin-top: 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        background: #fff;
+    }
+
     @media (max-width: 768px) {
         .pos-page-title {
             font-size: 1.7rem;
@@ -249,13 +297,9 @@
     </div>
 @endif
 
-@if($errors->any())
+@if($errors->has('payment'))
     <div class="alert alert-danger alert-custom">
-        <ul class="mb-0 ps-3">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+        {{ $errors->first('payment') }}
     </div>
 @endif
 
@@ -272,29 +316,29 @@
             <h2 class="card-title">Transaction Details</h2>
             <p class="card-subtitle">Enter payment information and charges for this delivery.</p>
 
-            <div class="row g-3 mb-4">
-                <div class="col-md-6">
+            <div class="row g-2 transaction-info-grid">
+                <div class="col-sm-6 col-xl-3">
                     <div class="info-box">
                         <div class="info-label">Delivery ID</div>
                         <div class="info-value">{{ $delivery->delivery_id }}</div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-sm-6 col-xl-3">
                     <div class="info-box">
                         <div class="info-label">Client Name</div>
                         <div class="info-value">{{ $delivery->client_name }}</div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-sm-6 col-xl-3">
                     <div class="info-box">
                         <div class="info-label">Rice Type</div>
                         <div class="info-value">{{ $delivery->riceType->name ?? 'N/A' }}</div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-sm-6 col-xl-3">
                     <div class="info-box">
                         <div class="info-label">Palay Weight</div>
                         <div class="info-value">{{ number_format($palayWeight, 2) }} kg</div>
@@ -302,7 +346,7 @@
                 </div>
             </div>
 
-            <form method="POST" action="{{ route('staff.pos.store', $delivery->id) }}"
+            <form method="POST" action="{{ route('staff.pos.store', $delivery->id) }}" enctype="multipart/form-data"
                 data-confirm-title="Confirm Payment"
                 data-confirm-message="Confirm and save this payment? Please verify the amount and payment method before continuing."
                 data-confirm-button="Save Payment">
@@ -325,18 +369,34 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="field-label" for="milling_fee_per_kg">Milling Fee per Kg</label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            name="milling_fee_per_kg"
-                            id="milling_fee_per_kg"
-                            class="form-control custom-input"
-                            value="{{ old('milling_fee_per_kg', $millingFeePerKg) }}"
-                            required
-                            readonly>
+                    <div class="col-md-6 pricing-fields-stack">
+                        <div>
+                            <label class="field-label" for="milling_fee_per_kg">Milling Fee per Kg</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                name="milling_fee_per_kg"
+                                id="milling_fee_per_kg"
+                                class="form-control custom-input"
+                                value="{{ old('milling_fee_per_kg', $millingFeePerKg) }}"
+                                required
+                                readonly>
+                        </div>
+
+                        <div>
+                            <label class="field-label" for="discount">Discount</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                name="discount"
+                                id="discount"
+                                class="form-control custom-input @error('discount') is-invalid @enderror"
+                                value="{{ old('discount') }}"
+                                placeholder="0.00">
+                            @error('discount')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -347,31 +407,20 @@
                             min="0"
                             name="other_charges"
                             id="other_charges"
-                            class="form-control custom-input"
+                            class="form-control custom-input @error('other_charges') is-invalid @enderror"
                             value="{{ old('other_charges') }}"
                             placeholder="0.00">
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="field-label" for="discount">Discount</label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            name="discount"
-                            id="discount"
-                            class="form-control custom-input"
-                            value="{{ old('discount') }}"
-                            placeholder="0.00">
+                        @error('other_charges')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
                     <div class="col-md-6">
                         <label class="field-label" for="payment_method">Payment Method</label>
-                        <select name="payment_method" id="payment_method" class="form-select custom-select" required>
+                        <select name="payment_method" id="payment_method" class="form-select custom-select @error('payment_method') is-invalid @enderror" required>
                             <option value="cash" {{ old('payment_method', 'cash') == 'cash' ? 'selected' : '' }}>Cash</option>
                             <option value="gcash" {{ old('payment_method') == 'gcash' ? 'selected' : '' }}>GCash</option>
                             <option value="maya" {{ old('payment_method') == 'maya' ? 'selected' : '' }}>Maya</option>
                         </select>
+                        @error('payment_method')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
                     <div class="col-md-6">
@@ -382,10 +431,11 @@
                             min="0"
                             name="amount_received"
                             id="amount_received"
-                            class="form-control custom-input"
+                            class="form-control custom-input @error('amount_received') is-invalid @enderror"
                             value="{{ old('amount_received') }}"
                             placeholder="0.00"
                             required>
+                        @error('amount_received')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
                     <div class="col-md-6" id="reference_number_wrapper">
@@ -394,9 +444,25 @@
                             type="text"
                             name="reference_number"
                             id="reference_number"
-                            class="form-control custom-input"
+                            class="form-control custom-input @error('reference_number') is-invalid @enderror"
                             value="{{ old('reference_number') }}"
                             placeholder="Enter reference number">
+                        @error('reference_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="col-md-6" id="payment_proof_wrapper">
+                        <label class="field-label" for="payment_proof">Payment Receipt / Proof</label>
+                        <div class="proof-upload">
+                            <input
+                                type="file"
+                                name="payment_proof"
+                                id="payment_proof"
+                                class="form-control custom-input @error('payment_proof') is-invalid @enderror"
+                                accept="image/jpeg,image/png,image/webp">
+                            <p class="proof-help">For GCash or Maya: upload a clear receipt screenshot or photo (JPG, PNG, or WebP; maximum 2 MB).</p>
+                            <img id="payment_proof_preview" class="proof-preview" alt="Selected payment proof preview">
+                        </div>
+                        @error('payment_proof')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
                     <div class="col-12">
@@ -404,8 +470,9 @@
                         <textarea
                             name="notes"
                             id="notes"
-                            class="form-control custom-textarea"
+                            class="form-control custom-textarea @error('notes') is-invalid @enderror"
                             placeholder="Required when adding other charges or a discount">{{ old('notes') }}</textarea>
+                        @error('notes')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
                     <div class="col-12 pt-2 payment-submit">
@@ -479,6 +546,9 @@
     const paymentMethodInput = document.getElementById('payment_method');
     const referenceWrapper = document.getElementById('reference_number_wrapper');
     const referenceInput = document.getElementById('reference_number');
+    const proofWrapper = document.getElementById('payment_proof_wrapper');
+    const proofInput = document.getElementById('payment_proof');
+    const proofPreview = document.getElementById('payment_proof_preview');
     const receivedLabel = document.getElementById('amount_received_label');
 
     function money(value) {
@@ -515,6 +585,18 @@
         }
 
         referenceWrapper.style.display = isCash ? 'none' : 'block';
+        if (proofWrapper) proofWrapper.style.display = isCash ? 'none' : 'block';
+
+        if (proofInput) {
+            proofInput.required = !isCash;
+            if (isCash) {
+                proofInput.value = '';
+                if (proofPreview) {
+                    proofPreview.removeAttribute('src');
+                    proofPreview.style.display = 'none';
+                }
+            }
+        }
 
         if (referenceInput) {
             referenceInput.required = !isCash;
@@ -570,7 +652,22 @@
         paymentMethodInput.addEventListener('change', toggleReferenceField);
     }
 
+    if (proofInput && proofPreview) {
+        proofInput.addEventListener('change', () => {
+            const file = proofInput.files?.[0];
+            if (!file) {
+                proofPreview.removeAttribute('src');
+                proofPreview.style.display = 'none';
+                return;
+            }
+
+            proofPreview.src = URL.createObjectURL(file);
+            proofPreview.style.display = 'block';
+        });
+    }
+
     updateSummary();
     toggleReferenceField();
 </script>
+@include('partials.field-validation-focus')
 @endsection

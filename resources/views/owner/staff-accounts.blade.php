@@ -111,9 +111,6 @@
     .history-link { border: 1px solid #bbd7c0; color: #166534; background: #fff; }
     .history-link:hover { color: #14532d; background: #f0fdf4; }
 
-    .history-link .staff-count {
-        margin-left: 2px;
-    }
     .pagination-row { padding: 12px 16px; border-top: 1px solid #eef2f7; display:flex; justify-content:space-between; align-items:center; gap:12px; color:#64748b; font-size:.82rem; }
     .pagination-actions { display:flex; gap:7px; }
     .page-link-simple { border:1px solid #dbe3ec; border-radius:8px; padding:6px 10px; color:#334155; text-decoration:none; font-weight:700; }
@@ -132,15 +129,6 @@
         font-weight: 900;
         color: #0f172a;
         margin: 0;
-    }
-
-    .staff-count {
-        background: #ecfdf5;
-        color: #15803d;
-        font-size: 0.75rem;
-        font-weight: 800;
-        padding: 5px 10px;
-        border-radius: 999px;
     }
 
     .table-wrap {
@@ -320,7 +308,6 @@
             <a class="history-link" href="{{ route('owner.staff-accounts.history') }}">
                 <i data-lucide="history"></i>
                 <span>History</span>
-                <span class="staff-count">{{ $staffAccounts->total() }}</span>
             </a>
             <a href="{{ route('owner.staff-accounts.create') }}" class="add-btn">
                 <i data-lucide="user-plus"></i>

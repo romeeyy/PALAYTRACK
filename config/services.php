@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'semaphore' => [
+        'mode' => env('SMS_MODE', 'simulation'),
+        'api_key' => env('SEMAPHORE_API_KEY'),
+        'sender_name' => env('SEMAPHORE_SENDER_NAME', 'JKDIEZ'),
+        'endpoint' => env('SEMAPHORE_ENDPOINT', 'https://api.semaphore.co/api/v4/messages'),
+    ],
+
 ];

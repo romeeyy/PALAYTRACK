@@ -11,6 +11,7 @@ class DeliveryNotification extends Model
         'delivery_id',
         'method',
         'notification_status',
+        'source',
         'remarks',
         'notified_at',
     ];

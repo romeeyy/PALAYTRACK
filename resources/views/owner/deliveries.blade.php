@@ -38,20 +38,21 @@
     .filter-card,
     .table-card {
         background: #ffffff;
-        border-radius: 20px;
-        padding: 24px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        border-radius: 18px;
+        border: 1px solid #e2e8e4;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
     }
 
     .filter-card {
-        margin-bottom: 24px;
+        padding: 16px 18px;
+        margin-bottom: 18px;
     }
 
     .queue-tabs {
         display: inline-flex;
         gap: 4px;
         padding: 4px;
-        margin-bottom: 18px;
+        margin: 0 0 14px;
         background: #ffffff;
         border: 1px solid #dfe7df;
         border-radius: 12px;
@@ -63,7 +64,7 @@
         align-items: center;
         gap: 8px;
         min-height: 38px;
-        padding: 7px 13px;
+        padding: 7px 14px;
         border-radius: 8px;
         color: #475569;
         font-weight: 700;
@@ -118,7 +119,7 @@
     }
 
     .card-title {
-        font-size: 1.15rem;
+        font-size: 1.22rem;
         font-weight: 800;
         margin-bottom: 6px;
     }
@@ -126,7 +127,7 @@
     .card-subtitle {
         color: #64748b;
         font-size: 0.95rem;
-        margin-bottom: 20px;
+        margin-bottom: 14px;
     }
 
     .custom-select {
@@ -172,6 +173,10 @@
         background: #f8fafc;
     }
 
+    .soft-table {
+        min-width: 1050px;
+    }
+
     .client-name {
         font-weight: 700;
     }
@@ -187,10 +192,15 @@
     }
 
     .status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         padding: 6px 12px;
         border-radius: 999px;
         font-size: 0.8rem;
         font-weight: 700;
+        min-width: 118px;
+        white-space: nowrap;
     }
 
     .status-pending {
@@ -213,11 +223,26 @@
         color: #475569;
     }
 
+    .status-payment-required {
+        background: #fff7ed;
+        color: #c2410c;
+    }
+
+    .status-awaiting-notification {
+        background: #fefce8;
+        color: #a16207;
+    }
+
+    .status-ready-for-claim {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
     .details-btn {
         border-radius: 10px;
-        padding: 6px 12px;
+        padding: 7px 13px;
         font-weight: 600;
-        min-width: 90px;
+        min-width: 118px;
     }
 
     .empty-state {
@@ -229,7 +254,7 @@
     .pagination-wrap { padding-top: 18px; }
 
     /* Shared compact module styling */
-    .page-header { margin-bottom: 18px; }
+    .page-header { margin-bottom: 16px; }
     .page-title { font-size: 1.8rem; }
     .page-subtitle { font-size: .92rem; }
     .quick-btn { min-height: 44px; border-radius: 10px; padding: 9px 14px; }
@@ -239,14 +264,21 @@
         border-radius: 20px;
         box-shadow: 0 10px 26px rgba(15, 23, 42, .06);
     }
-    .filter-card { padding: 14px 16px; margin-bottom: 16px; }
-    .table-card { padding: 18px; }
+    .filter-card { padding: 16px 18px; margin-bottom: 18px; }
+    .table-card { padding: 20px 22px; }
     .queue-tabs { margin-bottom: 14px; }
     .queue-tab { min-height: 38px; }
     .filter-grid { gap: 12px; }
     .filter-label { margin-bottom: 6px; }
     .filter-control { min-height: 44px; border-radius: 11px; }
     .soft-table tbody td { padding-top: 12px; padding-bottom: 12px; }
+    .soft-table .status-column,
+    .soft-table .actions-column {
+        text-align: center;
+        vertical-align: middle;
+    }
+    .soft-table .status-column { width: 165px; }
+    .soft-table .actions-column { width: 165px; }
     .pagination-wrap { padding-top: 12px; }
 
     @media (max-width: 1100px) {
@@ -273,11 +305,11 @@
 <nav class="queue-tabs" aria-label="Delivery record view">
     <a href="{{ route('owner.deliveries', ['view' => 'active']) }}"
        class="queue-tab {{ $selectedView === 'active' ? 'active' : '' }}">
-        Active Queue <span class="queue-count">{{ $activeCount }}</span>
+        Active Queue
     </a>
     <a href="{{ route('owner.deliveries', ['view' => 'history']) }}"
        class="queue-tab {{ $selectedView === 'history' ? 'active' : '' }}">
-        Claimed History <span class="queue-count">{{ $claimedCount }}</span>
+        Claimed History
     </a>
 </nav>
 
@@ -339,13 +371,25 @@
                     <th>Rice</th>
                     <th>Details</th>
                     <th>Recorded By</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th class="status-column">Status</th>
+                    <th class="actions-column">Actions</th>
                 </tr>
             </thead>
 
             <tbody>
                 @forelse ($deliveries as $delivery)
+                    @php
+                        $isPaid = $delivery->transaction?->payment_status === 'paid';
+                        $isNotified = $delivery->hasSuccessfulNotification();
+                        $displayStatus = match ($delivery->status) {
+                            'completed' => !$isNotified ? 'Awaiting Notification' : ($isPaid ? 'Ready for Claim' : 'Payment Required'),
+                            default => ucfirst($delivery->status),
+                        };
+                        $statusClass = match ($delivery->status) {
+                            'completed' => !$isNotified ? 'awaiting-notification' : ($isPaid ? 'ready-for-claim' : 'payment-required'),
+                            default => $delivery->status,
+                        };
+                    @endphp
                     <tr>
                         <td>
                             <span class="queue-badge">#{{ $delivery->queue_number }}</span>
@@ -376,13 +420,13 @@
                             </div>
                         </td>
 
-                        <td>
-                            <span class="status-badge status-{{ $delivery->status }}">
-                                {{ ucfirst($delivery->status) }}
+                        <td class="status-column">
+                            <span class="status-badge status-{{ $statusClass }}">
+                                {{ $displayStatus }}
                             </span>
                         </td>
 
-                        <td>
+                        <td class="actions-column">
                             <a href="{{ url('/owner/delivery-details/' . $delivery->id) }}"
                                class="btn btn-outline-success btn-sm details-btn">
                                 View

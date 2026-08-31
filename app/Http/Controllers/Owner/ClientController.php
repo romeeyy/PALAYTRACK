@@ -32,9 +32,11 @@ class ClientController extends Controller
         }
 
         if (!empty($search)) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('contact_number', 'like', "%{$search}%");
+            $normalizedSearch = mb_strtolower($search);
+
+            $query->where(function ($q) use ($normalizedSearch) {
+                $q->whereRaw('LOWER(name) LIKE ?', ["%{$normalizedSearch}%"])
+                  ->orWhere('contact_number', 'like', "%{$normalizedSearch}%");
             });
         }
 

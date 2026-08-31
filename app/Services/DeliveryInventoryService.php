@@ -75,7 +75,7 @@ class DeliveryInventoryService
     {
         return DB::transaction(function () use ($delivery): Delivery {
             $delivery = Delivery::query()
-                ->with('transaction')
+                ->with(['transaction', 'notifications'])
                 ->lockForUpdate()
                 ->findOrFail($delivery->id);
 
@@ -95,6 +95,12 @@ class DeliveryInventoryService
             if (!$delivery->transaction || $delivery->transaction->payment_status !== 'paid') {
                 throw ValidationException::withMessages([
                     'claim' => 'Full payment is required before releasing the milled rice.',
+                ]);
+            }
+
+            if (!$delivery->hasSuccessfulNotification()) {
+                throw ValidationException::withMessages([
+                    'claim' => 'A successful farmer notification is required before releasing the milled rice.',
                 ]);
             }
 

@@ -112,6 +112,9 @@
         box-shadow: 0 0 0 3px rgba(47, 93, 30, 0.10);
     }
 
+    .form-control-custom.is-invalid { border-color:#ef4444; background:#fffafa; box-shadow:0 0 0 .16rem rgba(239,68,68,.08); }
+    .invalid-feedback { display:block; margin-top:6px; color:#b42318; font-size:.8rem; font-weight:600; }
+
     .security-box {
         margin-top: 6px;
         background: #f7faf7;
@@ -270,6 +273,7 @@
     }
 </style>
 @include('partials.form-dark-mode')
+@include('partials.field-validation-focus')
 
 <div class="page-shell">
     <div class="page-header">
@@ -282,12 +286,6 @@
             <span>Back to Staff Accounts</span>
         </a>
     </div>
-
-    @if ($errors->any())
-        <div class="error-box">
-            {{ $errors->first() }}
-        </div>
-    @endif
 
     <div class="staff-card">
         <div class="staff-card-header">
@@ -310,12 +308,13 @@
                                 type="text"
                                 name="name"
                                 id="name"
-                                class="form-control form-control-custom"
+                                class="form-control form-control-custom @error('name') is-invalid @enderror"
                                 value="{{ old('name', $staff->name) }}"
                                 placeholder="Enter full name"
                                 oninput="capitalizeWords(this)"
                                 required
                             >
+                            @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                     </div>
 
@@ -326,11 +325,12 @@
                                 type="email"
                                 name="email"
                                 id="email"
-                                class="form-control form-control-custom"
+                                class="form-control form-control-custom @error('email') is-invalid @enderror"
                                 value="{{ old('email', $staff->email) }}"
                                 placeholder="Enter email address"
                                 required
                             >
+                            @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                     </div>
                 </div>
@@ -346,9 +346,10 @@
                                     type="password"
                                     name="password"
                                     id="password"
-                                    class="form-control form-control-custom"
+                                    class="form-control form-control-custom @error('password') is-invalid @enderror"
                                     placeholder="Leave blank if unchanged"
                                 >
+                                @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                 <div id="passwordLengthWarning" class="password-warning">
                                     Use at least 8 characters with a letter and a number.
                                 </div>
@@ -366,7 +367,7 @@
                                     type="password"
                                     name="password_confirmation"
                                     id="password_confirmation"
-                                    class="form-control form-control-custom"
+                                    class="form-control form-control-custom @error('password') is-invalid @enderror"
                                     placeholder="Re-enter new password"
                                 >
                                 <div id="passwordMatchWarning" class="password-warning">

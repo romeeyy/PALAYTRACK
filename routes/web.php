@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Staff\DeliveryController;
 use App\Models\MillingFeeHistory;
@@ -80,6 +81,7 @@ function autoNotifyDeliveryCompleted($delivery)
 
         $delivery->notifications()->create([
             'method' => 'text',
+            'source' => 'automatic',
             'notification_status' => $notificationStatus,
             'remarks' => $notificationStatus === 'failed'
                 ? 'Message Failed'
@@ -94,6 +96,7 @@ function autoNotifyDeliveryCompleted($delivery)
 
         $delivery->notifications()->create([
             'method' => 'text',
+            'source' => 'automatic',
             'notification_status' => 'failed',
             'remarks' => 'Message Failed',
             'notified_at' => null,
@@ -290,7 +293,7 @@ Route::prefix('owner')->group(function () {
         $selectedView = $validated['view'] ?? 'active';
         $activeCount = Delivery::whereIn('status', ['pending', 'processing', 'completed'])->count();
         $claimedCount = Delivery::where('status', 'claimed')->count();
-        $query = Delivery::query()->with(['riceType', 'staff']);
+        $query = Delivery::query()->with(['riceType', 'staff', 'transaction', 'notifications']);
 
         if ($selectedView === 'history') {
             $query->where('status', 'claimed');
@@ -427,19 +430,22 @@ Route::prefix('owner')->group(function () {
         }
 
         $request->validate([
-            'date' => 'nullable|date',
+            'from_date' => 'nullable|date',
+            'to_date' => 'nullable|date|after_or_equal:from_date',
             'staff_id' => 'nullable',
         ]);
 
-        $date = $request->date ?: now()->toDateString();
+        $fromDate = $request->from_date ?: ($request->date ?: now()->toDateString());
+        $toDate = $request->to_date ?: $fromDate;
         $staffId = $request->staff_id ?: 'all';
 
-        $report = $reportService->generate($date, $staffId);
+        $report = $reportService->generate($fromDate, $staffId, $toDate);
 
         $staffUsers = User::where('role', 'staff')->orderBy('name')->get();
 
         return view('owner.reports', array_merge($report, compact(
-            'date',
+            'fromDate',
+            'toDate',
             'staffId',
             'staffUsers'
         )));
@@ -726,7 +732,7 @@ Route::prefix('staff')->group(function () {
         $selectedView = $validated['view'] ?? 'active';
         $activeCount = Delivery::whereIn('status', ['pending', 'processing', 'completed'])->count();
         $claimedCount = Delivery::where('status', 'claimed')->count();
-        $query = Delivery::query()->with(['riceType', 'staff']);
+        $query = Delivery::query()->with(['riceType', 'staff', 'transaction', 'notifications']);
 
         if ($selectedView === 'history') {
             $query->where('status', 'claimed');
@@ -775,7 +781,14 @@ Route::prefix('staff')->group(function () {
         }
 
         $delivery = Delivery::with(['riceType', 'notifications', 'transaction', 'staff'])->findOrFail($id);
-        return view('staff.delivery-details', compact('delivery'));
+        $completionToken = null;
+
+        if ($delivery->status === 'processing') {
+            $completionToken = Str::random(40);
+            session()->put('delivery_completion_tokens.' . $delivery->id, $completionToken);
+        }
+
+        return view('staff.delivery-details', compact('delivery', 'completionToken'));
     })->name('staff.delivery-details');
 
     Route::post('/delivery-status/{id}', function (Request $request, $id) {
@@ -805,8 +818,18 @@ Route::prefix('staff')->group(function () {
         $delivery = Delivery::findOrFail($id);
 
         $request->validate([
-            'actual_rice' => 'required|numeric|min:0.01'
+            'actual_rice' => ['required', 'numeric', 'min:0.01'],
+            'completion_token' => ['required', 'string'],
         ]);
+
+        $sessionToken = session()->get('delivery_completion_tokens.' . $delivery->id);
+
+        if (!is_string($sessionToken)
+            || !hash_equals($sessionToken, (string) $request->completion_token)) {
+            return redirect()->back()->withErrors([
+                'actual_rice' => 'This completion form is no longer valid. Reload the delivery and try again.',
+            ]);
+        }
 
         if ($delivery->status !== 'processing') {
             return redirect()->back()->withErrors([
@@ -819,6 +842,10 @@ Route::prefix('staff')->group(function () {
                 'actual_rice' => 'Actual rice cannot exceed palay weight.'
             ]);
         }
+
+        // A completion token is single-use. This prevents a stale page, browser
+        // Back/Forward cache, or request replay from completing the delivery.
+        session()->forget('delivery_completion_tokens.' . $delivery->id);
 
         $delivery = app(DeliveryInventoryService::class)
             ->complete($delivery, (float) $request->actual_rice);
@@ -846,16 +873,17 @@ Route::prefix('staff')->group(function () {
             return redirect()->back()->with('error', 'The farmer can only be notified after milling is completed.');
         }
 
+        if ($delivery->hasSuccessfulNotification()) {
+            return redirect()->back()->with('warning', 'The farmer has already been notified successfully.');
+        }
+
         if ((string) Setting::getValue('sms_enabled', '0') === '1') {
             return redirect()->back()->with('error', 'Automatic SMS is enabled for this delivery.');
         }
 
-        if ($delivery->notifications()->exists()) {
-            return redirect()->back()->with('error', 'A notification has already been recorded for this delivery.');
-        }
-
         $delivery->notifications()->create([
             'method' => $request->method,
+            'source' => 'manual',
             'notification_status' => $request->notification_status,
             'remarks' => $request->remarks,
             'notified_at' => $request->notified_at,
@@ -931,12 +959,16 @@ Route::prefix('staff')->group(function () {
             return redirect()->route('login');
         }
 
-        $request->validate(['date' => 'nullable|date']);
+        $request->validate([
+            'from_date' => 'nullable|date',
+            'to_date' => 'nullable|date|after_or_equal:from_date',
+        ]);
 
-        $date = $request->date ?: now()->toDateString();
+        $fromDate = $request->from_date ?: ($request->date ?: now()->toDateString());
+        $toDate = $request->to_date ?: $fromDate;
         $staffId = Auth::id();
 
-        return view('staff.reports', $reportService->generate($date, $staffId));
+        return view('staff.reports', $reportService->generate($fromDate, $staffId, $toDate));
     })->name('staff.reports');
     Route::get('/claim-stub/{id}', function ($id) {
         if (!Auth::check() || Auth::user()->role !== 'staff') {

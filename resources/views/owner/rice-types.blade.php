@@ -829,11 +829,13 @@
         document.body.style.overflow = '';
     }
 
-    function openEditModal(riceType) {
+    function openEditModal(button) {
+        const riceType = button.dataset;
+
         editForm.action = '/owner/edit-rice-type/' + riceType.id;
 
         document.getElementById('editName').value = riceType.name || '';
-        document.getElementById('editRecoveryRate').value = riceType.recovery_rate || '';
+        document.getElementById('editRecoveryRate').value = riceType.recoveryRate || '';
         document.getElementById('editStatus').value = riceType.status || 'active';
         document.getElementById('editDescription').value = riceType.description || '';
 

@@ -64,8 +64,12 @@ class DeliveryController extends Controller
             return back()->with('error', 'Only failed SMS notifications can be resent.');
         }
 
+        if ($notification->source === 'manual') {
+            return back()->with('error', 'Manual notification attempts must be retried manually and logged as a new attempt.');
+        }
+
         if ((string) Setting::getValue('sms_enabled', '0') !== '1') {
-            return back()->with('error', 'Enable automatic SMS in Settings before resending.');
+            return back()->with('error', 'Automatic SMS is currently disabled. Retry manually and record a new notification attempt.');
         }
 
         if ($notification->delivery->status !== 'completed') {
@@ -74,7 +78,7 @@ class DeliveryController extends Controller
 
         $delivery = $notification->delivery;
 
-        $message = "Your rice is ready for pickup at JK Diez Rice Mill. Please present your claim stub upon claiming. Thank you!";
+        $message = "Hello {$delivery->client_name}, your milled rice is now ready for pickup at JK Diez Rice Mill. Please present your claim stub upon claiming. Thank you!";
 
         $smsResult = $smsService->send($delivery->contact_number, $message);
 
@@ -83,21 +87,30 @@ class DeliveryController extends Controller
             && !in_array($smsStatus, ['failed', 'error'], true);
 
         if ($sendSucceeded) {
-            $notification->update([
+            $delivery->notifications()->create([
+                'method' => 'text',
                 'notification_status' => 'sent',
+                'source' => 'automatic',
                 'notified_at' => now(),
                 'remarks' => $smsStatus === 'simulated'
                     ? 'SMS resend simulated successfully (no live message was sent).'
                     : 'SMS resent successfully via Semaphore',
             ]);
 
-            return back()->with('success', 'SMS resent successfully.');
+            return back()->with(
+                'success',
+                $smsStatus === 'simulated'
+                    ? 'SMS resend simulated. No live message was sent.'
+                    : 'SMS resent successfully.'
+            );
         }
 
-        $notification->update([
+        $delivery->notifications()->create([
+            'method' => 'text',
             'notification_status' => 'failed',
+            'source' => 'automatic',
             'notified_at' => null,
-            'remarks' => 'Message Failed',
+            'remarks' => 'SMS resend failed.',
         ]);
 
         return back()->with('error', 'SMS resend failed.');

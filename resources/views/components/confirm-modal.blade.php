@@ -8,7 +8,11 @@
     .system-confirm-cancel,.system-confirm-submit{border-radius:9px;padding:8px 13px;font-size:.85rem;font-weight:800}
     .system-confirm-cancel{background:#fff;border:1px solid #d1d5db;color:#111827}
     .system-confirm-submit{border:0;background:#15803d;color:#fff}
-    .system-confirm-submit.danger{background:#b42318}
+    html[data-accent] .system-confirm-submit.danger,
+    .system-confirm-submit.danger{background:#dc2626!important;border-color:#dc2626!important;color:#fff!important}
+    html[data-accent] .system-confirm-submit.danger:hover,
+    .system-confirm-submit.danger:hover{background:#b91c1c!important;border-color:#b91c1c!important}
+    .system-confirm-submit.danger:focus-visible{outline:3px solid rgba(220,38,38,.28);outline-offset:2px}
     .system-confirm-submit:disabled{opacity:.65;cursor:not-allowed}
     html[data-theme="dark"] .system-confirm-overlay{background:rgba(2,6,23,.72)}
     html[data-theme="dark"] .system-confirm-box{background:#172033;border:1px solid #35445a;box-shadow:0 22px 55px rgba(0,0,0,.4)}
@@ -46,6 +50,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('submit', function (event) {
         const form = event.target;
         if (!form.dataset.confirmMessage || form.dataset.confirmed === 'true') return;
+
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            form.reportValidity();
+            return;
+        }
+
         event.preventDefault();
         pendingForm = form;
         title.textContent = form.dataset.confirmTitle || 'Confirm Action';
@@ -64,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
         submit.disabled = true;
         pendingForm.dataset.confirmed = 'true';
         pendingForm.querySelectorAll('button[type="submit"]').forEach(button => button.disabled = true);
-        pendingForm.submit();
+        pendingForm.requestSubmit();
     });
     modal.addEventListener('click', event => { if (event.target === modal) closeSystemConfirm(); });
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && modal.classList.contains('show')) closeSystemConfirm(); });

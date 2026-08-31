@@ -20,6 +20,7 @@ class DeliveryRecordingController extends Controller
             'palay_weight' => ['required', 'numeric', 'min:1'],
             'notes' => ['nullable', 'string', 'max:1000'],
         ], [
+            'contact_number.regex' => 'Enter a valid Philippine mobile number (e.g., 09123456789).',
             'sacks.multiple_of' => 'Number of sacks must be a whole or half sack (example: 2 or 2.5).',
             'sacks.min' => 'Number of sacks must be at least half a sack (0.5).',
         ]);

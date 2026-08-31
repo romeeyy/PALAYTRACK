@@ -113,6 +113,9 @@
         box-shadow: 0 0 0 3px rgba(47, 93, 30, 0.10);
     }
 
+    .custom-input.is-invalid { border-color:#ef4444; background:#fffafa; box-shadow:0 0 0 .16rem rgba(239,68,68,.08); }
+    .invalid-feedback { display:block; margin-top:6px; color:#b42318; font-size:.8rem; font-weight:600; }
+
     .custom-toggle-wrap {
         display: flex;
         align-items: center;
@@ -434,14 +437,6 @@
     </div>
 @endif
 
-@if($errors->any())
-    <div class="alert-error-custom">
-        @foreach($errors->all() as $error)
-            <div>{{ $error }}</div>
-        @endforeach
-    </div>
-@endif
-
 <div class="settings-grid">
     <div class="settings-card">
         <div class="settings-card-header">
@@ -463,6 +458,7 @@
             @csrf
 
             <input type="hidden" name="sms_enabled" id="smsHidden" value="{{ $smsEnabled }}">
+            @error('sms_enabled')<div class="invalid-feedback">{{ $message }}</div>@enderror
 
             <div class="settings-body">
                 <div>
@@ -518,10 +514,11 @@
                         min="0.01"
                         max="100"
                         name="menudo_fee"
-                        class="form-control custom-input"
+                        class="form-control custom-input @error('menudo_fee') is-invalid @enderror"
                         value="{{ old('menudo_fee', $menudoFee) }}"
                         required
                     >
+                    @error('menudo_fee')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
 
                 <div class="col-md-6">
@@ -532,10 +529,11 @@
                         min="0.01"
                         max="100"
                         name="commercial_fee"
-                        class="form-control custom-input"
+                        class="form-control custom-input @error('commercial_fee') is-invalid @enderror"
                         value="{{ old('commercial_fee', $commercialFee) }}"
                         required
                     >
+                    @error('commercial_fee')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
             </div>
 
@@ -629,4 +627,5 @@
     }
 </script>
 
+@include('partials.field-validation-focus')
 @endsection

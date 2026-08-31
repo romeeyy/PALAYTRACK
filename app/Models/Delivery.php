@@ -72,6 +72,23 @@ class Delivery extends Model
         return $this->hasMany(DeliveryNotification::class);
     }
 
+    public function hasSuccessfulNotification(): bool
+    {
+        if ($this->relationLoaded('notifications')) {
+            return $this->notifications->contains(
+                fn (DeliveryNotification $notification) => in_array(
+                    $notification->notification_status,
+                    ['sent', 'reached'],
+                    true
+                )
+            );
+        }
+
+        return $this->notifications()
+            ->whereIn('notification_status', ['sent', 'reached'])
+            ->exists();
+    }
+
     public function inventoryLogs()
     {
         return $this->hasMany(InventoryLog::class);

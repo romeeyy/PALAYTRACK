@@ -20,12 +20,6 @@
     </div>
 @endif
 
-@if ($errors->any())
-    <div class="alert alert-danger mb-4">
-        {{ $errors->first() }}
-    </div>
-@endif
-
 <div class="profile-workspace">
     <aside class="profile-summary">
         <div class="summary-accent"></div>
@@ -87,9 +81,11 @@
                 <input 
                     type="text" 
                     name="name" 
+                    class="@error('name') is-invalid @enderror"
                     value="{{ old('name', Auth::user()->name) }}" 
                     required
                 >
+                @error('name')<div class="field-error">{{ $message }}</div>@enderror
             </div>
 
             <div class="form-group">
@@ -97,9 +93,11 @@
                 <input 
                     type="email" 
                     name="email" 
+                    class="@error('email') is-invalid @enderror"
                     value="{{ old('email', Auth::user()->email) }}" 
                     required
                 >
+                @error('email')<div class="field-error">{{ $message }}</div>@enderror
             </div>
 
             <div class="form-actions">
@@ -121,10 +119,6 @@
             </div>
         </div>
 
-        @if ($errors->passwordUpdate->any())
-            <div class="alert alert-danger compact-alert">{{ $errors->passwordUpdate->first() }}</div>
-        @endif
-
         <form method="POST" action="{{ route(Auth::user()->role === 'staff' ? 'staff.profile.password' : 'owner.profile.password') }}"
             data-confirm-title="Change Password?"
             data-confirm-message="Save your new account password?"
@@ -134,15 +128,17 @@
             <div class="password-grid">
                 <div class="form-group full-row">
                     <label for="current_password">Current Password</label>
-                    <input id="current_password" type="password" name="current_password" autocomplete="current-password" required>
+                    <input id="current_password" type="password" name="current_password" class="@error('current_password', 'passwordUpdate') is-invalid @enderror" autocomplete="current-password" required>
+                    @error('current_password', 'passwordUpdate')<div class="field-error">{{ $message }}</div>@enderror
                 </div>
                 <div class="form-group">
                     <label for="password">New Password</label>
-                    <input id="password" type="password" name="password" autocomplete="new-password" required>
+                    <input id="password" type="password" name="password" class="@error('password', 'passwordUpdate') is-invalid @enderror" autocomplete="new-password" required>
+                    @error('password', 'passwordUpdate')<div class="field-error">{{ $message }}</div>@enderror
                 </div>
                 <div class="form-group">
                     <label for="password_confirmation">Confirm New Password</label>
-                    <input id="password_confirmation" type="password" name="password_confirmation" autocomplete="new-password" required>
+                    <input id="password_confirmation" type="password" name="password_confirmation" class="@error('password', 'passwordUpdate') is-invalid @enderror" autocomplete="new-password" required>
                 </div>
             </div>
             <p class="field-help">Use at least 8 characters with letters and numbers.</p>
@@ -389,7 +385,8 @@
 .remove-photo { display: inline-flex !important; align-items: center; gap: 8px; margin: 0 !important; font-weight: 600 !important; color: #64748b !important; }
 .remove-photo input { width: 16px; height: 16px; }
 .field-help { margin: 5px 0 0; color: #64748b; font-size: 12px; }
-.field-error { margin-top: 7px; color: #b91c1c; font-size: 13px; font-weight: 700; }
+.field-error { margin-top: 6px; color: #b42318; font-size: 12.8px; font-weight: 700; }
+.profile-main input.is-invalid { border-color:#ef4444; background:#fffafa; box-shadow:0 0 0 .16rem rgba(239,68,68,.08); }
 .compact-alert { margin-bottom: 18px; }
 .password-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
 .password-grid .full-row { grid-column: 1 / -1; }
@@ -423,6 +420,7 @@
     .form-actions .btn-save { width: 100%; }
 }
 </style>
+@include('partials.field-validation-focus')
 
 <script>
 document.getElementById('profile_photo')?.addEventListener('change', function () {

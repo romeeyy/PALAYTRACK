@@ -250,6 +250,15 @@
                 &larr; Back to Transactions
             </a>
 
+            @if($transaction->payment_proof_path)
+            <a href="{{ asset('storage/' . $transaction->payment_proof_path) }}"
+               class="btn btn-outline-success"
+               target="_blank"
+               rel="noopener">
+                View Payment Proof
+            </a>
+            @endif
+
             <button onclick="window.print()" class="btn btn-success">
                 Print Receipt
             </button>

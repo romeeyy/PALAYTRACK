@@ -160,10 +160,36 @@
         color: #111827;
     }
 
-    .error-box {
-        display: none;
-        margin-bottom: 18px;
-        border-radius: 12px;
+    .custom-input.is-invalid,
+    .custom-input.is-invalid:focus {
+        border-color: #ef4444;
+        background-color: #fffafa;
+        box-shadow: 0 0 0 0.16rem rgba(239, 68, 68, 0.08);
+    }
+
+    .invalid-feedback {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 6px;
+        color: #b42318;
+        font-size: 0.8rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .invalid-feedback::before {
+        content: "!";
+        display: inline-grid;
+        flex: 0 0 16px;
+        width: 16px;
+        height: 16px;
+        place-items: center;
+        border-radius: 50%;
+        background: #fee4e2;
+        color: #b42318;
+        font-size: 0.68rem;
+        font-weight: 800;
     }
 
     @media (max-width: 768px) {
@@ -203,8 +229,6 @@
     </div>
 
     <div class="form-card">
-        <div id="errorBox" class="alert alert-danger error-box"></div>
-
        <form id="deliveryForm" action="{{ route('staff.record-delivery.store') }}" method="POST">
     @csrf
             <div class="row g-4">
@@ -213,10 +237,14 @@
                     <input
                         type="text"
                         name="client_name"
-                         class="form-control custom-input text-capitalize-input"
+                        value="{{ old('client_name') }}"
+                        class="form-control custom-input text-capitalize-input @error('client_name') is-invalid @enderror"
                         placeholder="Enter client name"
                         required
                     >
+                    @error('client_name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
@@ -224,10 +252,16 @@
                     <input
                         type="text"
                         name="contact_number"
-                        class="form-control custom-input"
+                        value="{{ old('contact_number') }}"
+                        inputmode="tel"
+                        autocomplete="tel"
+                        class="form-control custom-input @error('contact_number') is-invalid @enderror"
                         placeholder="09XX-XXX-XXXX"
                         required
                     >
+                    @error('contact_number')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">

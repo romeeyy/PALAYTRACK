@@ -20,6 +20,7 @@ class Transaction extends Model
         'amount_received',
         'change_amount',
         'reference_number',
+        'payment_proof_path',
         'payment_status',
         'paid_at',
         'notes',

@@ -29,20 +29,46 @@
             var(--user-sidebar-start) 100%) !important;
     }
 
+    /*
+     * Primary actions must follow the selected accent. Module-specific views
+     * historically used different class names and fixed green values.
+     * Secondary, edit, danger, warning, and status controls stay semantic.
+     */
     html[data-accent] .main-content :is(
         .btn-success, .btn-save, .save-theme,
-        .quick-btn.btn-success, button.btn-success
+        .quick-btn.btn-success, button.btn-success,
+        .btn-main, .btn-print, .btn-filter, .add-btn,
+        .submit-btn, .modal-save, .audit-button-primary,
+        .system-confirm-submit:not(.danger),
+        .filter-btn:not(.btn-outline-secondary)
     ) {
-        background-color: var(--user-accent) !important;
+        background: var(--user-accent) !important;
         border-color: var(--user-accent) !important;
+        color: #fff !important;
+    }
+
+    html[data-accent] .system-confirm-submit:not(.danger) {
+        background: var(--user-accent) !important;
+        border-color: var(--user-accent) !important;
+        color: #fff !important;
+    }
+
+    html[data-accent] .system-confirm-submit:not(.danger):hover {
+        background: var(--user-accent-dark) !important;
+        border-color: var(--user-accent-dark) !important;
     }
 
     html[data-accent] .main-content :is(
         .btn-success, .btn-save, .save-theme,
-        .quick-btn.btn-success, button.btn-success
+        .quick-btn.btn-success, button.btn-success,
+        .btn-main, .btn-print, .btn-filter, .add-btn,
+        .submit-btn, .modal-save, .audit-button-primary,
+        .system-confirm-submit:not(.danger),
+        .filter-btn:not(.btn-outline-secondary)
     ):hover {
-        background-color: var(--user-accent-dark) !important;
+        background: var(--user-accent-dark) !important;
         border-color: var(--user-accent-dark) !important;
+        color: #fff !important;
     }
 
     html[data-accent] .avatar-small { background-color: var(--user-accent-dark) !important; }
@@ -246,6 +272,15 @@
     html[data-theme="dark"] .main-content :is(.status-pending,.pricing-badge.menudo,.helper-warning,.difference-box) {
         background: #422b08 !important;
         color: #fcd34d !important;
+        border-color: #854d0e !important;
+    }
+    html[data-theme="dark"] .main-content .status-awaiting-notification {
+        background: #3f3507 !important;
+        color: #fde68a !important;
+    }
+    html[data-theme="dark"] .main-content .notify-btn {
+        background: #3f3507 !important;
+        color: #fde68a !important;
         border-color: #854d0e !important;
     }
     html[data-theme="dark"] .main-content :is(.status-inactive,.error-box,.failed-notification-box,.btn-toggle-custom.active-btn) {

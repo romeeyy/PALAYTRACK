@@ -154,6 +154,42 @@
         box-shadow: 0 0 0 0.18rem rgba(47, 93, 30, 0.12);
     }
 
+    .custom-input.is-invalid,
+    .custom-select.is-invalid,
+    .custom-textarea.is-invalid,
+    .custom-input.is-invalid:focus,
+    .custom-select.is-invalid:focus,
+    .custom-textarea.is-invalid:focus {
+        border-color: #ef4444;
+        background-color: #fffafa;
+        box-shadow: 0 0 0 0.16rem rgba(239, 68, 68, 0.08);
+    }
+
+    .invalid-feedback {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 6px;
+        color: #b42318;
+        font-size: 0.8rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .invalid-feedback::before {
+        content: "!";
+        display: inline-grid;
+        flex: 0 0 16px;
+        width: 16px;
+        height: 16px;
+        place-items: center;
+        border-radius: 50%;
+        background: #fee4e2;
+        color: #b42318;
+        font-size: 0.68rem;
+        font-weight: 800;
+    }
+
     .field-label {
         font-size: 0.92rem;
         font-weight: 700;
@@ -595,6 +631,7 @@
 
     $latestNotification = $delivery->notifications->sortByDesc('created_at')->first();
     $smsStatus = $latestNotification?->notification_status ?? null;
+    $isNotified = $delivery->hasSuccessfulNotification();
 @endphp
 
 <div class="page-header">
@@ -626,16 +663,6 @@
 @if(session('warning'))
     <div class="alert alert-warning alert-custom mb-4">
         {{ session('warning') }}
-    </div>
-@endif
-
-@if($errors->any())
-    <div class="alert alert-danger alert-custom mb-4">
-        <ul class="mb-0 ps-3">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
     </div>
 @endif
 
@@ -772,6 +799,7 @@
               data-confirm-message="Save the actual milled rice and mark this delivery as Completed? Inventory will be updated."
               data-confirm-button="Save & Complete">
             @csrf
+            <input type="hidden" name="completion_token" value="{{ $completionToken }}">
 
             <div class="row g-3 align-items-end">
                 <div class="col-md-4">
@@ -779,12 +807,17 @@
                     <input
                         type="number"
                         step="0.01"
+                        min="0.01"
+                        max="{{ $delivery->palay_weight }}"
                         name="actual_rice"
-                        class="form-control custom-input"
+                        class="form-control custom-input @error('actual_rice') is-invalid @enderror"
                         placeholder="Enter actual milled rice (kg)"
                         value="{{ old('actual_rice', $delivery->actual_rice) }}"
                         required
                     >
+                    @error('actual_rice')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="col-md-3">
@@ -824,12 +857,12 @@
     </div>
 @endif
 
-@if(!$latestNotification && $delivery->status === 'completed')
-<div class="section-card notification-card">
-    @php
-        $smsEnabled = \App\Models\Setting::getValue('sms_enabled', '0');
-    @endphp
+@php
+    $smsEnabled = (string) \App\Models\Setting::getValue('sms_enabled', '0');
+@endphp
 
+@if($delivery->status === 'completed' && $smsEnabled !== '1' && !$isNotified)
+<div class="section-card notification-card">
     <div class="notification-heading">
         <h2 class="section-title">Log Farmer Notification</h2>
         <div class="notification-status">
@@ -848,35 +881,36 @@
         </div>
     </div>
 
-    @if($smsEnabled === '1')
-        <p class="notification-notice">Automatic SMS is enabled and will be logged when the delivery becomes Completed.</p>
-    @else
-        <p class="notification-notice">SMS is disabled. Notify the farmer manually and record it below.</p>
-    @endif
+    <p class="notification-notice">Automatic SMS is disabled. Notify the farmer manually, then record every attempt below.</p>
 
-    @if((string) $smsEnabled !== '1')
     <form method="POST" action="{{ url('/staff/delivery-notification/' . $delivery->id) }}" class="notification-form">
         @csrf
 
         <div class="notification-fields">
             <div>
                 <label class="field-label">Method</label>
-                <select name="method" class="form-select custom-select" required>
+                <select name="method" class="form-select custom-select @error('method') is-invalid @enderror" required>
                     <option value="">Select Method</option>
                     <option value="call" {{ old('method') == 'call' ? 'selected' : '' }}>Call</option>
                     <option value="text" {{ old('method') == 'text' ? 'selected' : '' }}>Text</option>
                     <option value="in_person" {{ old('method') == 'in_person' ? 'selected' : '' }}>In Person</option>
                 </select>
+                @error('method')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div>
                 <label class="field-label">Notification Status</label>
-                <select name="notification_status" class="form-select custom-select" required>
+                <select name="notification_status" class="form-select custom-select @error('notification_status') is-invalid @enderror" required>
                     <option value="">Select Status</option>
                     <option value="sent" {{ old('notification_status') == 'sent' ? 'selected' : '' }}>Sent</option>
                     <option value="reached" {{ old('notification_status') == 'reached' ? 'selected' : '' }}>Reached</option>
                     <option value="failed" {{ old('notification_status') == 'failed' ? 'selected' : '' }}>Failed</option>
                 </select>
+                @error('notification_status')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div>
@@ -884,20 +918,26 @@
                 <input
                     type="datetime-local"
                     name="notified_at"
-                    class="form-control custom-input"
+                    class="form-control custom-input @error('notified_at') is-invalid @enderror"
                     value="{{ old('notified_at') }}"
                     required
                 >
+                @error('notified_at')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div>
                 <label class="field-label">Remarks</label>
                 <textarea
                     name="remarks"
-                    class="form-control custom-textarea"
+                    class="form-control custom-textarea @error('remarks') is-invalid @enderror"
                     rows="1"
                     placeholder="Optional remarks..."
                 >{{ old('remarks') }}</textarea>
+                @error('remarks')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="notification-action">
@@ -907,7 +947,6 @@
             </div>
         </div>
     </form>
-@endif
 </div>
 @endif
 
@@ -916,7 +955,10 @@
     <p class="section-subtitle">Previous notification logs for this delivery.</p>
 
     @if($latestNotification)
-        @if($latestNotification->notification_status === 'failed')
+        @if($latestNotification->notification_status === 'failed'
+            && $latestNotification->method === 'text'
+            && $latestNotification->source !== 'manual'
+            && $smsEnabled === '1')
            <div class="failed-notification-box">
 
     <div class="failed-notification-left">
@@ -949,49 +991,41 @@
     </form>
 
 </div>
-        @else
-            <div class="table-responsive">
-                <table class="table table-soft align-middle">
-                    <thead>
-                        <tr>
-                            <th>Notified At</th>
-                            <th>Method</th>
-                            <th>Status</th>
-                            <th>Remarks</th>
-                        </tr>
-                    </thead>
+        @endif
 
-                    <tbody>
+        <div class="table-responsive">
+            <table class="table table-soft align-middle">
+                <thead>
+                    <tr>
+                        <th>Attempted At</th>
+                        <th>Method</th>
+                        <th>Status</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach($delivery->notifications->sortByDesc('created_at') as $notification)
                         <tr>
                             <td>
-                                @if($latestNotification->notified_at)
-                                    {{ \Carbon\Carbon::parse($latestNotification->notified_at)->format('M d, Y h:i A') }}
-                                @else
-                                    -
-                                @endif
+                                {{ \Carbon\Carbon::parse($notification->notified_at ?? $notification->created_at)->format('M d, Y h:i A') }}
                             </td>
-
-                            <td>
-                                {{ ucwords(str_replace('_', ' ', $latestNotification->method)) }}
-                            </td>
-
+                            <td>{{ ucwords(str_replace('_', ' ', $notification->method)) }}</td>
                             <td>
                                 <span class="sms-status-badge
-                                    {{ $latestNotification->notification_status === 'sent' ? 'sms-sent' : '' }}
-                                    {{ $latestNotification->notification_status === 'reached' ? 'sms-reached' : '' }}
+                                    {{ $notification->notification_status === 'sent' ? 'sms-sent' : '' }}
+                                    {{ $notification->notification_status === 'reached' ? 'sms-reached' : '' }}
+                                    {{ $notification->notification_status === 'failed' ? 'sms-failed' : '' }}
                                 ">
-                                    {{ ucfirst($latestNotification->notification_status) }}
+                                    {{ ucfirst($notification->notification_status) }}
                                 </span>
                             </td>
-
-                            <td>
-                                {{ $latestNotification->remarks ?: '-' }}
-                            </td>
+                            <td>{{ $notification->remarks ?: '-' }}</td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
-        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     @else
         <div class="empty-state">
             No notification logs yet.
@@ -1032,9 +1066,11 @@
                         View Receipt
                     </a>
                 </div>
-            @elseif($delivery->status === 'completed')
+            @elseif($delivery->status === 'completed' && $isNotified)
                 <a href="{{ url('/staff/pos/' . $delivery->id) }}"
                    class="btn btn-success action-btn-lg w-100 mt-auto">Proceed to Payment</a>
+            @elseif($delivery->status === 'completed')
+                <div class="helper-box helper-warning mb-0 mt-auto">Notify the farmer successfully before payment.</div>
             @else
                 <div class="helper-box helper-warning mb-0 mt-auto">Complete milling before payment.</div>
             @endif
@@ -1049,7 +1085,7 @@
             </div>
             @if($delivery->status === 'claimed')
                 <div class="helper-box helper-dark mb-0 mt-auto">This delivery has already been claimed.</div>
-            @elseif($delivery->status === 'completed' && $delivery->transaction)
+            @elseif($delivery->status === 'completed' && $isNotified && $delivery->transaction?->payment_status === 'paid')
                 <form method="POST" action="{{ url('/staff/claim-delivery/' . $delivery->id) }}"
                       class="mt-auto"
                       data-confirm-title="Mark as Claimed?"
@@ -1058,7 +1094,9 @@
                     @csrf
                     <button type="submit" class="btn btn-dark-soft action-btn-lg w-100">Mark as Claimed</button>
                 </form>
-            @elseif($delivery->status === 'completed' && !$delivery->transaction)
+            @elseif($delivery->status === 'completed' && !$isNotified)
+                <div class="helper-box helper-warning mb-0 mt-auto">Notify the farmer successfully before releasing this delivery.</div>
+            @elseif($delivery->status === 'completed')
                 <div class="helper-box helper-warning mb-0 mt-auto">Complete payment before releasing this delivery.</div>
             @else
                 <div class="helper-box helper-warning mb-0 mt-auto">Complete milling before releasing this delivery.</div>
@@ -1066,4 +1104,6 @@
         </div>
     </div>
 </div>
+
+@include('partials.field-validation-focus')
 @endsection

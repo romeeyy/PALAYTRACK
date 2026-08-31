@@ -57,6 +57,10 @@ class ClientSafetyTest extends TestCase
         $client = Client::where('name', 'Snapshot Client')->firstOrFail();
         $delivery = $client->deliveries()->firstOrFail();
         $delivery->update(['status' => 'completed']);
+        $delivery->notifications()->create([
+            'method' => 'call', 'source' => 'manual',
+            'notification_status' => 'reached', 'notified_at' => now(),
+        ]);
 
         $this->actingAs($owner)->post(route('owner.clients.update-type', $client), [
             'client_type' => 'commercial',

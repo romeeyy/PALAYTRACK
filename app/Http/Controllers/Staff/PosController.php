@@ -11,8 +11,10 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class PosController extends Controller
 {
@@ -25,6 +27,13 @@ class PosController extends Controller
         if ($delivery->status !== 'completed') {
             return redirect()->back()->withErrors([
                 'payment' => 'Payment is only available for completed deliveries.'
+            ]);
+        }
+
+
+        if (!$delivery->hasSuccessfulNotification()) {
+            return redirect()->back()->withErrors([
+                'payment' => 'Notify the farmer successfully before recording payment.'
             ]);
         }
 
@@ -68,6 +77,13 @@ class PosController extends Controller
                 'nullable',
                 Rule::unique('transactions', 'reference_number'),
             ],
+            'payment_proof' => [
+                Rule::requiredIf(fn () => $request->payment_method !== 'cash'),
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:2048',
+            ],
         ]);
 
         if ($request->payment_method === 'gcash') {
@@ -92,8 +108,14 @@ class PosController extends Controller
             ]);
         }
 
+        $paymentProofPath = null;
+
+        if ($request->payment_method !== 'cash' && $request->hasFile('payment_proof')) {
+            $paymentProofPath = $request->file('payment_proof')->store('payment-proofs', 'public');
+        }
+
         try {
-            DB::transaction(function () use ($request, $delivery, $otherCharges, $discount, $amountReceived): void {
+            DB::transaction(function () use ($request, $delivery, $otherCharges, $discount, $amountReceived, $paymentProofPath): void {
                 $delivery = Delivery::query()
                     ->with('client')
                     ->lockForUpdate()
@@ -102,6 +124,13 @@ class PosController extends Controller
                 if ($delivery->status !== 'completed') {
                     throw ValidationException::withMessages([
                         'payment' => 'Payment is only available for completed deliveries.',
+                    ]);
+                }
+
+
+                if (!$delivery->hasSuccessfulNotification()) {
+                    throw ValidationException::withMessages([
+                        'payment' => 'Notify the farmer successfully before recording payment.',
                     ]);
                 }
 
@@ -156,12 +185,21 @@ class PosController extends Controller
                     'amount_received' => $amountReceived,
                     'change_amount' => $isDigital ? 0 : round($amountReceived - $totalAmount, 2),
                     'reference_number' => $isDigital ? $request->reference_number : null,
+                    'payment_proof_path' => $isDigital ? $paymentProofPath : null,
                     'payment_status' => 'paid',
                     'paid_at' => Carbon::now(),
                     'notes' => $request->notes,
                 ]);
             });
-        } catch (QueryException $exception) {
+        } catch (Throwable $exception) {
+            if ($paymentProofPath) {
+                Storage::disk('public')->delete($paymentProofPath);
+            }
+
+            if (!$exception instanceof QueryException) {
+                throw $exception;
+            }
+
             if (($exception->errorInfo[0] ?? null) === '23000') {
                 throw ValidationException::withMessages([
                     'payment' => 'This delivery or digital reference already has a recorded transaction.',

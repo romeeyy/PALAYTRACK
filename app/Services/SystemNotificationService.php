@@ -35,6 +35,7 @@ class SystemNotificationService
                 });
         } else {
             Delivery::where('status', 'pending')
+                ->where('staff_id', $user->id)
                 ->where('created_at', '>=', $since)
                 ->latest()
                 ->limit(6)
@@ -51,9 +52,17 @@ class SystemNotificationService
                 });
         }
 
-        Delivery::where('status', 'completed')
+        $completedDeliveries = Delivery::where('status', 'completed')
+            ->whereHas('transaction', fn ($query) => $query->where('payment_status', 'paid'))
+            ->whereHas('notifications', fn ($query) => $query->whereIn('notification_status', ['sent', 'reached']))
             ->whereNotNull('completed_at')
-            ->where('completed_at', '>=', $since)
+            ->where('completed_at', '>=', $since);
+
+        if (!$user->isOwner()) {
+            $completedDeliveries->where('staff_id', $user->id);
+        }
+
+        $completedDeliveries
             ->latest('completed_at')
             ->limit(8)
             ->get()
@@ -68,9 +77,17 @@ class SystemNotificationService
                 ));
             });
 
-        DeliveryNotification::with('delivery')
+        $failedNotifications = DeliveryNotification::with('delivery')
             ->where('notification_status', 'failed')
-            ->where('created_at', '>=', $since)
+            ->where('created_at', '>=', $since);
+
+        if (!$user->isOwner()) {
+            $failedNotifications->whereHas('delivery', function ($query) use ($user): void {
+                $query->where('staff_id', $user->id);
+            });
+        }
+
+        $failedNotifications
             ->latest()
             ->limit(8)
             ->get()

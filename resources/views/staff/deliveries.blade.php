@@ -165,6 +165,10 @@
         background: #f8fafc;
     }
 
+    .soft-table {
+        min-width: 1050px;
+    }
+
     .client-name {
         font-weight: 700;
     }
@@ -180,10 +184,15 @@
     }
 
     .status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         padding: 6px 12px;
         border-radius: 999px;
         font-size: 0.8rem;
         font-weight: 700;
+        min-width: 118px;
+        white-space: nowrap;
     }
 
     .status-pending {
@@ -206,17 +215,84 @@
         color: #475569;
     }
 
+    .status-payment-required {
+        background: #fff7ed;
+        color: #c2410c;
+    }
+
+    .status-awaiting-notification {
+        background: #fefce8;
+        color: #a16207;
+    }
+
+    .status-ready-for-claim {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
     .details-btn {
         border-radius: 10px;
-        padding: 6px 12px;
+        padding: 7px 13px;
         font-weight: 600;
-        min-width: 90px;
+        min-width: 118px;
     }
 
     .empty-state {
         text-align: center;
         padding: 20px;
         color: #64748b;
+    }
+
+    .row-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .row-actions form { margin: 0; }
+
+    .workflow-btn {
+        border-radius: 10px;
+        padding: 7px 13px;
+        font-size: .82rem;
+        font-weight: 700;
+        white-space: nowrap;
+        min-width: 118px;
+    }
+
+    .delivery-link {
+        color: #64748b;
+        text-decoration: none;
+        transition: color .15s ease;
+    }
+
+    .delivery-link:hover {
+        color: #15803d;
+        text-decoration: underline;
+    }
+
+    .payment-btn {
+        color: #c2410c;
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+    }
+
+    .payment-btn:hover {
+        color: #9a3412;
+        background: #ffedd5;
+        border-color: #fdba74;
+    }
+
+    .notify-btn {
+        color: #a16207;
+        background: #fefce8;
+        border: 1px solid #fde68a;
+    }
+
+    .notify-btn:hover {
+        color: #854d0e;
+        background: #fef9c3;
+        border-color: #facc15;
     }
 
     .pagination-wrap { padding-top: 18px; }
@@ -240,6 +316,13 @@
     .filter-label { margin-bottom: 6px; }
     .filter-control { min-height: 44px; border-radius: 11px; }
     .soft-table tbody td { padding-top: 12px; padding-bottom: 12px; }
+    .soft-table .status-column,
+    .soft-table .actions-column {
+        text-align: center;
+        vertical-align: middle;
+    }
+    .soft-table .status-column { width: 165px; }
+    .soft-table .actions-column { width: 165px; }
     .pagination-wrap { padding-top: 12px; }
 
     @media (max-width: 1100px) {
@@ -266,11 +349,11 @@
 <nav class="queue-tabs" aria-label="Delivery record view">
     <a href="{{ route('staff.deliveries', ['view' => 'active']) }}"
        class="queue-tab {{ $selectedView === 'active' ? 'active' : '' }}">
-        Active Queue <span class="queue-count">{{ $activeCount }}</span>
+        Active Queue
     </a>
     <a href="{{ route('staff.deliveries', ['view' => 'history']) }}"
        class="queue-tab {{ $selectedView === 'history' ? 'active' : '' }}">
-        Claimed History <span class="queue-count">{{ $claimedCount }}</span>
+        Claimed History
     </a>
 </nav>
 
@@ -332,13 +415,25 @@
                     <th>Rice</th>
                     <th>Details</th>
                     <th>Recorded By</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th class="status-column">Status</th>
+                    <th class="actions-column">Actions</th>
                 </tr>
             </thead>
 
             <tbody>
                 @forelse ($deliveries as $delivery)
+                @php
+                    $isPaid = $delivery->transaction?->payment_status === 'paid';
+                    $isNotified = $delivery->hasSuccessfulNotification();
+                    $displayStatus = match ($delivery->status) {
+                        'completed' => !$isNotified ? 'Awaiting Notification' : ($isPaid ? 'Ready for Claim' : 'Payment Required'),
+                        default => ucfirst($delivery->status),
+                    };
+                    $statusClass = match ($delivery->status) {
+                        'completed' => !$isNotified ? 'awaiting-notification' : ($isPaid ? 'ready-for-claim' : 'payment-required'),
+                        default => $delivery->status,
+                    };
+                @endphp
                 <tr>
                     <td>
                         <span class="queue-badge">#{{ $delivery->queue_number }}</span>
@@ -347,7 +442,13 @@
 
                     <td>
                         <div class="client-name">{{ $delivery->client_name }}</div>
-                        <div class="sub-text">{{ $delivery->delivery_id }}</div>
+                        <div class="sub-text">
+                            <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}"
+                               class="delivery-link"
+                               title="View delivery details">
+                                {{ $delivery->delivery_id }}
+                            </a>
+                        </div>
                     </td>
 
                     <td>{{ $delivery->riceType->name ?? 'N/A' }}</td>
@@ -365,17 +466,41 @@
                         <div class="sub-text">{{ $delivery->staff?->role ? ucfirst($delivery->staff->role) : 'Legacy record' }}</div>
                     </td>
 
-                    <td>
-                        <span class="status-badge status-{{ $delivery->status }}">
-                            {{ ucfirst($delivery->status) }}
+                    <td class="status-column">
+                        <span class="status-badge status-{{ $statusClass }}">
+                            {{ $displayStatus }}
                         </span>
                     </td>
 
-                    <td>
-                        <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}"
-                            class="btn btn-outline-success btn-sm details-btn">
-                            View
-                        </a>
+                    <td class="actions-column">
+                        <div class="row-actions">
+                            @if($selectedView === 'active' && $delivery->status === 'completed' && !$isNotified)
+                                <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}"
+                                   class="btn btn-sm workflow-btn notify-btn">
+                                    Notify Farmer
+                                </a>
+                            @elseif($selectedView === 'active' && $delivery->status === 'completed' && !$isPaid)
+                                <a href="{{ route('staff.pos.create', $delivery) }}"
+                                   class="btn btn-sm workflow-btn payment-btn">
+                                    Record Payment
+                                </a>
+                            @elseif($selectedView === 'active' && $delivery->status === 'completed' && $isPaid)
+                                <form method="POST" action="{{ route('staff.claim-delivery', $delivery->id) }}"
+                                      data-confirm-title="Mark as Claimed?"
+                                      data-confirm-message="Confirm that the milled rice has been released to the customer."
+                                      data-confirm-button="Mark as Claimed">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm workflow-btn">
+                                        Mark Claimed
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}"
+                                   class="btn btn-outline-success btn-sm details-btn">
+                                    View
+                                </a>
+                            @endif
+                        </div>
                     </td>
                 </tr>
                @empty

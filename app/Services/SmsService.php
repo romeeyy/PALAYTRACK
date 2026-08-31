@@ -3,13 +3,13 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Throwable;
 
 class SmsService
 {
     public function send(string $phoneNumber, string $message): array
     {
-        
-        $mode = env('SMS_MODE', 'simulation');
+        $mode = (string) config('services.semaphore.mode', 'simulation');
 
         if ($mode === 'simulation') {
             return [
@@ -19,12 +19,24 @@ class SmsService
             ];
         }
 
-        $response = Http::asForm()->post('https://api.semaphore.co/api/v4/messages', [
-            'apikey' => env('SEMAPHORE_API_KEY'),
-            'number' => $phoneNumber,
-            'message' => $message,
-            'sendername' => env('SEMAPHORE_SENDER_NAME', 'JKDIEZ'),
-        ]);
+        try {
+            $response = Http::asForm()
+                ->timeout(15)
+                ->post((string) config('services.semaphore.endpoint'), [
+                    'apikey' => config('services.semaphore.api_key'),
+                    'number' => $phoneNumber,
+                    'message' => $message,
+                    'sendername' => config('services.semaphore.sender_name', 'JKDIEZ'),
+                ]);
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return [
+                'success' => false,
+                'status' => 'failed',
+                'response' => 'Unable to connect to the SMS provider.',
+            ];
+        }
 
         if ($response->successful()) {
             $data = $response->json();

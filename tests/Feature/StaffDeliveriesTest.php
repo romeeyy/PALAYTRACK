@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Delivery;
 use App\Models\RiceType;
+use App\Models\Setting;
 use App\Models\User;
+use App\Services\SmsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -75,7 +77,11 @@ class StaffDeliveriesTest extends TestCase
         $this->assertSame('processing', $delivery->fresh()->status);
 
         $this->actingAs($this->staff)
-            ->post(route('staff.actual-rice', $delivery->id), ['actual_rice' => 70])
+            ->withSession(['delivery_completion_tokens' => [$delivery->id => 'valid-completion-token']])
+            ->post(route('staff.actual-rice', $delivery->id), [
+                'actual_rice' => 70,
+                'completion_token' => 'valid-completion-token',
+            ])
             ->assertSessionHas('success');
         $this->assertSame('completed', $delivery->fresh()->status);
 
@@ -87,6 +93,164 @@ class StaffDeliveriesTest extends TestCase
             'delivery_id' => $delivery->id, 'stock_category' => 'milled_rice',
             'type' => 'in', 'quantity' => 70,
         ]);
+    }
+
+    public function test_invalid_or_replayed_completion_request_cannot_complete_delivery(): void
+    {
+        $delivery = $this->delivery('DEL-GUARD1', 'Guarded Client', 'processing', '2026-07-22 08:00:00', 1);
+        $delivery->inventoryLogs()->create([
+            'stock_category' => 'palay', 'type' => 'in', 'quantity' => 100,
+            'remarks' => 'Initial delivery', 'logged_at' => now(),
+        ]);
+
+        $this->actingAs($this->staff)
+            ->withSession(['delivery_completion_tokens' => [$delivery->id => 'valid-completion-token']])
+            ->post(route('staff.actual-rice', $delivery->id), [
+                'actual_rice' => 0,
+                'completion_token' => 'valid-completion-token',
+            ])
+            ->assertSessionHasErrors('actual_rice');
+
+        $this->assertSame('processing', $delivery->fresh()->status);
+        $this->assertNull($delivery->fresh()->actual_rice);
+        $this->assertDatabaseMissing('inventory_logs', [
+            'delivery_id' => $delivery->id,
+            'stock_category' => 'milled_rice',
+        ]);
+
+        $this->actingAs($this->staff)
+            ->post(route('staff.actual-rice', $delivery->id), [
+                'actual_rice' => 70,
+                'completion_token' => 'stale-or-replayed-token',
+            ])
+            ->assertSessionHasErrors('actual_rice');
+
+        $this->assertSame('processing', $delivery->fresh()->status);
+        $this->assertNull($delivery->fresh()->actual_rice);
+    }
+
+    public function test_resending_failed_sms_preserves_every_notification_attempt(): void
+    {
+        $delivery = $this->delivery('DEL-SMS001', 'SMS Client', 'completed', '2026-07-22 08:00:00', 1);
+        $failedAttempt = $delivery->notifications()->create([
+            'method' => 'text',
+            'notification_status' => 'failed',
+            'source' => 'automatic',
+            'remarks' => 'Message Failed',
+            'notified_at' => null,
+        ]);
+        Setting::setValue('sms_enabled', '1');
+
+        $smsService = $this->mock(SmsService::class);
+        $smsService->shouldReceive('send')
+            ->once()
+            ->with($delivery->contact_number, \Mockery::type('string'))
+            ->andReturn(['success' => true, 'status' => 'sent']);
+
+        $this->actingAs($this->staff)
+            ->post(route('staff.resend-sms', $failedAttempt->id))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('delivery_notifications', [
+            'id' => $failedAttempt->id,
+            'delivery_id' => $delivery->id,
+            'method' => 'text',
+            'notification_status' => 'failed',
+            'remarks' => 'Message Failed',
+        ]);
+        $this->assertDatabaseHas('delivery_notifications', [
+            'delivery_id' => $delivery->id,
+            'method' => 'text',
+            'notification_status' => 'sent',
+        ]);
+        $this->assertSame(2, $delivery->notifications()->count());
+    }
+
+    public function test_manual_failed_notification_is_retried_by_logging_a_new_manual_attempt(): void
+    {
+        $delivery = $this->delivery('DEL-MAN001', 'Manual Client', 'completed', '2026-07-22 08:00:00', 1);
+        Setting::setValue('sms_enabled', '0');
+
+        $this->actingAs($this->staff)
+            ->post(route('staff.delivery-notification', $delivery->id), [
+                'method' => 'text',
+                'notification_status' => 'failed',
+                'notified_at' => now()->subMinute()->format('Y-m-d H:i:s'),
+                'remarks' => 'No signal',
+            ])
+            ->assertSessionHas('success');
+
+        $this->actingAs($this->staff)
+            ->post(route('staff.delivery-notification', $delivery->id), [
+                'method' => 'call',
+                'notification_status' => 'reached',
+                'notified_at' => now()->format('Y-m-d H:i:s'),
+                'remarks' => 'Reached by phone',
+            ])
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('delivery_notifications', [
+            'delivery_id' => $delivery->id,
+            'source' => 'manual',
+            'notification_status' => 'failed',
+        ]);
+        $this->assertDatabaseHas('delivery_notifications', [
+            'delivery_id' => $delivery->id,
+            'source' => 'manual',
+            'notification_status' => 'reached',
+        ]);
+        $this->assertSame('completed', $delivery->fresh()->status);
+        $this->assertSame(2, $delivery->notifications()->count());
+    }
+
+    public function test_successful_manual_notification_hides_form_and_blocks_duplicates(): void
+    {
+        $delivery = $this->delivery('DEL-MAN002', 'Notified Client', 'completed', '2026-07-22 08:00:00', 1);
+        Setting::setValue('sms_enabled', '0');
+
+        $payload = [
+            'method' => 'call',
+            'notification_status' => 'reached',
+            'notified_at' => now()->format('Y-m-d H:i:s'),
+            'remarks' => 'Farmer reached',
+        ];
+
+        $this->actingAs($this->staff)
+            ->post(route('staff.delivery-notification', $delivery->id), $payload)
+            ->assertSessionHas('success');
+
+        $this->actingAs($this->staff)
+            ->get(route('staff.delivery-details', $delivery->id))
+            ->assertOk()
+            ->assertDontSee('Save Notification');
+
+        $this->actingAs($this->staff)
+            ->post(route('staff.delivery-notification', $delivery->id), $payload)
+            ->assertSessionHas('warning');
+
+        $this->assertSame(1, $delivery->notifications()->count());
+    }
+
+    public function test_automatic_resend_is_blocked_when_sms_is_disabled(): void
+    {
+        $delivery = $this->delivery('DEL-SMSOFF', 'Disabled SMS Client', 'completed', '2026-07-22 08:00:00', 1);
+        $failedAttempt = $delivery->notifications()->create([
+            'method' => 'text',
+            'notification_status' => 'failed',
+            'source' => 'automatic',
+            'remarks' => 'Message Failed',
+        ]);
+        Setting::setValue('sms_enabled', '0');
+
+        $smsService = $this->mock(SmsService::class);
+        $smsService->shouldNotReceive('send');
+
+        $this->actingAs($this->staff)
+            ->post(route('staff.resend-sms', $failedAttempt->id))
+            ->assertSessionHas('error');
+
+        $this->assertSame(1, $delivery->notifications()->count());
+        $this->assertSame('completed', $delivery->fresh()->status);
     }
 
     private function delivery(

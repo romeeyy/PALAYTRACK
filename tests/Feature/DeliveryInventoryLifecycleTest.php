@@ -60,6 +60,13 @@ class DeliveryInventoryLifecycleTest extends TestCase
             'paid_at' => now(),
         ]);
 
+        $delivery->notifications()->create([
+            'method' => 'call',
+            'source' => 'manual',
+            'notification_status' => 'reached',
+            'notified_at' => now(),
+        ]);
+
         $service->claim($delivery->fresh());
         $service->claim($delivery->fresh());
 

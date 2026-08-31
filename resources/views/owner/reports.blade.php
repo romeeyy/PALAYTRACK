@@ -54,7 +54,7 @@
 
     .filter-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr auto;
+        grid-template-columns: minmax(180px, .8fr) minmax(180px, .8fr) minmax(220px, 1.2fr) auto;
         gap: 14px;
         align-items: end;
     }
@@ -601,8 +601,8 @@
 
 <div class="page-header no-print">
     <div>
-        <h1 class="page-title">Daily Sales Report</h1>
-        <p class="page-subtitle">Grouped daily sales summary for staff remittance and owner verification.</p>
+        <h1 class="page-title">Sales Report</h1>
+        <p class="page-subtitle">Sales summary for staff remittance and owner verification.</p>
     </div>
 
     <button type="button" class="btn-print" onclick="window.print()">Print Report</button>
@@ -612,8 +612,13 @@
     <form method="GET" action="{{ route('owner.reports') }}" class="filter-card">
         <div class="filter-grid">
             <div>
-                <label class="field-label">Report Date</label>
-                <input type="date" name="date" class="custom-input" value="{{ $date }}">
+                <label class="field-label">From Date</label>
+                <input type="date" name="from_date" class="custom-input" value="{{ $fromDate }}" required>
+            </div>
+
+            <div>
+                <label class="field-label">To Date</label>
+                <input type="date" name="to_date" class="custom-input" value="{{ $toDate }}" min="{{ $fromDate }}" required>
             </div>
 
             <div>
@@ -642,12 +647,17 @@
         <div class="print-header">
             <img src="{{ asset('images/jk-logo.png') }}" class="print-logo" alt="JK Logo">
             <h2 class="print-business">JK Diez Rice Mill</h2>
-            <p class="print-title">Daily Sales Report</p>
+            <p class="print-title">Sales Report</p>
         </div>
 
         <div class="report-meta">
             <div class="meta-item">
-                <strong>Date Covered:</strong> {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}
+                <strong>Date Covered:</strong>
+                @if($fromDate === $toDate)
+                    {{ \Carbon\Carbon::parse($fromDate)->format('F d, Y') }}
+                @else
+                    {{ \Carbon\Carbon::parse($fromDate)->format('M d, Y') }} – {{ \Carbon\Carbon::parse($toDate)->format('M d, Y') }}
+                @endif
             </div>
 
             <div class="meta-item">
@@ -862,5 +872,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fromDate = document.querySelector('input[name="from_date"]');
+        const toDate = document.querySelector('input[name="to_date"]');
+
+        if (!fromDate || !toDate) return;
+
+        function syncReportDates() {
+            toDate.min = fromDate.value;
+
+            if (!toDate.value || toDate.value < fromDate.value) {
+                toDate.value = fromDate.value;
+            }
+        }
+
+        fromDate.addEventListener('input', syncReportDates);
+        fromDate.addEventListener('change', syncReportDates);
+        syncReportDates();
+    });
+</script>
 
 @endsection

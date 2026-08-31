@@ -372,6 +372,11 @@
                 margin-left: 0;
                 padding: 18px;
             }
+
+            .topbar {
+                height: 54px;
+                margin-bottom: 16px;
+            }
         }
     </style>
 </head>

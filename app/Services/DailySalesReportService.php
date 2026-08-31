@@ -8,9 +8,10 @@ use Illuminate\Support\Collection;
 
 class DailySalesReportService
 {
-    public function generate(string $date, int|string|null $staffId = null): array
+    public function generate(string $fromDate, int|string|null $staffId = null, ?string $toDate = null): array
     {
-        $baseQuery = $this->baseQuery($date, $staffId);
+        $toDate ??= $fromDate;
+        $baseQuery = $this->baseQuery($fromDate, $toDate, $staffId);
 
         $groupedSales = (clone $baseQuery)
             ->select(
@@ -48,7 +49,10 @@ class DailySalesReportService
             ->get();
 
         return [
-            'date' => $date,
+            // Keep `date` for older report/export views that still expect it.
+            'date' => $fromDate,
+            'fromDate' => $fromDate,
+            'toDate' => $toDate,
             'groupedSales' => $groupedSales,
             'paymentBreakdown' => $paymentBreakdown,
             'totalIncome' => (float) (clone $baseQuery)->sum('transactions.total_amount'),
@@ -68,13 +72,16 @@ class DailySalesReportService
         ];
     }
 
-    private function baseQuery(string $date, int|string|null $staffId): Builder
+    private function baseQuery(string $fromDate, string $toDate, int|string|null $staffId): Builder
     {
         $query = Transaction::query()
             ->join('deliveries', 'transactions.delivery_id', '=', 'deliveries.id')
             ->leftJoin('users', 'transactions.user_id', '=', 'users.id')
             ->where('transactions.payment_status', 'paid')
-            ->whereRaw('DATE(COALESCE(transactions.paid_at, transactions.created_at)) = ?', [$date]);
+            ->whereRaw(
+                'DATE(COALESCE(transactions.paid_at, transactions.created_at)) BETWEEN ? AND ?',
+                [$fromDate, $toDate]
+            );
 
         if ($staffId !== null && $staffId !== '' && $staffId !== 'all') {
             $query->where('transactions.user_id', (int) $staffId);
