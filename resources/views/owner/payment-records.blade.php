@@ -64,21 +64,29 @@
     .filter-panel {
         margin-top: 15px;
         background: #ffffff;
-        border: 1px solid #e2eadf;
-        border-radius: 16px;
-        padding: 13px 15px;
+        border: 1px solid #dfe7df;
+        border-radius: 18px;
+        padding: 16px 18px 14px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
     }
 
-    .filter-grid {
+    .filter-row {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 10px 12px;
+        gap: 14px;
         align-items: end;
     }
 
+    .filter-row-top {
+        grid-template-columns: minmax(0, 1.5fr) minmax(180px, 0.7fr);
+        margin-bottom: 16px;
+    }
+
+    .filter-row-bottom {
+        grid-template-columns: minmax(160px, 1fr) minmax(160px, 1fr) minmax(180px, 1fr) auto;
+    }
+
     .filter-search-group {
-        grid-column: span 3;
+        min-width: 0;
     }
 
     .filter-label {
@@ -88,7 +96,7 @@
         font-size: 0.92rem;
         font-weight: 700;
         color: #475569;
-        margin-bottom: 6px;
+        margin-bottom: 7px;
     }
 
     .filter-label i {
@@ -102,8 +110,8 @@
     .filter-search {
         max-width: none;
         width: 100%;
-        border-radius: 11px;
-        min-height: 44px;
+        border-radius: 12px;
+        min-height: 48px;
         border: 1px solid #dbe3ec;
         background: #ffffff;
         box-shadow: 0 4px 10px rgba(15, 23, 42, 0.03);
@@ -123,10 +131,19 @@
         box-shadow: 0 0 0 3px rgba(47, 93, 30, 0.12);
     }
 
+    .date-help {
+        display: block;
+        margin-top: 6px;
+        color: #64748b;
+        font-size: 0.78rem;
+    }
+
     .filter-actions {
         display: flex;
         justify-content: flex-end;
         gap: 10px;
+        align-self: end;
+        padding-top: 0;
     }
 
     .filter-btn {
@@ -134,11 +151,11 @@
         align-items: center;
         justify-content: center;
         gap: 7px;
-        min-height: 44px;
-        padding: 8px 14px;
-        border-radius: 11px;
+        min-height: 46px;
+        padding: 8px 16px;
+        border-radius: 12px;
         font-weight: 800;
-        font-size: 0.92rem;
+        font-size: 0.96rem;
         white-space: nowrap;
     }
 
@@ -188,9 +205,9 @@
     .record-pill {
         padding: 10px 14px;
         border-radius: 999px;
-        background: #f8fafc;
-        border: 1px solid #e5e7eb;
-        color: #475569;
+        background: #edf8f0;
+        border: 1px solid #ccebd5;
+        color: #187340;
         font-size: 0.88rem;
         font-weight: 900;
     }
@@ -205,10 +222,11 @@
     }
 
     .custom-table thead th {
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid #dbe3ec;
         color: #0f172a;
         font-size: 0.9rem;
-        font-weight: 900;
+        font-weight: 800;
+        letter-spacing: -0.01em;
         padding-top: 16px;
         padding-bottom: 16px;
         background: #ffffff;
@@ -220,27 +238,43 @@
         padding-bottom: 15px;
         border-color: #eef2f7;
         color: #1f2937;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         white-space: nowrap;
+        min-width: 108px;
     }
 
     .custom-table tbody tr:hover {
         background: #fafcfb;
     }
 
+    .custom-table tbody tr:nth-child(even) {
+        background: #fcfdfc;
+    }
+
+    .custom-table .numeric-cell {
+        font-variant-numeric: tabular-nums;
+    }
+
     .receipt-code {
-        font-weight: 900;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.84rem;
+        font-weight: 800;
         color: #0f172a;
     }
 
     .client-name {
-        font-weight: 800;
+        font-weight: 700;
         color: #111827;
     }
 
     .amount-text {
-        font-weight: 900;
+        font-weight: 700;
         color: #0f172a;
+    }
+
+    .date-cell {
+        color: #475569;
+        font-variant-numeric: tabular-nums;
     }
 
     .badge-method {
@@ -327,12 +361,13 @@
             justify-content: stretch;
         }
 
-        .filter-actions > * {
+        .filter-actions>* {
             flex: 1;
         }
     }
 
     @media (max-width: 768px) {
+
         .hero-card,
         .table-shell {
             border-radius: 18px;
@@ -361,7 +396,7 @@
         </div>
 
         <form method="GET" class="filter-panel">
-            <div class="filter-grid">
+            <div class="filter-row filter-row-top">
                 <div class="filter-search-group">
                     <label for="search" class="filter-label">
                         <i data-lucide="search"></i>
@@ -374,14 +409,13 @@
                         name="search"
                         value="{{ $search }}"
                         class="form-control filter-search"
-                        placeholder="Client, delivery, or receipt"
-                    >
+                        placeholder="Client, delivery, or receipt">
                 </div>
 
                 <div>
                     <label for="date" class="filter-label">
                         <i data-lucide="calendar-days"></i>
-                        Filter by Date
+                        Date
                     </label>
 
                     <input
@@ -389,10 +423,11 @@
                         type="date"
                         name="date"
                         value="{{ $date }}"
-                        class="form-control filter-date"
-                    >
+                        class="form-control filter-date">
                 </div>
+            </div>
 
+            <div class="filter-row filter-row-bottom">
                 <div>
                     <label for="milling_type" class="filter-label">
                         <i data-lucide="sliders-horizontal"></i>
@@ -402,8 +437,7 @@
                     <select
                         id="milling_type"
                         name="milling_type"
-                        class="form-select filter-select"
-                    >
+                        class="form-select filter-select">
                         <option value="all" {{ ($millingType ?? 'all') == 'all' ? 'selected' : '' }}>All Types</option>
                         <option value="menudo" {{ ($millingType ?? '') == 'menudo' ? 'selected' : '' }}>Menudo</option>
                         <option value="commercial" {{ ($millingType ?? '') == 'commercial' ? 'selected' : '' }}>Commercial</option>
@@ -419,8 +453,7 @@
                     <select
                         id="payment_method"
                         name="payment_method"
-                        class="form-select filter-select"
-                    >
+                        class="form-select filter-select">
                         <option value="all" {{ $paymentMethod === 'all' ? 'selected' : '' }}>All Methods</option>
                         <option value="cash" {{ $paymentMethod === 'cash' ? 'selected' : '' }}>Cash</option>
                         <option value="gcash" {{ $paymentMethod === 'gcash' ? 'selected' : '' }}>GCash</option>
@@ -437,13 +470,12 @@
                     <select
                         id="staff_id"
                         name="staff_id"
-                        class="form-select filter-select"
-                    >
+                        class="form-select filter-select">
                         <option value="all" {{ $staffId === 'all' ? 'selected' : '' }}>All Cashiers</option>
                         @foreach($staffUsers as $staff)
-                            <option value="{{ $staff->id }}" {{ (string) $staffId === (string) $staff->id ? 'selected' : '' }}>
-                                {{ $staff->name }}
-                            </option>
+                        <option value="{{ $staff->id }}" {{ (string) $staffId === (string) $staff->id ? 'selected' : '' }}>
+                            {{ $staff->name }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -454,8 +486,8 @@
                         Filter
                     </button>
                     <a href="{{ route('owner.payment-records', ['date' => now()->toDateString()]) }}"
-                       class="btn btn-outline-secondary filter-btn reset-btn"
-                       aria-label="Reset all transaction filters">
+                        class="btn btn-outline-secondary filter-btn reset-btn"
+                        aria-label="Reset all transaction filters">
                         <i data-lucide="rotate-ccw"></i>
                         Reset
                     </a>
@@ -477,88 +509,88 @@
         </div>
 
         @if($transactions->count())
-            <div class="table-wrap">
-                <div class="table-responsive table-scroll-wrapper">
-                    <table class="table custom-table">
-                        <thead>
-                            <tr>
-                                <th>Receipt</th>
-                                <th>Client</th>
-                                <th>Milling Type</th>
-                                <th>Palay Weight (kg)</th>
-                                <th>Milling Fee</th>
-                                <th>Total</th>
-                                <th>Method</th>
-                                <th>Date</th>
-                                <th class="text-center">Action</th>
-                            </tr>
-                        </thead>
+        <div class="table-wrap">
+            <div class="table-responsive table-scroll-wrapper">
+                <table class="table custom-table">
+                    <thead>
+                        <tr>
+                            <th>Receipt</th>
+                            <th>Client</th>
+                            <th>Milling Type</th>
+                            <th>Palay Weight (kg)</th>
+                            <th>Milling Fee</th>
+                            <th>Total</th>
+                            <th>Method</th>
+                            <th>Date</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
 
-                        <tbody>
-                            @foreach($transactions as $t)
-                                <tr>
-                                    <td class="receipt-code">
-                                        TXN-{{ str_pad($t->id, 5, '0', STR_PAD_LEFT) }}
-                                    </td>
+                    <tbody>
+                        @foreach($transactions as $t)
+                        <tr>
+                            <td class="receipt-code">
+                                TXN-{{ str_pad($t->id, 5, '0', STR_PAD_LEFT) }}
+                            </td>
 
-                                    <td class="client-name">
-                                        {{ $t->delivery->client_name ?? 'N/A' }}
-                                    </td>
+                            <td class="client-name">
+                                {{ $t->delivery->client_name ?? 'N/A' }}
+                            </td>
 
-                                    <td>
-                                        {{ ucfirst($t->milling_type ?? 'N/A') }}
-                                    </td>
+                            <td>
+                                {{ ucfirst($t->milling_type ?? 'N/A') }}
+                            </td>
 
-                                    <td>
-                                        {{ number_format($t->palay_weight_kg, 2) }} kg
-                                    </td>
+                            <td class="numeric-cell">
+                                {{ number_format($t->palay_weight_kg, 2) }} kg
+                            </td>
 
-                                    <td class="amount-text">
-                                        ₱{{ number_format($t->milling_fee_per_kg, 2) }}/kg
-                                    </td>
+                            <td class="numeric-cell amount-text">
+                                ₱{{ number_format($t->milling_fee_per_kg, 2) }}/kg
+                            </td>
 
-                                    <td class="amount-text">
-                                        ₱{{ number_format($t->total_amount, 2) }}
-                                    </td>
+                            <td class="numeric-cell amount-text">
+                                ₱{{ number_format($t->total_amount, 2) }}
+                            </td>
 
-                                    <td>
-                                        @php
-                                            $methodClass = match($t->payment_method) {
-                                                'cash' => 'badge-cash',
-                                                'gcash' => 'badge-gcash',
-                                                'maya' => 'badge-maya',
-                                                default => 'badge-cash',
-                                            };
-                                        @endphp
+                            <td>
+                                @php
+                                $methodClass = match($t->payment_method) {
+                                'cash' => 'badge-cash',
+                                'gcash' => 'badge-gcash',
+                                'maya' => 'badge-maya',
+                                default => 'badge-cash',
+                                };
+                                @endphp
 
-                                        <span class="badge-method {{ $methodClass }}">
-                                            {{ strtoupper($t->payment_method) }}
-                                        </span>
-                                    </td>
+                                <span class="badge-method {{ $methodClass }}">
+                                    {{ strtoupper($t->payment_method) }}
+                                </span>
+                            </td>
 
-                                    <td>
-                                        {{ ($t->paid_at ?? $t->created_at)->format('m/d/Y h:i A') }}
-                                    </td>
+                            <td class="date-cell">
+                                {{ ($t->paid_at ?? $t->created_at)->format('M d, Y g:i A') }}
+                            </td>
 
-                                    <td class="text-center align-middle">
-                                        <div class="d-flex justify-content-center">
-                                            <a href="{{ route('owner.receipt', $t->delivery_id) }}"
-                                               class="btn btn-sm btn-outline-success btn-view">
-                                                View
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            <td class="text-center align-middle">
+                                <div class="d-flex justify-content-center">
+                                    <a href="{{ route('owner.receipt', $t->delivery_id) }}"
+                                        class="btn btn-sm btn-outline-success btn-view">
+                                        View
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+        </div>
         @else
-            <div class="empty-state">
-                <div class="empty-state-title">No transaction records found</div>
-                <p class="empty-state-text">There are no recorded transactions for the selected filters.</p>
-            </div>
+        <div class="empty-state">
+            <div class="empty-state-title">No transaction records found</div>
+            <p class="empty-state-text">There are no recorded transactions for the selected filters.</p>
+        </div>
         @endif
     </div>
 </div>

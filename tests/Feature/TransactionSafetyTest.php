@@ -227,6 +227,41 @@ class TransactionSafetyTest extends TestCase
             });
     }
 
+    public function test_transaction_filters_default_to_today_and_use_selected_payment_date(): void
+    {
+        $this->travelTo(\Carbon\Carbon::parse('2026-09-25 12:00:00'));
+        $owner = User::factory()->create(['role' => 'owner', 'is_active' => true]);
+        $staff = User::factory()->create(['role' => 'staff', 'is_active' => true]);
+        $other = User::factory()->create(['role' => 'staff', 'is_active' => true]);
+        $old = $this->transaction($this->delivery($staff, 200, 1), $staff, 'cash');
+        $old->update(['paid_at' => '2026-08-30 16:14:48']);
+        $today = $this->transaction($this->delivery($staff, 200, 2), $staff, 'cash');
+        $legacy = $this->transaction($this->delivery($staff, 200, 3), $staff, 'cash');
+        $legacy->forceFill(['paid_at' => null, 'created_at' => '2026-08-30 12:14:08'])->save();
+        $private = $this->transaction($this->delivery($other, 200, 4), $other, 'cash');
+        $private->update(['paid_at' => '2026-08-30 12:00:00']);
+
+        foreach ([[$owner, 'owner.payment-records'], [$staff, 'staff.transactions']] as [$user, $route]) {
+            $base = ['payment_method' => 'cash', 'milling_type' => 'all'];
+            if ($user->role === 'owner') {
+                $base['staff_id'] = $staff->id;
+            }
+            foreach ([[], ['date' => '']] as $dateFilter) {
+                $this->actingAs($user)->get(route($route, array_merge($base, $dateFilter)))
+                    ->assertOk()
+                    ->assertViewHas('transactions', fn ($rows) => $rows->count() === 1
+                        && $rows->first()->id === $today->id);
+            }
+            $this->actingAs($user)->get(route($route, array_merge($base, ['date' => '2026-08-30'])))
+                ->assertOk()
+                ->assertViewHas('transactions', fn ($rows) => $rows->pluck('id')->sort()->values()->all()
+                    === collect([$old->id, $legacy->id])->sort()->values()->all());
+            $this->actingAs($user)->get(route($route, array_merge($base, ['date' => '2026-08-29'])))
+                ->assertOk()
+                ->assertViewHas('transactions', fn ($rows) => $rows->count() === 0);
+        }
+    }
+
     private function delivery(User $staff, float $weight, int $queue, string $clientName = 'Test Client'): Delivery
     {
         $riceType = RiceType::firstOrCreate(

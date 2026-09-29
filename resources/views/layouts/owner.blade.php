@@ -9,6 +9,7 @@
     @include('components.theme-loader')
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    @include('components.fonts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -32,7 +33,7 @@
         body {
             margin: 0;
             background: var(--page-bg);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--bs-body-font-family);
             color: var(--text-dark);
         }
 
@@ -477,8 +478,15 @@
     <div class="app-wrapper">
         <aside class="sidebar">
             <div class="brand-box">
+                @php
+                    $logoTheme = in_array(Auth::user()->theme_preference ?? 'classic', ['classic', 'forest', 'emerald', 'olive', 'sage', 'palay'], true)
+                        ? Auth::user()->theme_preference
+                        : 'classic';
+                @endphp
                 <div class="brand-logo">
-                    <img src="{{ asset('images/jk-logo.png') }}" alt="JK Diez Rice Mill Logo">
+                    <img src="{{ asset('images/theme-logos/jk-logo-' . $logoTheme . '.webp') }}"
+                         data-logo-base="{{ asset('images/theme-logos') }}"
+                         alt="JK Diez Rice Mill Logo">
                 </div>
 
                 <div>

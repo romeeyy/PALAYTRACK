@@ -37,15 +37,19 @@ Route::get('/appearance', [AppearanceController::class, 'edit'])->name('appearan
 Route::post('/appearance', [AppearanceController::class, 'update'])->name('appearance.update');
 
 Route::post('/notifications/read', function (Request $request) {
-    abort_unless(Auth::check(), 403);
+    $user = Auth::user();
 
-    Auth::user()->forceFill(['notifications_read_at' => now()])->save();
+    if (!$user instanceof User) {
+        abort(403);
+    }
+
+    $user->forceFill(['notifications_read_at' => now()])->save();
 
     return $request->expectsJson() ? response()->noContent() : back();
 })->middleware('auth')->name('notifications.read');
 
 if (!function_exists('autoNotifyDeliveryCompleted')) {
-function autoNotifyDeliveryCompleted($delivery)
+function autoNotifyDeliveryCompleted(Delivery $delivery): void
 {
     try {
         logger('AUTO SMS FUNCTION CALLED for delivery ID: ' . $delivery->id);
@@ -320,15 +324,13 @@ Route::prefix('owner')->group(function () {
             $query->whereDate('delivered_at', $validated['date']);
         }
 
-        // Active work is shown first in FCFS order. Finished records are newest first.
-        $deliveries = $query
-            ->orderByRaw("CASE WHEN status IN ('pending', 'processing') THEN 0 ELSE 1 END")
-            ->orderByRaw("CASE WHEN status IN ('pending', 'processing') THEN delivered_at END ASC")
-            ->orderByRaw("CASE WHEN status IN ('pending', 'processing') THEN queue_number END ASC")
-            ->orderByDesc('delivered_at')
-            ->orderByDesc('id')
-            ->paginate(15)
-            ->withQueryString();
+        if ($selectedView === 'history') {
+            $query->orderByDesc('claimed_at')->orderByDesc('delivered_at');
+        } else {
+            $query->activeQueueOrder();
+        }
+
+        $deliveries = $query->paginate(15)->withQueryString();
         return view('owner.deliveries', compact(
             'deliveries', 'selectedView', 'activeCount', 'claimedCount'
         ));
@@ -377,28 +379,34 @@ Route::prefix('owner')->group(function () {
             ->value('total');
 
         $palayByRiceType = InventoryLog::query()
-            ->join('deliveries', 'inventory_logs.delivery_id', '=', 'deliveries.id')
-            ->join('rice_types', 'deliveries.rice_type_id', '=', 'rice_types.id')
+            ->leftJoin('deliveries', 'inventory_logs.delivery_id', '=', 'deliveries.id')
+            ->leftJoin('rice_types', 'deliveries.rice_type_id', '=', 'rice_types.id')
             ->where('inventory_logs.stock_category', 'palay')
             ->select(
-                'rice_types.name as rice_type_name',
+                DB::raw("COALESCE(rice_types.name, 'Unknown / Unlinked') as rice_type_name"),
                 DB::raw("COALESCE(SUM(CASE WHEN inventory_logs.type = 'in' THEN inventory_logs.quantity ELSE -inventory_logs.quantity END), 0) as total_weight")
             )
             ->groupBy('rice_types.name')
+            ->havingRaw("rice_types.name IS NOT NULL OR SUM(CASE WHEN inventory_logs.type = 'in' THEN inventory_logs.quantity ELSE -inventory_logs.quantity END) <> 0")
             ->get();
 
         $milledByRiceType = InventoryLog::query()
-            ->join('deliveries', 'inventory_logs.delivery_id', '=', 'deliveries.id')
-            ->join('rice_types', 'deliveries.rice_type_id', '=', 'rice_types.id')
+            ->leftJoin('deliveries', 'inventory_logs.delivery_id', '=', 'deliveries.id')
+            ->leftJoin('rice_types', 'deliveries.rice_type_id', '=', 'rice_types.id')
             ->where('inventory_logs.stock_category', 'milled_rice')
             ->select(
-                'rice_types.name as rice_type_name',
+                DB::raw("COALESCE(rice_types.name, 'Unknown / Unlinked') as rice_type_name"),
                 DB::raw("COALESCE(SUM(CASE WHEN inventory_logs.type = 'in' THEN inventory_logs.quantity ELSE -inventory_logs.quantity END), 0) as total_weight")
             )
             ->groupBy('rice_types.name')
+            ->havingRaw("rice_types.name IS NOT NULL OR SUM(CASE WHEN inventory_logs.type = 'in' THEN inventory_logs.quantity ELSE -inventory_logs.quantity END) <> 0")
             ->get();
 
         $allRiceTypes = RiceType::select('name')->get();
+        if ($palayByRiceType->contains('rice_type_name', 'Unknown / Unlinked')
+            || $milledByRiceType->contains('rice_type_name', 'Unknown / Unlinked')) {
+            $allRiceTypes->push((object) ['name' => 'Unknown / Unlinked']);
+        }
 
         $combinedInventory = $allRiceTypes->map(function ($riceType) use ($palayByRiceType, $milledByRiceType) {
             $palay = $palayByRiceType->firstWhere('rice_type_name', $riceType->name);
@@ -423,6 +431,8 @@ Route::prefix('owner')->group(function () {
             'combinedInventory'
         ));
     })->name('owner.inventory');
+
+
 
     Route::get('/reports', function (Request $request, DailySalesReportService $reportService) {
         if (!Auth::check() || Auth::user()->role !== 'owner') {
@@ -671,17 +681,24 @@ Route::prefix('staff')->group(function () {
             return redirect()->route('login');
         }
 
-        // Keep the status cards consistent with the Owner dashboard:
-        // current statuses of deliveries recorded within the current month.
-        $monthlyStatusQuery = Delivery::whereBetween('created_at', [
-            Carbon::today()->startOfMonth(),
-            Carbon::today()->endOfMonth(),
-        ]);
-
-        $pendingCount = (clone $monthlyStatusQuery)->where('status', 'pending')->count();
-        $processingCount = (clone $monthlyStatusQuery)->where('status', 'processing')->count();
-        $completedCount = (clone $monthlyStatusQuery)->where('status', 'completed')->count();
-        $claimedCount = (clone $monthlyStatusQuery)->where('status', 'claimed')->count();
+        // Operational cards show all work that still needs action, even when a
+        // delivery carries over from a previous month.
+        $pendingCount = Delivery::where('status', 'pending')->count();
+        $processingCount = Delivery::where('status', 'processing')->count();
+        $completedCount = Delivery::where('status', 'completed')
+            ->whereHas('notifications', function ($query) {
+                $query->whereIn('notification_status', ['sent', 'reached']);
+            })
+            ->whereHas('transaction', function ($query) {
+                $query->where('payment_status', 'paid');
+            })
+            ->count();
+        $claimedCount = Delivery::where('status', 'claimed')
+            ->whereBetween('claimed_at', [
+                Carbon::today()->startOfMonth(),
+                Carbon::today()->endOfMonth(),
+            ])
+            ->count();
 
         $trendLabels = [];
         $trendCounts = [];
@@ -762,10 +779,7 @@ Route::prefix('staff')->group(function () {
         if ($selectedView === 'history') {
             $query->orderByDesc('claimed_at')->orderByDesc('delivered_at');
         } else {
-            $query
-                ->orderByRaw("CASE WHEN status IN ('pending', 'processing') THEN 0 ELSE 1 END")
-                ->orderBy('delivered_at')
-                ->orderBy('queue_number');
+            $query->activeQueueOrder();
         }
 
         $deliveries = $query->paginate(15)->withQueryString();
@@ -920,25 +934,27 @@ Route::prefix('staff')->group(function () {
             ->value('total');
 
         $palayByRiceType = InventoryLog::query()
-            ->join('deliveries', 'inventory_logs.delivery_id', '=', 'deliveries.id')
-            ->join('rice_types', 'deliveries.rice_type_id', '=', 'rice_types.id')
+            ->leftJoin('deliveries', 'inventory_logs.delivery_id', '=', 'deliveries.id')
+            ->leftJoin('rice_types', 'deliveries.rice_type_id', '=', 'rice_types.id')
             ->where('inventory_logs.stock_category', 'palay')
             ->select(
-                'rice_types.name as rice_type_name',
+                DB::raw("COALESCE(rice_types.name, 'Unknown / Unlinked') as rice_type_name"),
                 DB::raw("SUM(CASE WHEN inventory_logs.type = 'in' THEN inventory_logs.quantity ELSE -inventory_logs.quantity END) as total_weight")
             )
             ->groupBy('rice_types.name')
+            ->havingRaw("rice_types.name IS NOT NULL OR SUM(CASE WHEN inventory_logs.type = 'in' THEN inventory_logs.quantity ELSE -inventory_logs.quantity END) <> 0")
             ->get();
 
         $milledByRiceType = InventoryLog::query()
-            ->join('deliveries', 'inventory_logs.delivery_id', '=', 'deliveries.id')
-            ->join('rice_types', 'deliveries.rice_type_id', '=', 'rice_types.id')
+            ->leftJoin('deliveries', 'inventory_logs.delivery_id', '=', 'deliveries.id')
+            ->leftJoin('rice_types', 'deliveries.rice_type_id', '=', 'rice_types.id')
             ->where('inventory_logs.stock_category', 'milled_rice')
             ->select(
-                'rice_types.name as rice_type_name',
+                DB::raw("COALESCE(rice_types.name, 'Unknown / Unlinked') as rice_type_name"),
                 DB::raw("SUM(CASE WHEN inventory_logs.type = 'in' THEN inventory_logs.quantity ELSE -inventory_logs.quantity END) as total_weight")
             )
             ->groupBy('rice_types.name')
+            ->havingRaw("rice_types.name IS NOT NULL OR SUM(CASE WHEN inventory_logs.type = 'in' THEN inventory_logs.quantity ELSE -inventory_logs.quantity END) <> 0")
             ->get();
 
         $inventoryLogs = InventoryLog::with(['delivery.riceType'])

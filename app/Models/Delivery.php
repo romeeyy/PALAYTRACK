@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Delivery extends Model
@@ -60,6 +61,39 @@ class Delivery extends Model
                 $delivery->claimed_at ??= now();
             }
         });
+    }
+
+    /**
+     * Order active deliveries by the next action required, then by FCFS
+     * within each workflow group. Keep this shared by owner and staff views.
+     */
+    public function scopeActiveQueueOrder(Builder $query): Builder
+    {
+        return $query
+            ->orderByRaw(<<<'SQL'
+                CASE
+                    WHEN deliveries.status = 'processing' THEN 0
+                    WHEN deliveries.status = 'pending' THEN 1
+                    WHEN deliveries.status = 'completed' AND NOT EXISTS (
+                        SELECT 1
+                        FROM delivery_notifications
+                        WHERE delivery_notifications.delivery_id = deliveries.id
+                          AND delivery_notifications.notification_status IN ('sent', 'reached')
+                    ) THEN 2
+                    WHEN deliveries.status = 'completed' AND NOT EXISTS (
+                        SELECT 1
+                        FROM transactions
+                        WHERE transactions.delivery_id = deliveries.id
+                          AND transactions.payment_status = 'paid'
+                    ) THEN 3
+                    WHEN deliveries.status = 'completed' THEN 4
+                    ELSE 5
+                END
+            SQL)
+            ->orderBy('deliveries.queue_date')
+            ->orderBy('deliveries.queue_number')
+            ->orderBy('deliveries.delivered_at')
+            ->orderBy('deliveries.id');
     }
 
     public function riceType()

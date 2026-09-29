@@ -44,7 +44,7 @@ class OwnerDeliveriesTest extends TestCase
             ->assertDontSee('DEL-OTHER1');
     }
 
-    public function test_owner_delivery_list_prioritizes_active_fcfs_then_recent_finished_records(): void
+    public function test_owner_delivery_list_prioritizes_next_action_then_uses_fcfs(): void
     {
         $this->delivery('DEL-DONE01', 'Finished', 'completed', '2026-07-22 10:00:00', 4);
         $this->delivery('DEL-QUEUE2', 'Second', 'processing', '2026-07-22 09:00:00', 3);
@@ -53,7 +53,7 @@ class OwnerDeliveriesTest extends TestCase
         $this->actingAs($this->owner)
             ->get(route('owner.deliveries'))
             ->assertOk()
-            ->assertSeeInOrder(['DEL-QUEUE1', 'DEL-QUEUE2', 'DEL-DONE01'])
+            ->assertSeeInOrder(['DEL-QUEUE2', 'DEL-QUEUE1', 'DEL-DONE01'])
             ->assertSee($this->staff->name)
             ->assertSee('Staff');
     }

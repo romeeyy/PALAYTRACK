@@ -29,7 +29,7 @@
         background: #ffffff;
         border: 1px solid #e5e7eb;
         border-radius: 18px;
-        padding: 22px 24px;
+        padding: 20px 22px;
         box-shadow: 0 10px 26px rgba(15, 23, 42, 0.05);
     }
 
@@ -109,8 +109,8 @@
     }
 
     .custom-input:focus {
-        border-color: #2f5d1e;
-        box-shadow: 0 0 0 3px rgba(47, 93, 30, 0.10);
+        border-color: var(--user-accent, #2f5d1e);
+        box-shadow: 0 0 0 3px var(--user-accent-ring, rgba(47, 93, 30, 0.10));
     }
 
     .custom-input.is-invalid { border-color:#ef4444; background:#fffafa; box-shadow:0 0 0 .16rem rgba(239,68,68,.08); }
@@ -150,7 +150,7 @@
     }
 
     .custom-toggle-input:checked + .custom-toggle-label {
-        background: #15803d;
+        background: var(--user-accent, #15803d);
     }
 
     .custom-toggle-input:checked + .custom-toggle-label::after {
@@ -177,6 +177,8 @@
         background: #274d19;
         color: #fff;
     }
+
+    .fee-form-actions { display:flex; justify-content:flex-end; margin-top:16px; }
 
     .btn-main:disabled {
         background: #94a3b8;
@@ -262,7 +264,7 @@
     }
 
     .history-table tbody td {
-        padding: 15px 16px;
+        padding: 12px 16px;
         border-bottom: 1px solid #f1f5f9;
         color: #334155;
         font-size: 0.9rem;
@@ -486,7 +488,7 @@
                 </button>
             </div>
             @if($latestSmsHistory)
-                <p class="history-note mt-3">Last changed {{ $latestSmsHistory->changed_at->format('M d, Y h:i A') }} by {{ $latestSmsHistory->user->name ?? 'Owner' }}.</p>
+                <p class="history-note mt-3">Last changed {{ $latestSmsHistory->changed_at->format('M d, Y · g:i A') }} by {{ $latestSmsHistory->user->name ?? 'Owner' }}.</p>
             @endif
         </form>
     </div>
@@ -515,7 +517,7 @@
                         max="100"
                         name="menudo_fee"
                         class="form-control custom-input @error('menudo_fee') is-invalid @enderror"
-                        value="{{ old('menudo_fee', $menudoFee) }}"
+                        value="{{ old('menudo_fee', number_format((float) $menudoFee, 2, '.', '')) }}"
                         required
                     >
                     @error('menudo_fee')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -530,14 +532,14 @@
                         max="100"
                         name="commercial_fee"
                         class="form-control custom-input @error('commercial_fee') is-invalid @enderror"
-                        value="{{ old('commercial_fee', $commercialFee) }}"
+                        value="{{ old('commercial_fee', number_format((float) $commercialFee, 2, '.', '')) }}"
                         required
                     >
                     @error('commercial_fee')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
             </div>
 
-            <div class="mt-3">
+            <div class="fee-form-actions">
                 <button type="submit" class="btn btn-main">
                     Update Milling Fees
                 </button>
@@ -584,7 +586,7 @@
                                 </td>
                                 <td>
                                     <span class="date-muted">
-                                        {{ \Carbon\Carbon::parse($history->changed_at)->format('M d, Y h:i A') }}
+                                        {{ \Carbon\Carbon::parse($history->changed_at)->format('M d, Y · g:i A') }}
                                     </span>
                                 </td>
                             </tr>

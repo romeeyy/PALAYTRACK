@@ -11,18 +11,18 @@
 @endphp
 
 <style>
-    .page-header { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
+    .page-header { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:10px; }
 
     .details-page-title {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 900;
         color: #0f172a;
-        margin: 0 0 6px;
+        margin: 0 0 3px;
     }
 
     .details-page-subtitle {
         color: #64748b;
-        font-size: 1rem;
+        font-size: .88rem;
         margin: 0;
     }
 
@@ -30,8 +30,8 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        min-height: 42px;
-        padding: 9px 14px;
+        min-height: 36px;
+        padding: 6px 11px;
         border: 1px solid #cbd5e1;
         border-radius: 11px;
         background: #ffffff;
@@ -53,6 +53,8 @@
         margin-bottom: 18px;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
     }
+
+
 
     .section-title {
         font-size: 1.15rem;
@@ -76,6 +78,19 @@
         padding: 12px 14px;
         min-height: 74px;
     }
+
+    .owner-delivery-info-card { padding: 14px 16px; }
+    .owner-delivery-info-card .section-subtitle { margin-bottom: 7px; }
+    .owner-delivery-info-card .info-grid { gap: 2px 16px; }
+    .owner-delivery-info-card .info-box { background: transparent; border: 0; border-bottom: 1px solid #e5e7eb; border-radius: 0; padding: 7px 4px; min-height: 52px; }
+    .owner-delivery-info-card .info-label { font-size: .74rem; margin-bottom: 3px; }
+    .owner-delivery-info-card .info-value { font-size: .88rem; }
+    .owner-delivery-info-card .status-info-box { display: flex; align-items: flex-start; }
+    .owner-delivery-info-card .status-inline { display: flex; align-items: center; gap: 8px; width: 100%; }
+    .owner-delivery-info-card .status-inline .info-label { margin-bottom: 0; }
+    .owner-delivery-info-card .status-inline .status-pill { padding: 5px 10px; font-size: .76rem; transform: translateY(4px); }
+    .owner-delivery-info-card .notes-wrap { margin-top: 8px !important; }
+    .owner-delivery-info-card .note-box { padding: 9px 12px; }
 
     .info-label {
         font-size: 0.8rem;
@@ -164,8 +179,17 @@
     .measurement-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
+        gap: 10px;
     }
+
+    .measurement-card { padding: 14px 16px; }
+    .measurement-card .section-subtitle { margin-bottom: 10px; }
+    .measurement-card .highlight-box,
+    .measurement-card .difference-box { min-height: 84px; padding: 11px 14px; }
+    .measurement-card .highlight-label { margin-bottom: 6px; font-size: .82rem; }
+    .measurement-card .highlight-value { font-size: 1.35rem; }
+    .measurement-card .difference-label { margin-bottom: 6px; }
+    .measurement-card .readonly-note { margin-top: 10px; font-size: .86rem; line-height: 1.4; }
 
     .difference-label {
         color: #9a3412;
@@ -185,13 +209,22 @@
         display: grid;
         grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
         gap: 18px;
-        align-items: stretch;
+        align-items: start;
     }
 
     .support-grid .section-card {
         height: 100%;
+        padding: 16px;
         margin-bottom: 0;
     }
+
+    .support-grid .section-title { font-size: 1.08rem; }
+    .support-grid .section-subtitle { margin-bottom: 9px; }
+    .support-grid .info-grid { gap: 8px; }
+    .support-grid .info-box { min-height: 56px; padding: 8px 10px; }
+    .support-grid .info-label { font-size: .74rem; margin-bottom: 3px; }
+    .support-grid .info-value { font-size: .86rem; }
+    .support-grid .readonly-note { margin-top: 8px; font-size: .82rem; line-height: 1.35; }
 
     .claim-card {
         display: flex;
@@ -251,7 +284,7 @@
     </a>
 </div>
 
-<div class="section-card">
+<div class="section-card owner-delivery-info-card">
     <h2 class="section-title">Delivery Information</h2>
     <p class="section-subtitle">Basic delivery, client, and milling information.</p>
 
@@ -318,22 +351,24 @@
             <div class="info-value">{{ number_format($delivery->estimated_rice, 2) }} kg</div>
         </div>
 
-        <div class="info-box">
-            <div class="info-label">Current Status</div>
-            <span class="status-pill {{ $delivery->status }}">
-                <span class="status-dot"></span>
-                {{ ucfirst($delivery->status) }}
-            </span>
+        <div class="info-box status-info-box">
+            <div class="status-inline">
+                <div class="info-label">Current Status</div>
+                <span class="status-pill {{ $delivery->status }}">
+                    <span class="status-dot"></span>
+                    {{ ucfirst($delivery->status) }}
+                </span>
+            </div>
         </div>
     </div>
 
-    <div class="mt-4">
+    <div class="mt-4 notes-wrap">
         <div class="info-label">Notes</div>
         <div class="note-box">{{ $delivery->notes ?: 'No notes provided.' }}</div>
     </div>
 </div>
 
-<div class="section-card">
+<div class="section-card measurement-card">
     <h2 class="section-title">Milled Rice Measurement</h2>
     <p class="section-subtitle">Estimated and actual output comparison for this delivery.</p>
 
@@ -411,9 +446,6 @@
                 </div>
             </div>
 
-            <p class="readonly-note">
-                Notification records are shown for monitoring and verification. Staff or the system handles notification actions.
-            </p>
         </div>
 
         <div class="section-card claim-card">
@@ -430,5 +462,4 @@
             </a>
         </div>
 </div>
-
 @endsection

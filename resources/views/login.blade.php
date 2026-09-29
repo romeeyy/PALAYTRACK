@@ -5,6 +5,7 @@
 * { box-sizing: border-box; }
 
 body {
+    --bs-body-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     min-height: 100vh;
     background: url("/images/login-bg.png") center/cover no-repeat;
@@ -20,8 +21,8 @@ body {
 }
 
 .login-shell {
-    width: min(880px, 90vw); /* smaller width */
-    min-height: 500px;       /* slightly shorter */
+    width: min(880px, 100%);
+    min-height: 500px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     border-radius: 30px;
@@ -36,6 +37,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 40px;
     background:
         linear-gradient(rgba(12, 73, 48, 0.56), rgba(12, 73, 48, 0.56)),
         url("/images/rice-field.png") center/cover no-repeat;
@@ -44,8 +46,9 @@ body {
 .logo-box {
     width: 72px;
     height: 72px;
-    border-radius: 18px;
-    background: rgba(56,105,39,0.65);
+    border-radius: 50%;
+    overflow: hidden;
+    background: #1e543b;
     border: 1px solid rgba(255,255,255,0.22);
     display: flex;
     align-items: center;
@@ -53,7 +56,7 @@ body {
     margin-bottom: 28px;
 }
 
-.logo-box svg { width: 38px; height: 38px; }
+.logo-box img { width: 100%; height: 100%; object-fit: cover; }
 
 .brand-name {
     font-size: 2.7rem;
@@ -194,6 +197,8 @@ input[type="password"]::-ms-clear {
     align-items: center;
     margin: 2px 0 24px;
     font-size: 0.95rem;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .remember-wrap {
@@ -229,17 +234,12 @@ input[type="password"]::-ms-clear {
 }
 
 .notice {
-    margin-top: 24px;
-    padding: 16px 18px;
-    border-radius: 14px;
-    background: rgba(255,255,255,0.45);
-    border: 1px solid rgba(255,255,255,0.45);
+    margin: 20px 0 0;
     color: #1f2937;
+    text-align: center;
     line-height: 1.6;
     font-size: 0.93rem;
 }
-
-.notice strong { color: #111827; }
 
 .footer {
     margin-top: 24px;
@@ -259,7 +259,7 @@ input[type="password"]::-ms-clear {
 @media (max-width: 900px) {
     .login-shell {
         grid-template-columns: 1fr;
-        width: min(500px, 94vw);
+        width: min(500px, 100%);
     }
 
     .login-left,
@@ -272,6 +272,25 @@ input[type="password"]::-ms-clear {
         border-top: 2px solid rgba(255,255,255,0.65);
     }
 }
+@media (max-width: 540px) {
+    .login-page { padding: 20px 16px; }
+    .login-shell { border-radius: 22px; }
+    .login-left, .login-right { padding: 28px 24px; }
+    .login-left { gap: 24px; }
+    .logo-box { margin-bottom: 16px; }
+    .brand-name { font-size: 1.875rem; }
+    .brand-text { font-size: 0.875rem; line-height: 1.6; }
+    .feature-box { display: none; }
+    .form-title { font-size: 1.75rem; }
+}
+
+.btn-login:hover { background: #2f5d1e; }
+.btn-login:focus-visible,
+.password-toggle:focus-visible,
+.forgot-link:focus-visible {
+    outline: 3px solid #2f5d1e;
+    outline-offset: 4px;
+}
 </style>
 
 <div class="login-page">
@@ -280,13 +299,7 @@ input[type="password"]::-ms-clear {
         <section class="login-left">
             <div>
                 <div class="logo-box">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <path d="M32 54V14" stroke="#F6C343" stroke-width="5" stroke-linecap="round"/>
-                        <path d="M32 20C24 18 18 22 16 30C24 32 30 28 32 20Z" fill="#7BC043"/>
-                        <path d="M32 30C24 28 18 32 16 40C24 42 30 38 32 30Z" fill="#7BC043"/>
-                        <path d="M32 20C40 18 46 22 48 30C40 32 34 28 32 20Z" fill="#F6C343"/>
-                        <path d="M32 30C40 28 46 32 48 40C40 42 34 38 32 30Z" fill="#F6C343"/>
-                    </svg>
+                    <img src="{{ asset('images/theme-logos/jk-logo-classic.webp') }}" alt="JK Rice Mill logo" width="72" height="72">
                 </div>
 
                 <h1 class="brand-name">PalayTrack</h1>
@@ -369,10 +382,7 @@ input[type="password"]::-ms-clear {
                 <button type="submit" class="btn-login">Log in</button>
             </form>
 
-            <div class="notice">
-                <strong>Notice:</strong> Log in using your assigned account.
-                Your dashboard will open based on your role.
-            </div>
+            <p class="notice">Use your assigned owner or staff account.</p>
 
             <div class="footer">
                 © 2026 PalayTrack. All rights reserved.

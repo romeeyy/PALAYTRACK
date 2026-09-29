@@ -254,7 +254,7 @@
     .pagination-wrap { padding-top: 18px; }
 
     /* Shared compact module styling */
-    .page-header { margin-bottom: 16px; }
+    .page-header { margin-bottom: 14px; }
     .page-title { font-size: 1.8rem; }
     .page-subtitle { font-size: .92rem; }
     .quick-btn { min-height: 44px; border-radius: 10px; padding: 9px 14px; }
@@ -264,14 +264,22 @@
         border-radius: 20px;
         box-shadow: 0 10px 26px rgba(15, 23, 42, .06);
     }
-    .filter-card { padding: 16px 18px; margin-bottom: 18px; }
-    .table-card { padding: 20px 22px; }
-    .queue-tabs { margin-bottom: 14px; }
+    .filter-card { padding: 14px 16px; margin-bottom: 12px; }
+    .table-card { padding: 12px 14px; }
+    .pagination-wrap { padding-top: 8px; margin-top: 8px; border-top: 1px solid #e5e7eb; }
+    .pagination-wrap .pagination { margin: 0; gap: 3px; }
+    .pagination-wrap .page-link { min-width: 32px; height: 32px; padding: 5px 8px; border-radius: 8px !important; border-color: #dbe3ec; color: var(--user-accent-dark, #166534); font-size: .82rem; text-align: center; }
+    .pagination-wrap .page-item.active .page-link { background: var(--user-accent, #15803d); border-color: var(--user-accent, #15803d); color: #fff; }
+    .pagination-wrap .page-item.disabled .page-link { color: #94a3b8; background: #f8fafc; }
+    .queue-tabs { margin-bottom: 10px; }
     .queue-tab { min-height: 38px; }
     .filter-grid { gap: 12px; }
     .filter-label { margin-bottom: 6px; }
     .filter-control { min-height: 44px; border-radius: 11px; }
-    .soft-table tbody td { padding-top: 12px; padding-bottom: 12px; }
+    .soft-table thead th { padding: 10px 10px; font-size: .82rem; }
+    .soft-table tbody td { padding: 8px 10px; line-height: 1.25; }
+    .soft-table tbody tr { transition: background-color .16s ease; }
+    .soft-table tbody tr:hover { background: #f4faf3; }
     .soft-table .status-column,
     .soft-table .actions-column {
         text-align: center;
@@ -358,7 +366,7 @@
     <h2 class="card-title">{{ $selectedView === 'active' ? 'Active Delivery Queue' : 'Claimed Delivery History' }}</h2>
     <p class="card-subtitle">
         {{ $selectedView === 'active'
-            ? 'Pending and processing deliveries follow First-Come, First-Served (FCFS) order.'
+            ? 'Prioritized by next required action, then First-Come, First-Served (FCFS) within each group.'
             : 'Completed records retained for payment, receipt, inventory, and audit reference.' }}
     </p>
 

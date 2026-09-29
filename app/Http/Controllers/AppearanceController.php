@@ -20,7 +20,7 @@ class AppearanceController extends Controller
         $this->authorizedUser();
 
         $validated = $request->validate([
-            'theme_preference' => ['required', 'in:classic,forest,emerald'],
+            'theme_preference' => ['required', 'in:classic,forest,emerald,olive,sage,palay'],
             'display_mode' => ['required', 'in:light,dark,system'],
         ]);
 

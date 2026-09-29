@@ -4,14 +4,14 @@
 
 <style>
     .page-header {
-        margin-bottom: 28px;
+        margin-bottom: 16px;
     }
 
     .page-title {
         font-size: 2rem;
         font-weight: 800;
         color: #0f172a;
-        margin: 0 0 6px;
+        margin: 0 0 4px;
         line-height: 1.2;
     }
 
@@ -24,7 +24,7 @@
     .summary-card {
         border: none;
         border-radius: 20px;
-        padding: 22px 22px 20px;
+        padding: 18px 18px 16px;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
         position: relative;
         overflow: hidden;
@@ -65,12 +65,17 @@
         z-index: 1;
     }
 
+    .main-content .summary-card .summary-value {
+        font-size: 1.75rem;
+        font-weight: 900;
+    }
+
     .summary-top {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
         gap: 12px;
-        margin-bottom: 20px;
+        margin-bottom: 12px;
     }
 
     .summary-label {
@@ -105,11 +110,11 @@
     }
 
     .summary-value {
-        font-size: 2.4rem;
+        font-size: 2.2rem;
         font-weight: 900;
         color: #0f172a;
         line-height: 1.1;
-        margin: 0 0 8px;
+        margin: 0 0 6px;
     }
 
     .summary-note {
@@ -204,9 +209,13 @@
     .empty-state {
         text-align: center;
         color: #64748b;
-        padding: 24px 12px;
+        padding: 28px 12px;
         font-size: 0.95rem;
     }
+
+    .empty-state-content { display:flex; flex-direction:column; align-items:center; gap:7px; }
+    .empty-state-content svg { width:22px; height:22px; color:#94a3b8; }
+    .empty-state-content span { color:#64748b; }
 
     .full-width-card {
         margin-top: 24px;
@@ -243,7 +252,7 @@
             </div>
 
             <h2 class="summary-value">{{ number_format($totalPalay, 2) }} kg</h2>
-            <p class="summary-note">Raw palay stock currently logged in inventory.</p>
+            <p class="summary-note">Total palay waiting for milling or still being milled.</p>
         </div>
     </div>
 
@@ -257,7 +266,7 @@
             </div>
 
             <h2 class="summary-value">{{ number_format($totalMilledRice, 2) }} kg</h2>
-            <p class="summary-note">Completed milled rice stock recorded from actual output.</p>
+            <p class="summary-note">Total milled rice not yet claimed.</p>
         </div>
     </div>
 </div>
@@ -269,7 +278,7 @@
                 <i data-lucide="sprout"></i>
                 Palay Inventory by Rice Type
             </h2>
-            <p class="section-subtitle">Unmilled palay currently in storage.</p>
+            <p class="section-subtitle">Palay stock grouped by rice type.</p>
 
             <div class="table-responsive">
                 <table class="table inventory-table align-middle">
@@ -281,14 +290,14 @@
                     </thead>
                     <tbody>
                         @forelse($palayByRiceType as $item)
-                            <tr>
-                                <td>{{ $item->rice_type_name }}</td>
-                                <td class="weight-cell">{{ number_format($item->total_weight, 2) }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ $item->rice_type_name }}</td>
+                            <td class="weight-cell">{{ number_format($item->total_weight, 2) }}</td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="2" class="empty-state">No palay inventory yet.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="2" class="empty-state"><div class="empty-state-content"><i data-lucide="sprout"></i><span>No palay inventory yet.</span></div></td>
+                        </tr>
                         @endforelse
 
                         <tr class="total-row palay-total">
@@ -307,7 +316,7 @@
                 <i data-lucide="package"></i>
                 Milled Rice Inventory by Rice Type
             </h2>
-            <p class="section-subtitle">Processed rice ready for claiming.</p>
+            <p class="section-subtitle">Unclaimed milled rice grouped by rice type.</p>
 
             <div class="table-responsive">
                 <table class="table inventory-table align-middle">
@@ -319,14 +328,14 @@
                     </thead>
                     <tbody>
                         @forelse($milledByRiceType as $item)
-                            <tr>
-                                <td>{{ $item->rice_type_name }}</td>
-                                <td class="weight-cell">{{ number_format($item->total_weight, 2) }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ $item->rice_type_name }}</td>
+                            <td class="weight-cell">{{ number_format($item->total_weight, 2) }}</td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="2" class="empty-state">No milled rice inventory yet.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="2" class="empty-state"><div class="empty-state-content"><i data-lucide="package-open"></i><span>No milled rice inventory yet.</span></div></td>
+                        </tr>
                         @endforelse
 
                         <tr class="total-row milled-total">
@@ -359,16 +368,16 @@
             </thead>
             <tbody>
                 @forelse($combinedInventory as $item)
-                    <tr>
-                        <td>{{ $item['rice_type_name'] }}</td>
-                        <td class="weight-cell">{{ number_format($item['palay_weight'], 2) }}</td>
-                        <td class="weight-cell">{{ number_format($item['milled_weight'], 2) }}</td>
-                        <td class="weight-cell">{{ number_format($item['total_weight'], 2) }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ $item['rice_type_name'] }}</td>
+                    <td class="weight-cell">{{ number_format($item['palay_weight'], 2) }}</td>
+                    <td class="weight-cell">{{ number_format($item['milled_weight'], 2) }}</td>
+                    <td class="weight-cell">{{ number_format($item['total_weight'], 2) }}</td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="4" class="empty-state">No inventory data yet.</td>
-                    </tr>
+                <tr>
+                    <td colspan="4" class="empty-state"><div class="empty-state-content"><i data-lucide="clipboard-list"></i><span>No inventory data yet.</span></div></td>
+                </tr>
                 @endforelse
 
                 <tr class="grand-total">

@@ -121,7 +121,8 @@
         border-bottom: 1px solid #eef2f7;
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+        gap: 12px;
     }
 
     .staff-card-title {
@@ -129,6 +130,23 @@
         font-weight: 900;
         color: #0f172a;
         margin: 0;
+    }
+
+    .staff-card-subtitle {
+        margin: 4px 0 0;
+        color: #64748b;
+        font-size: 0.82rem;
+    }
+
+    .staff-count {
+        padding: 7px 11px;
+        border: 1px solid #dce8df;
+        border-radius: 999px;
+        background: #f3faf4;
+        color: #187340;
+        font-size: 0.76rem;
+        font-weight: 800;
+        white-space: nowrap;
     }
 
     .table-wrap {
@@ -161,6 +179,10 @@
 
     .table-custom tbody tr:hover {
         background: #f9fafb;
+    }
+
+    .table-custom tbody tr:nth-child(even) {
+        background: #fcfdfc;
     }
 
     .table-custom tbody tr:last-child td {
@@ -196,6 +218,15 @@
         font-weight: 800;
         padding: 4px 9px;
         line-height: 1;
+        gap: 6px;
+    }
+
+    .status-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
     }
 
     .role-badge {
@@ -218,7 +249,7 @@
         align-items: center;
         gap: 7px;
         flex-wrap: nowrap;
-        justify-content: flex-end;
+        justify-content: center;
     }
 
     .action-form {
@@ -229,6 +260,9 @@
     .btn-toggle-custom {
         border: none;
         border-radius: 8px;
+        width: 132px;
+        min-height: 38px;
+        justify-content: center;
         padding: 6px 10px;
         font-size: 0.78rem;
         font-weight: 800;
@@ -241,17 +275,21 @@
     }
 
     .btn-edit-custom {
-        background: #eff6ff;
-        color: #1d4ed8;
+        background: #f8fafc;
+        border: 1px solid #dbe3ec;
+        color: #334155;
+        width: 100px;
     }
 
     .btn-toggle-custom.active-btn {
-        background: #fef2f2;
+        background: #fff7f7;
+        border: 1px solid #f2caca;
         color: #b42318;
     }
 
     .btn-toggle-custom.inactive-btn {
         background: #ecfdf5;
+        border: 1px solid #ccebd5;
         color: #047857;
     }
 
@@ -335,7 +373,11 @@
 
     <div class="staff-card">
         <div class="staff-card-header">
-            <h2 class="staff-card-title">Staff Accounts</h2>
+            <div>
+                <h2 class="staff-card-title">Staff Accounts</h2>
+                <p class="staff-card-subtitle">Review staff access and account status.</p>
+            </div>
+            <span class="staff-count">{{ $staffAccounts->total() }} {{ $staffAccounts->total() === 1 ? 'account' : 'accounts' }}</span>
         </div>
 
         <div class="table-wrap">
@@ -345,7 +387,7 @@
                         <th>Staff Member</th>
                         <th>Date Added</th>
                         <th>Status</th>
-                        <th style="width: 220px; text-align:right;">Actions</th>
+                        <th style="width: 220px; text-align:center;">Actions</th>
                     </tr>
                 </thead>
 
@@ -367,7 +409,7 @@
                                 <span class="date-sub">{{ $staff->created_at->format('h:i A') }}</span>
                             </td>
 
-                            <td style="text-align:right;">
+                            <td>
                                 <span class="status-badge {{ $staff->is_active ? 'status-active' : 'status-inactive' }}">
                                     {{ $staff->is_active ? 'Active' : 'Inactive' }}
                                 </span>

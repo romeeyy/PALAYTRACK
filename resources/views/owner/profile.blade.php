@@ -128,21 +128,22 @@
             <div class="password-grid">
                 <div class="form-group full-row">
                     <label for="current_password">Current Password</label>
-                    <input id="current_password" type="password" name="current_password" class="@error('current_password', 'passwordUpdate') is-invalid @enderror" autocomplete="current-password" required>
+                    <div class="password-input-wrap"><input id="current_password" type="password" name="current_password" class="@error('current_password', 'passwordUpdate') is-invalid @enderror" autocomplete="current-password" required><button type="button" class="password-toggle" data-target="current_password" aria-label="Show current password"><i data-lucide="eye"></i></button></div>
                     @error('current_password', 'passwordUpdate')<div class="field-error">{{ $message }}</div>@enderror
                 </div>
                 <div class="form-group">
                     <label for="password">New Password</label>
-                    <input id="password" type="password" name="password" class="@error('password', 'passwordUpdate') is-invalid @enderror" autocomplete="new-password" required>
+                    <div class="password-input-wrap"><input id="password" type="password" name="password" class="@error('password', 'passwordUpdate') is-invalid @enderror" autocomplete="new-password" required><button type="button" class="password-toggle" data-target="password" aria-label="Show new password"><i data-lucide="eye"></i></button></div>
                     @error('password', 'passwordUpdate')<div class="field-error">{{ $message }}</div>@enderror
                 </div>
                 <div class="form-group">
                     <label for="password_confirmation">Confirm New Password</label>
-                    <input id="password_confirmation" type="password" name="password_confirmation" class="@error('password', 'passwordUpdate') is-invalid @enderror" autocomplete="new-password" required>
+                    <div class="password-input-wrap"><input id="password_confirmation" type="password" name="password_confirmation" class="@error('password', 'passwordUpdate') is-invalid @enderror" autocomplete="new-password" required><button type="button" class="password-toggle" data-target="password_confirmation" aria-label="Show password confirmation"><i data-lucide="eye"></i></button></div>
                 </div>
             </div>
-            <p class="field-help">Use at least 8 characters with letters and numbers.</p>
-
+            <div class="password-requirements" aria-label="Password requirements">
+                <span data-rule="length">8+ characters</span><span data-rule="letter">A letter</span><span data-rule="number">A number</span><span data-rule="special">A special character</span>
+            </div>
             <div class="form-actions">
                 <button type="submit" class="btn-save">Change Password</button>
             </div>
@@ -156,6 +157,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 8px !important;
 }
 
 .page-title {
@@ -191,7 +193,7 @@
 
 .profile-workspace {
     display: grid;
-    grid-template-columns: 260px minmax(0, 1fr);
+    grid-template-columns: 230px minmax(0, 1fr);
     background: #ffffff;
     border-radius: 22px;
     overflow: hidden;
@@ -202,8 +204,8 @@
 .profile-summary {
     position: relative;
     text-align: center;
-    padding: 26px 22px 22px;
-    background: linear-gradient(180deg, #f5faf4 0%, #fbfdfb 100%);
+    padding: 22px 18px 18px;
+    background: linear-gradient(180deg, var(--user-accent-soft, #f5faf4) 0%, #fbfdfb 100%);
     border-right: 1px solid #e4ece3;
 }
 
@@ -213,11 +215,11 @@
     left: 0;
     right: 0;
     height: 5px;
-    background: linear-gradient(90deg, #166534, #4d8f36);
+    background: linear-gradient(90deg, var(--user-accent-dark, #166534), var(--user-accent, #4d8f36));
 }
 
 .profile-main {
-    padding: 22px 30px 24px;
+    padding: 18px 24px 20px;
 }
 
 .profile-section {
@@ -228,7 +230,7 @@
     width: 74px;
     height: 74px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1f5f1f, #3d8b32);
+    background: linear-gradient(135deg, var(--user-accent-dark, #1f5f1f), var(--user-accent, #3d8b32));
     color: #ffffff;
     font-size: 30px;
     font-weight: 800;
@@ -262,8 +264,8 @@
     display: inline-block;
     padding: 6px 14px;
     border-radius: 999px;
-    background: #ecfdf5;
-    color: #166534;
+    background: var(--user-accent-soft, #ecfdf5);
+    color: var(--user-accent-dark, #166534);
     font-weight: 700;
     font-size: 14px;
 }
@@ -272,7 +274,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 13px;
+    margin-bottom: 9px;
 }
 
 .section-icon {
@@ -282,8 +284,8 @@
     height: 40px;
     flex: 0 0 40px;
     border-radius: 11px;
-    background: #edf7eb;
-    color: #24723a;
+    background: var(--user-accent-soft, #edf7eb);
+    color: var(--user-accent-dark, #24723a);
 }
 
 .section-icon svg {
@@ -305,7 +307,7 @@
 }
 
 .form-group {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .account-form {
@@ -328,7 +330,7 @@
 
 .form-group input {
     width: 100%;
-    height: 40px;
+    height: 38px;
     border-radius: 10px;
     border: 1px solid #dbe3ef;
     padding: 0 14px;
@@ -339,8 +341,8 @@
 }
 
 .form-group input:focus {
-    border-color: #2f7d32;
-    box-shadow: 0 0 0 4px rgba(47, 125, 50, 0.12);
+    border-color: var(--user-accent, #2f7d32);
+    box-shadow: 0 0 0 4px var(--user-accent-ring, rgba(47, 125, 50, 0.12));
 }
 
 .form-group input:disabled {
@@ -356,7 +358,7 @@
 
 .profile-divider {
     height: 1px;
-    margin: 17px 0;
+    margin: 12px 0;
     background: #e8edf3;
 }
 
@@ -388,11 +390,23 @@
 .field-error { margin-top: 6px; color: #b42318; font-size: 12.8px; font-weight: 700; }
 .profile-main input.is-invalid { border-color:#ef4444; background:#fffafa; box-shadow:0 0 0 .16rem rgba(239,68,68,.08); }
 .compact-alert { margin-bottom: 18px; }
-.password-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
-.password-grid .full-row { grid-column: 1 / -1; }
+.password-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 14px; }
+.password-grid .full-row { grid-column: auto; }
+.password-input-wrap { position:relative; }
+.password-input-wrap input { padding-right:46px; }
+.password-input-wrap input::-ms-reveal,
+.password-input-wrap input::-ms-clear,
+.password-input-wrap input::-webkit-credentials-auto-fill-button { display:none !important; }
+.password-toggle { position:absolute; right:9px; top:50%; transform:translateY(-50%); width:32px; height:32px; display:grid; place-items:center; border:0; border-radius:8px; background:transparent; color:#64748b; cursor:pointer; }
+.password-toggle:hover { background:var(--user-accent-soft,#edf7eb); color:var(--user-accent-dark,#24723a); }
+.password-toggle svg { width:18px; height:18px; }
+.password-requirements { display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:8px; color:#64748b; font-size:12px; font-weight:700; }
+.password-requirements span::before { content:'\25CB'; margin-right:5px; color:#94a3b8; }
+.password-requirements span.is-valid { color:var(--user-accent-dark,#166534); }
+.password-requirements span.is-valid::before { content:'\2713'; color:var(--user-accent,#15803d); }
 
 .btn-save {
-    background: #1f7a3a;
+    background: var(--user-accent, #1f7a3a);
     color: white;
     border: none;
     min-height: 40px;
@@ -404,7 +418,7 @@
 }
 
 .btn-save:hover {
-    background: #166534;
+    background: var(--user-accent-dark, #166534);
 }
 
 @media (max-width: 850px) {
@@ -418,6 +432,7 @@
     .account-form .form-actions { grid-column: 1; }
     .form-actions { justify-content: stretch; }
     .form-actions .btn-save { width: 100%; }
+    .password-requirements { gap: 7px 10px; }
 }
 </style>
 @include('partials.field-validation-focus')
@@ -436,5 +451,33 @@ document.getElementById('profile_photo')?.addEventListener('change', function ()
     const removePhoto = document.getElementById('remove_photo');
     if (removePhoto) removePhoto.checked = false;
 });
+
+document.querySelectorAll('.password-toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+        const input = document.getElementById(toggle.dataset.target);
+        if (!input) return;
+        const visible = input.type === 'text';
+        input.type = visible ? 'password' : 'text';
+        toggle.setAttribute('aria-label', `${visible ? 'Show' : 'Hide'} ${toggle.dataset.target.replaceAll('_', ' ')}`);
+        toggle.innerHTML = `<i data-lucide="${visible ? 'eye' : 'eye-off'}"></i>`;
+        window.lucide?.createIcons();
+    });
+});
+
+const newPassword = document.getElementById('password');
+const requirementRules = {
+    length: value => value.length >= 8,
+    letter: value => /[A-Za-z]/.test(value),
+    number: value => /\d/.test(value),
+    special: value => /[^A-Za-z0-9]/.test(value)
+};
+const updatePasswordRequirements = () => {
+    const value = newPassword?.value || '';
+    document.querySelectorAll('.password-requirements [data-rule]').forEach(item => {
+        item.classList.toggle('is-valid', requirementRules[item.dataset.rule]?.(value));
+    });
+};
+newPassword?.addEventListener('input', updatePasswordRequirements);
+updatePasswordRequirements();
 </script>
 @endsection

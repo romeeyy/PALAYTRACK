@@ -13,15 +13,16 @@
     }
 
     .page-title {
-        font-size: 1.9rem;
+        font-size: 1.8rem;
         font-weight: 900;
         color: #0f172a;
-        margin: 0 0 5px;
+        margin: 0 0 6px;
+        line-height: 1.2;
     }
 
     .page-subtitle {
         color: #64748b;
-        font-size: 0.95rem;
+        font-size: 1rem;
         margin: 0;
     }
 
@@ -180,12 +181,33 @@
         font-weight: 900;
     }
 
-    .adjustment-line { display: block; }
-    .adjustment-line + .adjustment-line { margin-top: 6px; }
-    .adjustment-amount { display: block; color: #0f172a; font-size: 0.82rem; font-weight: 700; }
-    .adjustment-kind { display: block; margin-top: 1px; color: #64748b; font-size: 0.66rem; font-weight: 600; }
+    .adjustment-line {
+        display: block;
+    }
+
+    .adjustment-line+.adjustment-line {
+        margin-top: 6px;
+    }
+
+    .adjustment-amount {
+        display: block;
+        color: #0f172a;
+        font-size: 0.82rem;
+        font-weight: 700;
+    }
+
+    .adjustment-kind {
+        display: block;
+        margin-top: 1px;
+        color: #64748b;
+        font-size: 0.66rem;
+        font-weight: 600;
+    }
+
     .adjustment-charge,
-    .adjustment-discount { color: #334155; }
+    .adjustment-discount {
+        color: #334155;
+    }
 
     @media (max-width: 768px) {
         .collection-summary-grid {
@@ -552,8 +574,15 @@
             text-align: left !important;
         }
 
-        .adjustment-amount { font-size: 8px !important; font-weight: 700 !important; }
-        .adjustment-kind { font-size: 7px !important; font-weight: 400 !important; }
+        .adjustment-amount {
+            font-size: 8px !important;
+            font-weight: 700 !important;
+        }
+
+        .adjustment-kind {
+            font-size: 7px !important;
+            font-weight: 400 !important;
+        }
 
         .type-pill {
             background: transparent !important;
@@ -596,7 +625,10 @@
 </style>
 
 @php
-    $computedTotalKg = $groupedSales->sum('total_palay_weight');
+$computedTotalKg = $groupedSales->sum('total_palay_weight');
+$logoTheme = in_array(Auth::user()->theme_preference ?? 'classic', ['classic', 'forest', 'emerald', 'olive', 'sage', 'palay'], true)
+    ? (Auth::user()->theme_preference ?? 'classic')
+    : 'classic';
 @endphp
 
 <div class="page-header no-print">
@@ -635,7 +667,7 @@
 <div id="printArea">
     <div class="report-card">
         <div class="print-header">
-            <img src="{{ asset('images/jk-logo.png') }}" class="print-logo" alt="JK Logo">
+            <img src="{{ asset('images/theme-logos/jk-logo-' . $logoTheme . '.webp') }}" class="print-logo" alt="JK Rice Mill logo">
             <h2 class="print-business">JK Diez Rice Mill</h2>
             <p class="print-title">Sales Report</p>
         </div>
@@ -644,9 +676,9 @@
             <div class="meta-item">
                 <strong>Date Covered:</strong>
                 @if($fromDate === $toDate)
-                    {{ \Carbon\Carbon::parse($fromDate)->format('F d, Y') }}
+                {{ \Carbon\Carbon::parse($fromDate)->format('F d, Y') }}
                 @else
-                    {{ \Carbon\Carbon::parse($fromDate)->format('M d, Y') }} – {{ \Carbon\Carbon::parse($toDate)->format('M d, Y') }}
+                {{ \Carbon\Carbon::parse($fromDate)->format('M d, Y') }} – {{ \Carbon\Carbon::parse($toDate)->format('M d, Y') }}
                 @endif
             </div>
 
@@ -738,79 +770,79 @@
 
                 <tbody>
                     @forelse($groupedSales as $sale)
-                        @php
-                            $feeUsed = $sale->total_palay_weight > 0
-                                ? $sale->subtotal / $sale->total_palay_weight
-                                : 0;
-                        @endphp
+                    @php
+                    $feeUsed = $sale->total_palay_weight > 0
+                    ? $sale->subtotal / $sale->total_palay_weight
+                    : 0;
+                    @endphp
 
-                        <tr>
-                            <td>
-                                <span class="client-name">
-                                    {{ $sale->client_name ?? 'Unknown Client' }}
-                                </span>
-                            </td>
+                    <tr>
+                        <td>
+                            <span class="client-name">
+                                {{ $sale->client_name ?? 'Unknown Client' }}
+                            </span>
+                        </td>
 
-                            <td>
-                                <span class="type-pill {{ $sale->milling_type === 'menudo' ? 'type-menudo' : 'type-commercial' }}">
-                                    {{ ucfirst($sale->milling_type) }}
-                                </span>
-                            </td>
+                        <td>
+                            <span class="type-pill {{ $sale->milling_type === 'menudo' ? 'type-menudo' : 'type-commercial' }}">
+                                {{ ucfirst($sale->milling_type) }}
+                            </span>
+                        </td>
 
-                            <td class="text-right">
-                                {{ $sale->transaction_count }}
-                            </td>
+                        <td class="text-right">
+                            {{ $sale->transaction_count }}
+                        </td>
 
-                            <td class="text-center">
-                                {{ number_format($sale->total_palay_weight, 2) }} kg
-                            </td>
+                        <td class="text-center">
+                            {{ number_format($sale->total_palay_weight, 2) }} kg
+                        </td>
 
-                            <td class="text-right fee-text">
-                                ₱{{ number_format($feeUsed, 2) }}
-                            </td>
+                        <td class="text-right fee-text">
+                            ₱{{ number_format($feeUsed, 2) }}
+                        </td>
 
-                            <td>
-                                @if((float) $sale->other_charges > 0)
-                                    <span class="adjustment-line adjustment-charge">
-                                        <span class="adjustment-amount">+₱{{ number_format($sale->other_charges, 2) }}</span>
-                                        <span class="adjustment-kind">Charge</span>
-                                    </span>
-                                @endif
-                                @if((float) $sale->discount > 0)
-                                    <span class="adjustment-line adjustment-discount">
-                                        <span class="adjustment-amount">−₱{{ number_format($sale->discount, 2) }}</span>
-                                        <span class="adjustment-kind">Discount</span>
-                                    </span>
-                                @endif
-                            </td>
+                        <td>
+                            @if((float) $sale->other_charges > 0)
+                            <span class="adjustment-line adjustment-charge">
+                                <span class="adjustment-amount">+₱{{ number_format($sale->other_charges, 2) }}</span>
+                                <span class="adjustment-kind">Charge</span>
+                            </span>
+                            @endif
+                            @if((float) $sale->discount > 0)
+                            <span class="adjustment-line adjustment-discount">
+                                <span class="adjustment-amount">−₱{{ number_format($sale->discount, 2) }}</span>
+                                <span class="adjustment-kind">Discount</span>
+                            </span>
+                            @endif
+                        </td>
 
-                            <td class="text-right amount-text">
-                                ₱{{ number_format($sale->total_amount, 2) }}
-                            </td>
+                        <td class="text-right amount-text">
+                            ₱{{ number_format($sale->total_amount, 2) }}
+                        </td>
 
-                        </tr>
+                    </tr>
                     @empty
-                        <tr>
-                            <td colspan="7">
-                                <div class="empty-state">
-                                    No sales records found for the selected date.
-                                </div>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                No sales records found for the selected date.
+                            </div>
+                        </td>
+                    </tr>
                     @endforelse
 
                     @if($groupedSales->count() > 0)
-                        <tr class="total-row">
-                            <td colspan="2">Grand Total</td>
-                            <td class="text-center">{{ $totalTransactions }}</td>
-                            <td class="text-right">{{ number_format($computedTotalKg, 2) }} kg</td>
-                            <td class="text-right">—</td>
-                            <td>
-                                <span class="adjustment-amount">{{ $otherCharges - $discounts > 0 ? '+' : ($otherCharges - $discounts < 0 ? '−' : '') }}₱{{ number_format(abs($otherCharges - $discounts), 2) }}</span>
-                                <span class="adjustment-kind">Net Adjustment</span>
-                            </td>
-                            <td class="text-right">₱{{ number_format($totalIncome, 2) }}</td>
-                        </tr>
+                    <tr class="total-row">
+                        <td colspan="2">Grand Total</td>
+                        <td class="text-center">{{ $totalTransactions }}</td>
+                        <td class="text-right">{{ number_format($computedTotalKg, 2) }} kg</td>
+                        <td class="text-right">—</td>
+                        <td>
+                            <span class="adjustment-amount">{{ $otherCharges - $discounts > 0 ? '+' : ($otherCharges - $discounts < 0 ? '−' : '') }}₱{{ number_format(abs($otherCharges - $discounts), 2) }}</span>
+                            <span class="adjustment-kind">Net Adjustment</span>
+                        </td>
+                        <td class="text-right">₱{{ number_format($totalIncome, 2) }}</td>
+                    </tr>
                     @endif
                 </tbody>
             </table>
@@ -853,7 +885,7 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const fromDate = document.querySelector('input[name="from_date"]');
         const toDate = document.querySelector('input[name="to_date"]');
 

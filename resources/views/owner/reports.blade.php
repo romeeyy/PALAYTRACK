@@ -597,6 +597,9 @@
 
 @php
     $computedTotalKg = $groupedSales->sum('total_palay_weight');
+    $logoTheme = in_array(Auth::user()->theme_preference ?? 'classic', ['classic', 'forest', 'emerald', 'olive', 'sage', 'palay'], true)
+        ? (Auth::user()->theme_preference ?? 'classic')
+        : 'classic';
 @endphp
 
 <div class="page-header no-print">
@@ -645,7 +648,7 @@
 <div id="printArea">
     <div class="report-card">
         <div class="print-header">
-            <img src="{{ asset('images/jk-logo.png') }}" class="print-logo" alt="JK Logo">
+            <img src="{{ asset('images/theme-logos/jk-logo-' . $logoTheme . '.webp') }}" class="print-logo" alt="JK Rice Mill logo">
             <h2 class="print-business">JK Diez Rice Mill</h2>
             <p class="print-title">Sales Report</p>
         </div>

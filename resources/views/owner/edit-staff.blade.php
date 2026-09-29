@@ -3,8 +3,13 @@
 @section('content')
 <style>
     .page-shell {
-        max-width: 920px;
-        margin: 0 auto;
+        max-width: 1100px;
+        margin: 18px auto 24px;
+        padding: 24px;
+        border: 1px solid #edf2f7;
+        border-radius: 24px;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fbf7 100%);
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
     }
 
     .page-header {
@@ -136,6 +141,33 @@
         margin-top: 6px;
     }
 
+    .account-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        background: {{ $staff->is_active ? '#edf8f0' : '#f1f5f9' }};
+        color: {{ $staff->is_active ? '#187340' : '#64748b' }};
+        font-size: .72rem;
+        font-weight: 800;
+    }
+    .account-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    .password-field { position: relative; }
+    .password-field .form-control-custom { padding-right: 46px; }
+    .password-field .form-control-custom::-ms-reveal,
+    .password-field .form-control-custom::-ms-clear,
+    .password-field .form-control-custom::-webkit-credentials-auto-fill-button { display:none !important; }
+    .password-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; background: transparent; color: #64748b; cursor: pointer; }
+    .password-toggle:hover { color: #166534; }
+    .password-toggle i { width: 18px; height: 18px; }
+    .password-checklist { display: flex; flex-wrap: nowrap; gap: 5px 10px; margin-top: 7px; color: #64748b; font-size: .72rem; white-space: nowrap; }
+    .password-check { display: inline-flex; align-items: center; gap: 5px; }
+    .password-check::before { content: '○'; font-size: .9rem; color: #94a3b8; }
+    .password-check.valid { color: #15803d; }
+    .password-check.valid::before { content: '✓'; font-weight: 800; color: #15803d; }
+
     .input-error {
         border-color: #dc2626 !important;
         box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08) !important;
@@ -184,7 +216,7 @@
     .submit-btn {
         border: none;
         border-radius: 11px;
-        background: #15803d;
+        background: var(--user-accent, #168344);
         color: #fff;
         font-weight: 800;
         padding: 11px 18px;
@@ -226,7 +258,7 @@
         border-radius: 12px;
         font-size: 0.9rem;
         font-weight: 800;
-        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+        box-shadow: 0 12px 28px var(--user-accent-ring, rgba(15, 23, 42, 0.18));
         opacity: 0;
         visibility: hidden;
         transform: translateY(-10px);
@@ -243,6 +275,9 @@
     @media (max-width: 768px) {
         .page-shell {
             max-width: 100%;
+            margin: 12px 0 18px;
+            padding: 16px;
+            border-radius: 20px;
         }
 
         .page-title {
@@ -270,6 +305,8 @@
             top: 18px;
             text-align: center;
         }
+
+        .password-checklist { flex-wrap: wrap; white-space: normal; }
     }
 </style>
 @include('partials.form-dark-mode')
@@ -292,12 +329,16 @@
             <div class="header-icon"><i data-lucide="user-cog"></i></div>
             <div>
                 <h5 class="staff-card-title">{{ $staff->name }}</h5>
+                <span class="account-status">{{ $staff->is_active ? 'Active' : 'Inactive' }}</span>
                 <p class="staff-card-text">Update account information or replace the login password.</p>
             </div>
         </div>
 
         <div class="staff-card-body">
-            <form id="staffForm" method="POST" action="{{ route('owner.staff-accounts.update', $staff->id) }}">
+            <form id="staffForm" method="POST" action="{{ route('owner.staff-accounts.update', $staff->id) }}"
+                data-confirm-title="Update staff account?"
+                data-confirm-message="Are you sure you want to save these staff account changes?"
+                data-confirm-button="Yes, Update Account">
                 @csrf
 
                 <div class="row">
@@ -342,13 +383,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="password" class="form-label form-label-custom">New Password</label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    class="form-control form-control-custom @error('password') is-invalid @enderror"
-                                    placeholder="Leave blank if unchanged"
-                                >
+                                <div class="password-field">
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        id="password"
+                                        class="form-control form-control-custom @error('password') is-invalid @enderror"
+                                        placeholder="Leave blank if unchanged"
+                                    >
+                                    <button type="button" class="password-toggle" data-target="password" aria-label="Show password"><i data-lucide="eye"></i></button>
+                                </div>
                                 @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                 <div id="passwordLengthWarning" class="password-warning">
                                     Use at least 8 characters with a letter and a number.
@@ -356,27 +400,35 @@
                                 <div id="passwordLengthSuccess" class="password-success">
                                     Password format is valid.
                                 </div>
-                                <div class="input-hint">Leave blank to keep it. New passwords need at least 8 characters, a letter, and a number.</div>
+                                <div class="password-checklist" aria-label="Password requirements">
+                                    <span class="password-check" data-rule="length">8+ characters</span>
+                                    <span class="password-check" data-rule="letter">A letter</span>
+                                    <span class="password-check" data-rule="number">A number</span>
+                                    <span class="password-check" data-rule="special">A special character</span>
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="password_confirmation" class="form-label form-label-custom">Confirm New Password</label>
-                                <input
-                                    type="password"
-                                    name="password_confirmation"
-                                    id="password_confirmation"
-                                    class="form-control form-control-custom @error('password') is-invalid @enderror"
-                                    placeholder="Re-enter new password"
-                                >
+                                <div class="password-field">
+                                    <input
+                                        type="password"
+                                        name="password_confirmation"
+                                        id="password_confirmation"
+                                        class="form-control form-control-custom @error('password') is-invalid @enderror"
+                                        placeholder="Re-enter new password"
+                                    >
+                                    <button type="button" class="password-toggle" data-target="password_confirmation" aria-label="Show password"><i data-lucide="eye"></i></button>
+                                </div>
                                 <div id="passwordMatchWarning" class="password-warning">
                                     Passwords do not match.
                                 </div>
                                 <div id="passwordMatchSuccess" class="password-success">
                                     Passwords match.
                                 </div>
-                                <div class="input-hint">Make sure both password fields match exactly.</div>
+                                <div class="input-hint">Passwords must match.</div>
                             </div>
                         </div>
                     </div>
@@ -427,7 +479,12 @@
         const confirmValue = confirmPassword.value;
 
         const passwordIsEmpty = passwordValue.length === 0 && confirmValue.length === 0;
-        const isLengthValid = passwordValue.length >= 8 && /[A-Za-z]/.test(passwordValue) && /\d/.test(passwordValue);
+        const hasSpecialCharacter = /[^A-Za-z0-9]/.test(passwordValue);
+        const isLengthValid = passwordValue.length >= 8 && /[A-Za-z]/.test(passwordValue) && /\d/.test(passwordValue) && hasSpecialCharacter;
+        document.querySelector('[data-rule="length"]').classList.toggle('valid', passwordValue.length >= 8);
+        document.querySelector('[data-rule="letter"]').classList.toggle('valid', /[A-Za-z]/.test(passwordValue));
+        document.querySelector('[data-rule="number"]').classList.toggle('valid', /\d/.test(passwordValue));
+        document.querySelector('[data-rule="special"]').classList.toggle('valid', hasSpecialCharacter);
         const isMatch = passwordValue === confirmValue && confirmValue.length > 0;
 
         password.classList.remove('input-error', 'input-success');
@@ -474,7 +531,26 @@
     password.addEventListener('input', validatePasswordFields);
     confirmPassword.addEventListener('input', validatePasswordFields);
 
+    document.querySelectorAll('.password-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function () {
+            const showing = password.type === 'text';
+            const inputType = showing ? 'password' : 'text';
+            password.type = inputType;
+            confirmPassword.type = inputType;
+            document.querySelectorAll('.password-toggle').forEach(function (button) {
+                button.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+                button.innerHTML = `<i data-lucide="${showing ? 'eye' : 'eye-off'}"></i>`;
+            });
+            if (window.lucide) lucide.createIcons();
+        });
+    });
+
     staffForm.addEventListener('submit', function(event) {
+        // Wait for the shared confirmation modal before showing progress feedback.
+        if (staffForm.dataset.confirmed !== 'true') {
+            return;
+        }
+
         if (!validatePasswordFields()) {
             event.preventDefault();
             return;

@@ -8,20 +8,20 @@
         align-items: flex-start;
         gap: 16px;
         flex-wrap: wrap;
-        margin-bottom: 20px;
+        margin-bottom: 12px;
     }
 
     .page-title {
         font-size: 1.8rem;
         font-weight: 900;
         color: #0f172a;
-        margin: 0 0 6px;
+        margin: 0 0 3px;
         line-height: 1.2;
     }
 
     .page-subtitle {
         color: #64748b;
-        font-size: 1rem;
+        font-size: .95rem;
         margin: 0;
     }
 
@@ -29,9 +29,9 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        min-height: 42px;
+        min-height: 38px;
         border-radius: 11px;
-        padding: 9px 14px;
+        padding: 7px 12px;
         font-weight: 800;
     }
 
@@ -46,10 +46,17 @@
     .section-card {
         background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 18px;
-        padding: 20px;
+        border-radius: 16px;
+        padding: 16px 18px;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
-        margin-bottom: 18px;
+        margin-bottom: 14px;
+    }
+
+    .delivery-workspace {
+        padding: 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #eef6ea 0%, #f7fafc 55%, #eef6ea 100%);
     }
 
     .section-title {
@@ -63,22 +70,75 @@
     .section-subtitle {
         color: #64748b;
         font-size: 0.88rem;
-        margin-bottom: 15px;
+        margin-bottom: 11px;
     }
+
+    .workflow-steps {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        margin: 4px 0 15px;
+    }
+
+    .workflow-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        min-width: 72px;
+        color: #94a3b8;
+        font-size: .76rem;
+        font-weight: 800;
+        text-align: center;
+    }
+
+    .workflow-step-marker {
+        width: 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 50%;
+        background: #fff;
+        color: #94a3b8;
+        font-size: .78rem;
+        font-weight: 900;
+        transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .workflow-step.is-current { color: var(--user-accent-dark, #166534); }
+    .workflow-step.is-current .workflow-step-marker { border-color: var(--user-accent, #15803d); background: var(--user-accent-soft, #ecfdf5); color: var(--user-accent-dark, #166534); box-shadow: 0 0 0 4px var(--user-accent-ring, rgba(21,128,61,.12)); }
+    .workflow-step.is-current .workflow-step-marker { animation: workflowPulse 2.4s ease-in-out infinite; }
+    .workflow-step.is-complete { color: var(--user-accent-dark, #166534); }
+    .workflow-step.is-complete .workflow-step-marker { border-color: var(--user-accent, #15803d); background: var(--user-accent, #15803d); color: #fff; }
+    .workflow-connector { flex: 1; height: 2px; margin-top: 14px; background: #e2e8f0; }
+    .workflow-connector.is-complete { background: var(--user-accent, #15803d); }
 
     .info-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
+        gap: 10px;
     }
 
     .info-item {
-        background: #f8fafc;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 12px 14px;
-        min-height: 74px;
+        background: transparent;
+        border: 0;
+        border-bottom: 1px solid #e5e7eb;
+        border-radius: 0;
+        padding: 11px 4px;
+        min-height: 62px;
     }
+
+    .delivery-info-card { padding: 14px 16px; }
+    .delivery-info-card .section-subtitle { margin-bottom: 7px; }
+    .delivery-info-card .info-grid { gap: 2px 16px; }
+    .delivery-info-card .info-item { min-height: 52px; padding: 7px 4px; }
+    .delivery-info-card .info-label { margin-bottom: 3px; font-size: .74rem; }
+    .delivery-info-card .info-value { font-size: .88rem; }
+    .delivery-info-card .status-info-item { display: flex; align-items: flex-start; }
+    .delivery-info-card .status-inline { display: flex; align-items: center; justify-content: flex-start; width: 100%; gap: 8px; }
+    .delivery-info-card .status-inline .info-label { margin-bottom: 0; }
+    .delivery-info-card .status-inline .status-badge { padding: 5px 10px; font-size: .76rem; transform: translateY(4px); }
 
     .info-label {
         font-size: 0.8rem;
@@ -96,6 +156,11 @@
 
     .info-item.full {
         grid-column: 1 / -1;
+        margin-top: 3px;
+        padding: 9px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #f8fafc;
     }
 
     .status-badge {
@@ -140,6 +205,31 @@
         color: #111827;
         box-shadow: none;
     }
+
+    .milled-rice-form {
+        padding: 13px;
+        border: 1px solid #dbe7db;
+        border-radius: 14px;
+        background: var(--user-accent-soft, #f8fcf8);
+    }
+
+    .milled-rice-input-wrap { position: relative; }
+    .milled-rice-input-wrap .custom-input { padding-right: 48px; background: #fff; }
+    .milled-rice-unit { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: .82rem; font-weight: 800; pointer-events: none; }
+    .milled-rice-help { margin: 6px 0 0; color: #64748b; font-size: .78rem; }
+
+    .result-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .result-tile { display:flex; align-items:center; gap:12px; padding:13px 14px; border:1px solid #dbe3ec; border-radius:13px; background:#f8fafc; }
+    .result-icon { width:36px; height:36px; flex:0 0 36px; display:grid; place-items:center; border-radius:10px; background:var(--user-accent-soft,#ecfdf5); color:var(--user-accent-dark,#166534); }
+    .result-icon svg { width:18px; height:18px; }
+    .result-label { margin:0 0 3px; color:#64748b; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
+    .result-value { margin:0; color:#0f172a; font-size:1.12rem; font-weight:900; }
+    .result-value small { color:#64748b; font-size:.78rem; font-weight:700; }
+    .result-tile.result-helper-success { background:#f0fdf4; border-color:#86efac; }
+    .result-tile.result-helper-success .result-icon { background:#dcfce7; color:#15803d; }
+    .result-tile.result-helper-warning { background:#fffaf2; border-color:#fdba74; }
+    .result-tile.result-helper-warning .result-icon { background:#ffedd5; color:#c2410c; }
+    @media (max-width:576px) { .result-grid { grid-template-columns:1fr; } }
 
     .custom-textarea {
         min-height: 58px;
@@ -199,11 +289,25 @@
     }
 
     .action-btn {
-        min-height: 46px;
+        min-height: 42px;
         border-radius: 12px;
-        padding: 10px 16px;
+        padding: 8px 14px;
         font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
     }
+
+    .action-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(15, 23, 42, .12); }
+
+    .action-btn svg { width: 18px; height: 18px; }
+
+    .workflow-hint { display:flex; align-items:center; gap:7px; color:#64748b; margin-bottom:8px; }
+    .workflow-hint svg { width:16px; height:16px; color:#f59e0b; }
+    .section-card .btn-primary { background:var(--user-accent, #2563eb); border-color:var(--user-accent, #2563eb); }
+    .section-card .btn-primary:hover { background:var(--user-accent-dark, #1d4ed8); border-color:var(--user-accent-dark, #1d4ed8); }
 
     .helper-box {
         border-radius: 14px;
@@ -216,6 +320,8 @@
         background: #fff7ed;
         color: #9a3412;
         border: 1px solid #fdba74;
+        padding: 10px 12px;
+        font-size: .86rem;
     }
 
     .helper-dark {
@@ -278,26 +384,39 @@
     .action-card {
         background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 18px;
-        padding: 20px;
+        border-radius: 16px;
+        padding: 14px;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .action-card:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(15, 23, 42, .10); }
+
+    @keyframes workflowPulse {
+        0%, 100% { box-shadow: 0 0 0 4px var(--user-accent-ring, rgba(21,128,61,.12)); }
+        50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--user-accent, #15803d) 10%, transparent); }
     }
 
     .action-card.equal-height {
         height: 100%;
+        min-height: 180px;
     }
+
+    .delivery-actions-grid .action-card:nth-child(1) { border-top: 3px solid var(--user-accent, #15803d); }
+    .delivery-actions-grid .action-card:nth-child(2) { border-top: 3px solid var(--user-accent, #15803d); }
+    .delivery-actions-grid .action-card:nth-child(3) { border-top: 3px solid #f59e0b; }
 
     .action-card-title {
         font-size: 1.15rem;
         font-weight: 800;
         color: #0f172a;
-        margin-bottom: 8px;
+        margin-bottom: 5px;
         line-height: 1.3;
     }
 
     .action-card-subtitle {
         color: #64748b;
-        font-size: 0.95rem;
+        font-size: 0.88rem;
         margin-bottom: 0;
     }
 
@@ -309,8 +428,14 @@
     }
 
     .action-card-top {
-        margin-bottom: 8px;
+        margin-bottom: 4px;
     }
+
+    .action-card-title-row { display:flex; align-items:center; gap:9px; }
+    .action-card-icon { width:30px; height:30px; display:grid; place-items:center; flex:0 0 30px; border-radius:9px; background:var(--user-accent-soft,#ecfdf5); color:var(--user-accent-dark,#166534); }
+    .action-card-icon svg { width:16px; height:16px; }
+    .delivery-actions-grid .action-card:nth-child(2) .action-card-icon { background:var(--user-accent-soft,#ecfdf5); color:var(--user-accent-dark,#166534); }
+    .delivery-actions-grid .action-card:nth-child(3) .action-card-icon { background:#fff7ed; color:#c2410c; }
 
     .action-btn-lg {
         min-height: 46px;
@@ -320,15 +445,18 @@
         padding: 10px 15px;
     }
 
+    .action-btn-lg svg { width:18px; height:18px; }
+
     .btn-dark-soft {
-        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        background: var(--user-accent, #15803d);
         color: #fff;
         border: none;
-        box-shadow: 0 10px 20px rgba(17, 24, 39, 0.18);
+        box-shadow: 0 8px 16px var(--user-accent-ring, rgba(21, 128, 61, .18));
     }
 
     .btn-dark-soft:hover {
         color: #fff;
+        background: var(--user-accent-dark, #166534);
     }
 
     .payment-status-box {
@@ -479,6 +607,7 @@
 
 @media (max-width: 992px) {
     .info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .workflow-step { min-width: 62px; }
 }
 
 .compact-section .helper-box {
@@ -499,6 +628,10 @@
     margin-bottom: 10px;
 }
 
+.notification-title-group { display:flex; align-items:center; gap:10px; }
+.notification-title-icon { width:34px; height:34px; display:grid; place-items:center; border-radius:10px; background:var(--user-accent-soft,#ecfdf5); color:var(--user-accent-dark,#166534); }
+.notification-title-icon svg { width:17px; height:17px; }
+
 .notification-heading .section-title {
     margin: 0;
 }
@@ -511,6 +644,8 @@
     font-size: .8rem;
     font-weight: 700;
 }
+
+.notification-status .sms-status-badge { min-height: 28px; padding: 6px 10px; font-size: .78rem; }
 
 .notification-notice {
     margin: 0 0 12px;
@@ -533,6 +668,12 @@
     align-items: end;
 }
 
+@media (min-width: 1101px) {
+    .notification-fields { grid-template-columns: minmax(0, .9fr) minmax(0, .9fr) minmax(180px, 1.2fr); }
+    .notification-fields > div:nth-child(4) { grid-column: 1 / 3; }
+    .notification-fields > div:nth-child(5) { grid-column: 3; }
+}
+
 .notification-action {
     min-width: 150px;
 }
@@ -540,12 +681,15 @@
 .notification-action .action-btn {
     min-height: 44px;
     border: 0;
-    background: #15803d;
+    background: var(--user-accent, #15803d);
     color: #fff;
+    border-radius: 11px;
+    font-weight: 800;
+    box-shadow: 0 7px 15px var(--user-accent-ring, rgba(21,128,61,.18));
 }
 
 .notification-action .action-btn:hover {
-    background: #166534;
+    background: var(--user-accent-dark, #166534);
     color: #fff;
 }
 
@@ -553,11 +697,17 @@
     height: 44px;
     min-height: 44px;
     resize: none;
+    overflow: hidden;
 }
 
 .notification-history-card .empty-state {
     padding: 14px 10px;
 }
+
+    .history-method { display:inline-flex; align-items:center; padding:5px 9px; border-radius:999px; background:#eff6ff; color:#1d4ed8; font-size:.76rem; font-weight:800; }
+    .notification-history-card .table-soft tbody tr:hover { background:#f8fafc; }
+    .notification-history-title { display:flex; align-items:center; gap:10px; }
+    .notification-history-title .notification-title-icon { width:32px; height:32px; }
 
 .notification-history-card .section-subtitle {
     margin-bottom: 8px;
@@ -582,6 +732,9 @@
 /* mobile fix */
 @media (max-width: 576px) {
     .info-grid { grid-template-columns: 1fr; }
+    .workflow-steps { gap: 4px; }
+    .workflow-step { min-width: 0; flex: 1; font-size: .68rem; }
+    .workflow-step-marker { width: 27px; height: 27px; }
     .page-title { font-size: 1.7rem; }
     .section-card { padding: 18px; }
     .notification-fields { grid-template-columns: 1fr; }
@@ -609,6 +762,9 @@
     };
 
     $canEditActualRice = $delivery->status === 'processing';
+    $workflowStatuses = ['pending', 'processing', 'completed', 'claimed'];
+    $workflowIndex = array_search($delivery->status, $workflowStatuses, true);
+    $workflowIndex = $workflowIndex === false ? 0 : $workflowIndex;
 
     $variance = null;
     $varianceLabel = null;
@@ -666,7 +822,8 @@
     </div>
 @endif
 
-<div class="section-card compact-section">
+<div class="delivery-workspace">
+<div class="section-card compact-section delivery-info-card">
     <h2 class="section-title">Delivery Information</h2>
     <p class="section-subtitle">Basic delivery, client, and milling information.</p>
 
@@ -708,9 +865,9 @@
             <div class="info-value">{{ $delivery->riceType->name ?? 'N/A' }}</div>
         </div>
 
-        <div class="info-item">
-            <div class="info-label">Status</div>
-            <div class="info-value">
+        <div class="info-item status-info-item">
+            <div class="status-inline">
+                <div class="info-label">Status</div>
                 <span class="status-badge {{ $statusClass }}">
                     {{ ucfirst($delivery->status) }}
                 </span>
@@ -764,15 +921,35 @@
 <div class="section-card compact-section">
     <h2 class="section-title">Workflow Status</h2>
 
+    <div class="workflow-steps" aria-label="Delivery workflow">
+        @foreach($workflowStatuses as $stepIndex => $workflowStatus)
+            @php
+                $stepIsComplete = $stepIndex < $workflowIndex
+                    || ($delivery->status === 'completed' && $stepIndex === $workflowIndex)
+                    || ($delivery->status === 'claimed' && $stepIndex === $workflowIndex);
+            @endphp
+            <div class="workflow-step {{ $stepIsComplete ? 'is-complete' : '' }} {{ $stepIndex === $workflowIndex ? 'is-current' : '' }}">
+                <span class="workflow-step-marker">{{ $stepIsComplete ? '✓' : $stepIndex + 1 }}</span>
+                <span class="workflow-step-label">{{ ucfirst($workflowStatus) }}</span>
+            </div>
+            @if($stepIndex < count($workflowStatuses) - 1)
+                <span class="workflow-connector {{ $stepIndex < $workflowIndex ? 'is-complete' : '' }}"></span>
+            @endif
+        @endforeach
+    </div>
+
     @if($delivery->status === 'pending')
-        <p class="section-subtitle">Start milling when this delivery reaches the front of the active queue.</p>
+        <p class="section-subtitle workflow-hint"><i data-lucide="clock-3"></i>Start milling when this delivery reaches the front of the active queue.</p>
         <form method="POST" action="{{ url('/staff/delivery-status/' . $delivery->id) }}"
               data-confirm-title="Start Processing?"
               data-confirm-message="Move this delivery from Pending to Processing?"
               data-confirm-button="Start Processing">
             @csrf
             <input type="hidden" name="status" value="processing">
-            <button type="submit" class="btn btn-primary action-btn">Start Processing</button>
+            <button type="submit" class="btn btn-primary action-btn">
+                <i data-lucide="play-circle"></i>
+                Start Processing
+            </button>
         </form>
     @elseif($delivery->status === 'processing')
         <div class="helper-box helper-dark mb-0">
@@ -801,20 +978,24 @@
             @csrf
             <input type="hidden" name="completion_token" value="{{ $completionToken }}">
 
+            <div class="milled-rice-form">
             <div class="row g-3 align-items-end">
                 <div class="col-md-4">
                     <label class="field-label">Actual Milled Rice (kg)</label>
-                    <input
-                        type="number"
-                        step="0.01"
-                        min="0.01"
-                        max="{{ $delivery->palay_weight }}"
-                        name="actual_rice"
-                        class="form-control custom-input @error('actual_rice') is-invalid @enderror"
-                        placeholder="Enter actual milled rice (kg)"
-                        value="{{ old('actual_rice', $delivery->actual_rice) }}"
-                        required
-                    >
+                    <div class="milled-rice-input-wrap">
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0.01"
+                            max="{{ $delivery->palay_weight }}"
+                            name="actual_rice"
+                            class="form-control custom-input @error('actual_rice') is-invalid @enderror"
+                            placeholder="Enter actual output"
+                            value="{{ old('actual_rice', $delivery->actual_rice) }}"
+                            required
+                        >
+                        <span class="milled-rice-unit">kg</span>
+                    </div>
                     @error('actual_rice')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -822,9 +1003,11 @@
 
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-success action-btn w-100">
+                        <i data-lucide="check-circle-2"></i>
                         Save & Complete Milling
                     </button>
                 </div>
+            </div>
             </div>
         </form>
 
@@ -840,14 +1023,21 @@
         <p class="section-subtitle">Recorded actual milled rice output for this delivery.</p>
 
         @if($delivery->actual_rice !== null)
-            <div class="helper-box helper-dark mb-3">
-                <strong>Actual Milled Rice:</strong> {{ number_format($delivery->actual_rice, 2) }} kg
-            </div>
-
-            <div class="helper-box {{ $varianceClass }} mb-0">
-                <strong>Variance:</strong>
-                {{ $variance > 0 ? '+' : '' }}{{ number_format($variance, 2) }} kg
-                ({{ $varianceLabel }})
+            <div class="result-grid">
+                <div class="result-tile">
+                    <span class="result-icon"><i data-lucide="scale"></i></span>
+                    <div>
+                        <p class="result-label">Actual Milled Rice</p>
+                        <p class="result-value">{{ number_format($delivery->actual_rice, 2) }} <small>kg</small></p>
+                    </div>
+                </div>
+                <div class="result-tile result-{{ $varianceClass }}">
+                    <span class="result-icon"><i data-lucide="{{ $variance < 0 ? 'trending-down' : 'trending-up' }}"></i></span>
+                    <div>
+                        <p class="result-label">Variance</p>
+                        <p class="result-value">{{ $variance > 0 ? '+' : '' }}{{ number_format($variance, 2) }} <small>kg · {{ $varianceLabel }}</small></p>
+                    </div>
+                </div>
             </div>
         @else
             <div class="helper-box helper-warning mb-0">
@@ -864,7 +1054,10 @@
 @if($delivery->status === 'completed' && $smsEnabled !== '1' && !$isNotified)
 <div class="section-card notification-card">
     <div class="notification-heading">
-        <h2 class="section-title">Log Farmer Notification</h2>
+        <div class="notification-title-group">
+            <span class="notification-title-icon"><i data-lucide="bell-ring"></i></span>
+            <h2 class="section-title">Log Farmer Notification</h2>
+        </div>
         <div class="notification-status">
             <span>Latest status</span>
         @if($smsStatus)
@@ -942,6 +1135,7 @@
 
             <div class="notification-action">
                 <button type="submit" class="btn action-btn w-100">
+                    <i data-lucide="send"></i>
                     Save Notification
                 </button>
             </div>
@@ -950,8 +1144,12 @@
 </div>
 @endif
 
+@if($delivery->actual_rice !== null)
 <div class="section-card notification-history-card">
-    <h2 class="section-title">Notification History</h2>
+    <div class="notification-history-title">
+        <span class="notification-title-icon"><i data-lucide="history"></i></span>
+        <h2 class="section-title">Notification History</h2>
+    </div>
     <p class="section-subtitle">Previous notification logs for this delivery.</p>
 
     @if($latestNotification)
@@ -1008,9 +1206,9 @@
                     @foreach($delivery->notifications->sortByDesc('created_at') as $notification)
                         <tr>
                             <td>
-                                {{ \Carbon\Carbon::parse($notification->notified_at ?? $notification->created_at)->format('M d, Y h:i A') }}
+                                {{ \Carbon\Carbon::parse($notification->notified_at ?? $notification->created_at)->format('M d · g:i A') }}
                             </td>
-                            <td>{{ ucwords(str_replace('_', ' ', $notification->method)) }}</td>
+                            <td><span class="history-method">{{ ucwords(str_replace('_', ' ', $notification->method)) }}</span></td>
                             <td>
                                 <span class="sms-status-badge
                                     {{ $notification->notification_status === 'sent' ? 'sms-sent' : '' }}
@@ -1020,7 +1218,7 @@
                                     {{ ucfirst($notification->notification_status) }}
                                 </span>
                             </td>
-                            <td>{{ $notification->remarks ?: '-' }}</td>
+                            <td>{{ $notification->remarks ?: 'No remarks' }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -1032,12 +1230,13 @@
         </div>
     @endif
 </div>
+@endif
 
 <div class="delivery-actions-grid">
     <div class="action-card equal-height">
         <div class="action-card-body">
             <div class="action-card-top">
-                <h2 class="action-card-title">Claim Stub</h2>
+                <div class="action-card-title-row"><span class="action-card-icon"><i data-lucide="file-text"></i></span><h2 class="action-card-title">Claim Stub</h2></div>
                 <p class="action-card-subtitle">Open or reprint the customer’s claim ticket.</p>
             </div>
             <a href="{{ url('/staff/claim-stub/' . $delivery->id) }}"
@@ -1051,7 +1250,7 @@
     <div class="action-card equal-height">
         <div class="action-card-body">
             <div class="action-card-top">
-                <h2 class="action-card-title">Billing &amp; Payment</h2>
+                <div class="action-card-title-row"><span class="action-card-icon"><i data-lucide="wallet-cards"></i></span><h2 class="action-card-title">Billing &amp; Payment</h2></div>
                 <p class="action-card-subtitle">Record payment or open the completed receipt.</p>
             </div>
             @if($delivery->transaction)
@@ -1068,7 +1267,10 @@
                 </div>
             @elseif($delivery->status === 'completed' && $isNotified)
                 <a href="{{ url('/staff/pos/' . $delivery->id) }}"
-                   class="btn btn-success action-btn-lg w-100 mt-auto">Proceed to Payment</a>
+                   class="btn btn-success action-btn-lg w-100 mt-auto d-flex align-items-center justify-content-center gap-2">
+                    <i data-lucide="credit-card"></i>
+                    Proceed to Payment
+                </a>
             @elseif($delivery->status === 'completed')
                 <div class="helper-box helper-warning mb-0 mt-auto">Notify the farmer successfully before payment.</div>
             @else
@@ -1080,7 +1282,7 @@
     <div class="action-card equal-height">
         <div class="action-card-body">
             <div class="action-card-top">
-                <h2 class="action-card-title">Release Delivery</h2>
+                <div class="action-card-title-row"><span class="action-card-icon"><i data-lucide="package-check"></i></span><h2 class="action-card-title">Release Delivery</h2></div>
                 <p class="action-card-subtitle">Mark the rice as claimed after payment and release.</p>
             </div>
             @if($delivery->status === 'claimed')
@@ -1092,7 +1294,10 @@
                       data-confirm-message="Confirm that the milled rice has been released to the customer."
                       data-confirm-button="Mark as Claimed">
                     @csrf
-                    <button type="submit" class="btn btn-dark-soft action-btn-lg w-100">Mark as Claimed</button>
+                    <button type="submit" class="btn btn-dark-soft action-btn-lg w-100 d-flex align-items-center justify-content-center gap-2">
+                        <i data-lucide="package-check"></i>
+                        Mark as Claimed
+                    </button>
                 </form>
             @elseif($delivery->status === 'completed' && !$isNotified)
                 <div class="helper-box helper-warning mb-0 mt-auto">Notify the farmer successfully before releasing this delivery.</div>
@@ -1103,6 +1308,7 @@
             @endif
         </div>
     </div>
+</div>
 </div>
 
 @include('partials.field-validation-focus')

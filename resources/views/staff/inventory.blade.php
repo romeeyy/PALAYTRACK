@@ -8,20 +8,20 @@
         align-items: flex-start;
         gap: 16px;
         flex-wrap: wrap;
-        margin-bottom: 28px;
+        margin-bottom: 12px;
     }
 
     .page-title {
-        font-size: 2rem;
-        font-weight: 800;
+        font-size: 1.8rem;
+        font-weight: 900;
         color: #0f172a;
-        margin: 0 0 6px;
+        margin: 0 0 4px;
         line-height: 1.2;
     }
 
     .page-subtitle {
         color: #64748b;
-        font-size: 1rem;
+        font-size: 0.96rem;
         margin: 0;
     }
 
@@ -70,6 +70,10 @@
         z-index: 1;
     }
 
+    .main-content .summary-card .summary-value {
+        font-weight: 900;
+    }
+
     .summary-top {
         display: flex;
         justify-content: space-between;
@@ -110,7 +114,7 @@
     }
 
     .summary-value {
-        font-size: 2.35rem;
+        font-size: 1.8rem;
         font-weight: 900;
         color: #0f172a;
         line-height: 1;
@@ -167,7 +171,7 @@
 
     .inventory-table tbody td {
         color: #111827;
-        font-size: 0.95rem;
+        font-size: 0.85rem;
         padding: 14px 12px;
         vertical-align: middle;
         border-bottom: 1px solid #eef2f7;
@@ -198,6 +202,11 @@
         font-weight: 700;
     }
 
+    .empty-state { text-align:center; color:#64748b; padding:28px 12px; font-size:.95rem; }
+    .empty-state-content { display:flex; flex-direction:column; align-items:center; gap:7px; }
+    .empty-state-content svg { width:22px; height:22px; color:#94a3b8; }
+    .empty-state-content span { color:#64748b; }
+
     .logs-wrapper {
         max-height: 280px;
         overflow-y: auto;
@@ -214,10 +223,10 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-width: 54px;
-        padding: 6px 10px;
+        min-width: 50px;
+        padding: 5px 9px;
         border-radius: 999px;
-        font-size: 0.78rem;
+        font-size: 0.72rem;
         font-weight: 800;
         white-space: nowrap;
     }
@@ -269,7 +278,7 @@
             </div>
 
             <h2 class="summary-value">{{ number_format($totalPalay, 2) }} kg</h2>
-            <p class="summary-note">Raw palay stock currently logged in inventory.</p>
+            <p class="summary-note">Total palay waiting for milling or still being milled.</p>
         </div>
     </div>
 
@@ -283,7 +292,7 @@
             </div>
 
             <h2 class="summary-value">{{ number_format($totalMilledRice, 2) }} kg</h2>
-            <p class="summary-note">Completed milled rice stock recorded from actual output.</p>
+            <p class="summary-note">Total milled rice not yet claimed.</p>
         </div>
     </div>
 </div>
@@ -295,7 +304,7 @@
                 <i data-lucide="sprout"></i>
                 Palay Inventory by Rice Type
             </h2>
-            <p class="section-subtitle">Unmilled palay available in storage.</p>
+            <p class="section-subtitle">Palay stock grouped by rice type.</p>
 
             <div class="table-responsive">
                 <table class="table inventory-table align-middle">
@@ -307,14 +316,14 @@
                     </thead>
                     <tbody>
                         @forelse($palayByRiceType as $item)
-                            <tr>
-                                <td>{{ $item->rice_type_name }}</td>
-                                <td class="weight-cell">{{ number_format($item->total_weight, 2) }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ $item->rice_type_name }}</td>
+                            <td class="weight-cell">{{ number_format($item->total_weight, 2) }}</td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="2" class="text-center text-muted">No palay inventory yet.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="2" class="empty-state"><div class="empty-state-content"><i data-lucide="sprout"></i><span>No palay inventory yet.</span></div></td>
+                        </tr>
                         @endforelse
 
                         <tr class="total-row palay-total">
@@ -333,7 +342,7 @@
                 <i data-lucide="package"></i>
                 Milled Rice Inventory by Rice Type
             </h2>
-            <p class="section-subtitle">Finished rice ready for release.</p>
+            <p class="section-subtitle">Unclaimed milled rice grouped by rice type.</p>
 
             <div class="table-responsive">
                 <table class="table inventory-table align-middle">
@@ -345,14 +354,14 @@
                     </thead>
                     <tbody>
                         @forelse($milledByRiceType as $item)
-                            <tr>
-                                <td>{{ $item->rice_type_name }}</td>
-                                <td class="weight-cell">{{ number_format($item->total_weight, 2) }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ $item->rice_type_name }}</td>
+                            <td class="weight-cell">{{ number_format($item->total_weight, 2) }}</td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="2" class="text-center text-muted">No milled rice inventory yet.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="2" class="empty-state"><div class="empty-state-content"><i data-lucide="package-open"></i><span>No milled rice inventory yet.</span></div></td>
+                        </tr>
                         @endforelse
 
                         <tr class="total-row milled-total">
@@ -387,24 +396,24 @@
             </thead>
             <tbody>
                 @forelse($inventoryLogs as $log)
-                    <tr>
-                        <td class="log-date">
-                            {{ \Carbon\Carbon::parse($log->logged_at)->format('M d, Y h:i A') }}
-                        </td>
-                        <td>{{ $log->delivery->delivery_id ?? 'N/A' }}</td>
-                        <td>{{ $log->delivery->riceType->name ?? 'N/A' }}</td>
-                        <td>{{ ucfirst(str_replace('_', ' ', $log->stock_category)) }}</td>
-                        <td>
-                            <span class="type-badge {{ $log->type === 'in' ? 'type-in' : 'type-out' }}">
-                                {{ strtoupper($log->type) }}
-                            </span>
-                        </td>
-                        <td class="weight-cell">{{ number_format($log->quantity, 2) }}</td>
-                    </tr>
+                <tr>
+                    <td class="log-date">
+                        {{ \Carbon\Carbon::parse($log->logged_at)->format('M d, Y h:i A') }}
+                    </td>
+                    <td>{{ $log->delivery->delivery_id ?? 'N/A' }}</td>
+                    <td>{{ $log->delivery->riceType->name ?? 'Unknown / Unlinked' }}</td>
+                    <td>{{ ucfirst(str_replace('_', ' ', $log->stock_category)) }}</td>
+                    <td>
+                        <span class="type-badge {{ $log->type === 'in' ? 'type-in' : 'type-out' }}">
+                            {{ strtoupper($log->type) }}
+                        </span>
+                    </td>
+                    <td class="weight-cell">{{ number_format($log->quantity, 2) }}</td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="6" class="text-center text-muted">No inventory logs yet.</td>
-                    </tr>
+                <tr>
+                    <td colspan="6" class="empty-state"><div class="empty-state-content"><i data-lucide="clipboard-list"></i><span>No inventory logs yet.</span></div></td>
+                </tr>
                 @endforelse
             </tbody>
         </table>

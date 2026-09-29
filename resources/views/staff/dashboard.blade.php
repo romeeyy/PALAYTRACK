@@ -3,19 +3,20 @@
 @section('content')
 <style>
     .page-header {
-        margin-bottom: 28px;
+        margin-bottom: 18px;
     }
 
     .page-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
         font-weight: 900;
         color: #0f172a;
-        margin: 0 0 6px;
+        margin: 0 0 4px;
+        line-height: 1.2;
     }
 
     .page-subtitle {
         color: #64748b;
-        font-size: 1rem;
+        font-size: 0.92rem;
         margin: 0;
     }
 
@@ -28,7 +29,7 @@
     }
 
     .summary-card {
-        padding: 22px 22px 20px;
+        padding: 16px 18px 14px;
         height: 100%;
         border-top: none;
         background: linear-gradient(135deg, #ffffff 0%, #f4faf3 100%);
@@ -90,14 +91,14 @@
         justify-content: space-between;
         align-items: flex-start;
         gap: 12px;
-        margin-bottom: 18px;
+        margin-bottom: 12px;
         position: relative;
         z-index: 1;
     }
 
     .summary-label {
         color: #334155;
-        font-size: 0.98rem;
+        font-size: 0.9rem;
         font-weight: 800;
         line-height: 1.5;
         margin: 0;
@@ -142,7 +143,7 @@
     }
 
     .summary-value {
-        font-size: 2.35rem;
+        font-size: 1.35rem;
         font-weight: 900;
         color: #0f172a;
         line-height: 1;
@@ -155,20 +156,20 @@
 
     .summary-note {
         color: #64748b;
-        font-size: 0.95rem;
+        font-size: 0.8rem;
         margin: 8px 0 0;
         position: relative;
         z-index: 1;
     }
 
     .section-card {
-        padding: 22px;
+        padding: 18px;
         height: 100%;
         background: linear-gradient(135deg, #ffffff 0%, #fbfdf9 100%);
     }
 
     .operations-card {
-        padding: 24px;
+        padding: 18px;
         height: auto;
         min-height: 0;
         background: linear-gradient(135deg, #ffffff 0%, #fbfdf9 100%);
@@ -196,7 +197,7 @@
     }
 
     .section-title {
-        font-size: 1.15rem;
+        font-size: 1.05rem;
         font-weight: 900;
         color: #111827;
         margin-bottom: 6px;
@@ -204,8 +205,8 @@
 
     .section-subtitle {
         color: #64748b;
-        font-size: 0.95rem;
-        margin-bottom: 18px;
+        font-size: 0.85rem;
+        margin-bottom: 14px;
     }
 
     .updated-pill {
@@ -309,7 +310,7 @@
     }
 
     .table-scroll {
-        max-height: 330px;
+        max-height: 280px;
         overflow-y: auto;
         overflow-x: auto;
         border-radius: 14px;
@@ -325,8 +326,8 @@
         color: #334155;
         font-weight: 800;
         white-space: nowrap;
-        padding: 14px 12px;
-        font-size: 0.92rem;
+        padding: 12px 10px;
+        font-size: 0.82rem;
         position: sticky;
         top: 0;
         z-index: 2;
@@ -334,9 +335,9 @@
 
     .soft-table tbody td {
         border-bottom: 1px solid #eef2f7;
-        padding: 12px 12px;
+        padding: 10px 10px;
         vertical-align: middle;
-        font-size: 0.95rem;
+        font-size: 0.88rem;
         color: #334155;
     }
 
@@ -348,22 +349,22 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-width: 44px;
-        padding: 6px 11px;
+        min-width: 40px;
+        padding: 5px 10px;
         border-radius: 999px;
         background: #ecfdf3;
         color: #15803d;
         font-weight: 800;
-        font-size: 0.9rem;
+        font-size: 0.82rem;
     }
 
     .status-badge {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 7px 13px;
+        padding: 6px 10px;
         border-radius: 999px;
-        font-size: 0.84rem;
+        font-size: 0.78rem;
         font-weight: 800;
         white-space: nowrap;
     }
@@ -389,10 +390,11 @@
     }
 
     .open-btn {
-        border-radius: 10px;
-        padding: 7px 14px;
+        border-radius: 8px;
+        padding: 6px 12px;
         font-weight: 700;
         white-space: nowrap;
+        font-size: 0.82rem;
     }
 
     .empty-state {
@@ -403,21 +405,24 @@
     }
 
     .section-footer {
-        margin-top: 16px;
+        margin-top: 4px;
+        margin-bottom: -8px;
         display: flex;
         justify-content: flex-end;
     }
 
     .view-link {
-        font-size: 0.92rem;
+        font-size: 0.95rem;
         font-weight: 800;
-        color: #16a34a;
+        color: #2f9d5d;
         text-decoration: none;
+        transition: color 0.2s ease, opacity 0.2s ease;
     }
 
     .view-link:hover {
-        color: #15803d;
-        text-decoration: underline;
+        color: #22814b;
+        text-decoration: none;
+        opacity: 0.95;
     }
 
     @media (max-width: 768px) {
@@ -459,17 +464,18 @@
 </style>
 
 @php
-    $activeQueue = \App\Models\Delivery::whereIn('status', ['pending', 'processing'])
-        ->latest()
-        ->take(5)
-        ->get();
+$activeQueue = \App\Models\Delivery::with('riceType')
+->whereIn('status', ['pending', 'processing'])
+->activeQueueOrder()
+->take(5)
+->get();
 
-    $safeTrendLabels = $trendLabels ?? [];
-    $safeTrendCounts = $trendCounts ?? [];
+$safeTrendLabels = $trendLabels ?? [];
+$safeTrendCounts = $trendCounts ?? [];
 
-    $peakCount = count($safeTrendCounts) ? max($safeTrendCounts) : 0;
-    $peakIndex = count($safeTrendCounts) ? array_search($peakCount, $safeTrendCounts) : null;
-    $peakLabel = $peakIndex !== null && isset($safeTrendLabels[$peakIndex]) ? $safeTrendLabels[$peakIndex] : 'N/A';
+$peakCount = count($safeTrendCounts) ? max($safeTrendCounts) : 0;
+$peakIndex = count($safeTrendCounts) ? array_search($peakCount, $safeTrendCounts) : null;
+$peakLabel = $peakIndex !== null && isset($safeTrendLabels[$peakIndex]) ? $safeTrendLabels[$peakIndex] : 'N/A';
 @endphp
 
 <div class="page-header">
@@ -481,7 +487,7 @@
     <div class="col-md-6 col-xl-3">
         <div class="summary-card pending">
             <div class="summary-top">
-                <p class="summary-label">Pending This Month</p>
+                <p class="summary-label">Pending Now</p>
                 <div class="summary-icon">
                     <i data-lucide="clock-3"></i>
                 </div>
@@ -494,7 +500,7 @@
     <div class="col-md-6 col-xl-3">
         <div class="summary-card processing">
             <div class="summary-top">
-                <p class="summary-label">Processing This Month</p>
+                <p class="summary-label">Processing Now</p>
                 <div class="summary-icon">
                     <i data-lucide="settings-2"></i>
                 </div>
@@ -507,7 +513,7 @@
     <div class="col-md-6 col-xl-3">
         <div class="summary-card completed">
             <div class="summary-top">
-                <p class="summary-label">Completed This Month</p>
+                <p class="summary-label">Ready for Claim Now</p>
                 <div class="summary-icon">
                     <i data-lucide="check-check"></i>
                 </div>
@@ -617,42 +623,42 @@
 
                     <tbody>
                         @forelse($activeQueue as $delivery)
-                            <tr>
-                                <td>
-                                    <span class="queue-badge">#{{ $delivery->queue_number }}</span>
-                                </td>
-                                <td>{{ $delivery->delivery_id }}</td>
-                                <td>{{ $delivery->client_name }}</td>
-                                <td>{{ $delivery->riceType->name ?? 'N/A' }}</td>
-                                <td>
-                                    <span class="status-badge status-{{ $delivery->status }}">
-                                        {{ ucfirst($delivery->status) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}"
-                                       class="btn btn-outline-success btn-sm open-btn">
-                                        Open
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                <span class="queue-badge">#{{ $delivery->queue_number }}</span>
+                            </td>
+                            <td>{{ $delivery->delivery_id }}</td>
+                            <td>{{ $delivery->client_name }}</td>
+                            <td>{{ $delivery->riceType->name ?? 'N/A' }}</td>
+                            <td>
+                                <span class="status-badge status-{{ $delivery->status }}">
+                                    {{ ucfirst($delivery->status) }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}"
+                                    class="btn btn-outline-success btn-sm open-btn">
+                                    Open
+                                </a>
+                            </td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="6" class="empty-state">
-                                    No active queue items.
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                No active queue items.
+                            </td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
 
             @if($activeQueue->count() > 0)
-                <div class="section-footer">
-                    <a href="{{ route('staff.deliveries') }}" class="view-link">
-                        View all deliveries
-                    </a>
-                </div>
+            <div class="section-footer">
+                <a href="{{ route('staff.deliveries') }}" class="view-link">
+                    View all deliveries
+                </a>
+            </div>
             @endif
         </div>
     </div>

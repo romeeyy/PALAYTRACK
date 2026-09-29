@@ -33,7 +33,7 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+function initializeSystemConfirmModal() {
     const modal = document.getElementById('systemConfirmModal');
     const title = document.getElementById('systemConfirmTitle');
     const message = document.getElementById('systemConfirmMessage');
@@ -79,5 +79,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     modal.addEventListener('click', event => { if (event.target === modal) closeSystemConfirm(); });
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && modal.classList.contains('show')) closeSystemConfirm(); });
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSystemConfirmModal, { once: true });
+} else {
+    initializeSystemConfirmModal();
+}
 </script>

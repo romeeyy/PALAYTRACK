@@ -12,7 +12,7 @@
     }
 
     .pos-page-title {
-        font-size: 1.85rem;
+        font-size: 1.7rem;
         font-weight: 800;
         color: #0f172a;
         margin: 0 0 3px;
@@ -21,27 +21,34 @@
 
     .pos-page-subtitle {
         color: #64748b;
-        font-size: 1rem;
+        font-size: .92rem;
         margin: 0;
     }
 
     .back-btn {
-        min-height: 40px;
+        min-height: 36px;
         border: 1px solid #cbd5e1;
         border-radius: 10px;
-        padding: 7px 13px;
+        padding: 6px 11px;
         font-weight: 700;
         color: #334155;
         background: #fff;
     }
 
     .pos-card {
-        background: #ffffff;
+        background: linear-gradient(135deg, #ffffff 0%, #f7fbf5 100%);
         border: 1px solid #e2e8f0;
         border-radius: 18px;
         padding: 16px 18px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
         margin-bottom: 12px;
+    }
+
+    .pos-workspace {
+        padding: 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #eef6ea 0%, #f7fafc 55%, #eef6ea 100%);
     }
 
     .card-title {
@@ -50,6 +57,11 @@
         color: #111827;
         margin-bottom: 6px;
     }
+
+    .card-title-row { display: flex; align-items: center; gap: 9px; margin-bottom: 6px; }
+    .card-title-row .card-title { margin-bottom: 0; }
+    .card-title-icon { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; background: var(--user-accent-soft, #ecfdf5); color: var(--user-accent-dark, #166534); flex: 0 0 30px; }
+    .card-title-icon svg { width: 16px; height: 16px; }
 
     .card-subtitle {
         color: #64748b;
@@ -79,7 +91,7 @@
 
     .custom-textarea {
         min-height: 54px;
-        resize: vertical;
+        resize: none;
     }
 
     .custom-input:focus,
@@ -145,6 +157,12 @@
         color: #92400e;
         border: 1px solid #fde68a;
     }
+
+    .pricing-summary-box { height: auto; align-self: flex-start; padding: 10px 12px; }
+    .pricing-summary-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .pricing-summary-header .info-label { margin: 0; }
+    .pricing-summary-box .pricing-badge { padding: 5px 10px; font-size: .8rem; }
+    .pricing-summary-note { color: #64748b; font-size: .78rem; line-height: 1.35; margin-top: 7px; }
 
     .summary-box {
         background: #f8fafc;
@@ -218,12 +236,30 @@
     }
 
     .payment-summary-card {
-        position: sticky;
-        top: 18px;
+        position: static;
+        border-top: 3px solid var(--user-accent, #15803d);
+        background: linear-gradient(135deg, #ffffff 0%, #f3f9f1 100%);
     }
 
     .transaction-info-grid {
         margin-bottom: 12px !important;
+    }
+
+    .transaction-info-grid .info-box {
+        background: transparent;
+        border: 0;
+        border-bottom: 1px solid #e5e7eb;
+        border-radius: 0;
+        padding: 7px 4px 9px;
+    }
+
+    .transaction-info-grid .info-label { font-size: .76rem; margin-bottom: 2px; }
+    .transaction-info-grid .info-value { font-size: .9rem; }
+
+    .pos-card form {
+        border-top: 1px solid #e5e7eb;
+        padding-top: 14px;
+        margin-top: 2px;
     }
 
     .pos-card form > .row {
@@ -234,6 +270,17 @@
         display: grid;
         gap: 10px;
     }
+
+    .pricing-summary-field { order: 1; }
+    .pricing-fee-field { order: 2; }
+    .pricing-other-field { order: 3; }
+    .pricing-discount-field { order: 4; }
+    .pricing-amount-field { order: 5; }
+    .pricing-method-field { order: 6; }
+    #reference_number_wrapper { order: 7; }
+    #payment_proof_wrapper { order: 8; }
+    .payment-notes-field { order: 9; }
+    .payment-submit { order: 10; }
 
     .proof-upload {
         border: 1px dashed #94a3b8;
@@ -310,10 +357,14 @@
     data-commercial-fee="{{ (float) $commercialFee }}">
 </div>
 
+<div class="pos-workspace">
 <div class="row g-3">
     <div class="col-lg-7">
         <div class="pos-card">
-            <h2 class="card-title">Transaction Details</h2>
+            <div class="card-title-row">
+                <span class="card-title-icon"><i data-lucide="file-text"></i></span>
+                <h2 class="card-title">Transaction Details</h2>
+            </div>
             <p class="card-subtitle">Enter payment information and charges for this delivery.</p>
 
             <div class="row g-2 transaction-info-grid">
@@ -353,23 +404,21 @@
                 @csrf
 
                 <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="info-box">
-                            <div class="info-label">System-Applied Pricing</div>
-
-                            <div class="mt-2">
+                    <div class="col-md-6 pricing-summary-field">
+                        <div class="info-box pricing-summary-box">
+                            <div class="pricing-summary-header">
+                                <div class="info-label">System-Applied Pricing</div>
                                 <span class="pricing-badge {{ $millingType === 'commercial' ? 'commercial' : 'menudo' }}">
                                     {{ $millingType === 'commercial' ? 'Commercial' : 'Menudo' }}
                                 </span>
                             </div>
-
-                            <div class="small text-muted mt-2">
+                            <div class="pricing-summary-note">
                                 Based on client classification and milling weight.
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6 pricing-fields-stack">
+                    <div class="col-md-6 pricing-fee-field">
                         <div>
                             <label class="field-label" for="milling_fee_per_kg">Milling Fee per Kg</label>
                             <input
@@ -383,23 +432,23 @@
                                 required
                                 readonly>
                         </div>
-
-                        <div>
-                            <label class="field-label" for="discount">Discount</label>
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                name="discount"
-                                id="discount"
-                                class="form-control custom-input @error('discount') is-invalid @enderror"
-                                value="{{ old('discount') }}"
-                                placeholder="0.00">
-                            @error('discount')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 pricing-discount-field">
+                        <label class="field-label" for="discount">Discount</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            name="discount"
+                            id="discount"
+                            class="form-control custom-input @error('discount') is-invalid @enderror"
+                            value="{{ old('discount') }}"
+                            placeholder="0.00">
+                        @error('discount')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="col-md-6 pricing-other-field">
                         <label class="field-label" for="other_charges">Other Charges</label>
                         <input
                             type="number"
@@ -413,7 +462,7 @@
                         @error('other_charges')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 pricing-method-field">
                         <label class="field-label" for="payment_method">Payment Method</label>
                         <select name="payment_method" id="payment_method" class="form-select custom-select @error('payment_method') is-invalid @enderror" required>
                             <option value="cash" {{ old('payment_method', 'cash') == 'cash' ? 'selected' : '' }}>Cash</option>
@@ -423,7 +472,7 @@
                         @error('payment_method')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 pricing-amount-field">
                         <label class="field-label" for="amount_received" id="amount_received_label">Amount Received</label>
                         <input
                             type="number"
@@ -465,7 +514,7 @@
                         @error('payment_proof')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
-                    <div class="col-12">
+                    <div class="col-12 payment-notes-field">
                         <label class="field-label" for="notes">Notes / Adjustment Reason</label>
                         <textarea
                             name="notes"
@@ -487,7 +536,10 @@
 
     <div class="col-lg-5">
         <div class="pos-card payment-summary-card">
-            <h2 class="card-title">Payment Summary</h2>
+            <div class="card-title-row">
+                <span class="card-title-icon"><i data-lucide="calculator"></i></span>
+                <h2 class="card-title">Payment Summary</h2>
+            </div>
             <p class="card-subtitle">Review the computed charges before saving payment.</p>
 
             <div class="summary-box">
@@ -533,6 +585,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script>

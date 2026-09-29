@@ -20,7 +20,7 @@ class PaymentRecordController extends Controller
 
         $request->validate([
             'search' => 'nullable|string|max:100',
-            'date' => 'nullable|date',
+            'date' => 'nullable|date_format:Y-m-d',
             'milling_type' => 'nullable|in:all,menudo,commercial',
             'payment_method' => 'nullable|in:all,cash,gcash,maya',
             'staff_id' => [

@@ -8,7 +8,10 @@
         <h1 class="audit-page-title">Staff Account History</h1>
         <p class="audit-page-subtitle">Account creation, profile, password, and access-status changes.</p>
     </div>
-    <a href="{{ route('owner.staff-accounts') }}" class="audit-back">&larr; Back to Staff Accounts</a>
+    <a href="{{ route('owner.staff-accounts') }}" class="audit-back">
+        <i data-lucide="arrow-left"></i>
+        <span>Back to Staff Accounts</span>
+    </a>
 </div>
 
 <div class="audit-card">
@@ -22,7 +25,15 @@
                     <tr>
                         <td><span class="audit-muted">{{ $history->changed_at->format('M d, Y h:i A') }}</span></td>
                         <td>{{ $history->staff->name ?? 'Unknown staff' }}</td>
-                        <td><span class="audit-pill audit-pill-action">{{ str_replace('_', ' ', ucfirst($history->action)) }}</span></td>
+                        @php
+                            $actionClass = match ($history->action) {
+                                'created' => 'audit-pill-created',
+                                'updated' => 'audit-pill-updated',
+                                'status_changed' => 'audit-pill-status',
+                                default => 'audit-pill-action',
+                            };
+                        @endphp
+                        <td><span class="audit-pill {{ $actionClass }}">{{ str_replace('_', ' ', ucfirst($history->action)) }}</span></td>
                         <td>{{ $history->field ? ucfirst($history->field) : '—' }}</td>
                         <td>{{ $history->old_value ?? '—' }}</td>
                         <td>{{ $history->new_value ?? '—' }}</td>

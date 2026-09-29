@@ -38,7 +38,7 @@
                         <td><span class="audit-pill audit-pill-type">{{ ucfirst($history->milling_type) }}</span></td>
                         <td><span class="audit-pill audit-pill-old">₱{{ number_format($history->old_fee, 2) }}/kg</span></td>
                         <td><span class="audit-pill audit-pill-new">₱{{ number_format($history->new_fee, 2) }}/kg</span></td>
-                        <td><span class="audit-muted">{{ \Carbon\Carbon::parse($history->changed_at)->format('M d, Y h:i A') }}</span></td>
+                        <td><span class="audit-muted">{{ \Carbon\Carbon::parse($history->changed_at)->format('M d, Y · g:i A') }}</span></td>
                     </tr>
                 @empty
                     <tr><td colspan="4" class="audit-empty">No milling fee history found for this filter.</td></tr>

@@ -51,4 +51,21 @@ class AppearanceSafetyTest extends TestCase
         auth()->logout();
         $this->get(route('appearance.edit'))->assertForbidden();
     }
+
+    public function test_professional_accent_themes_can_be_saved(): void
+    {
+        $owner = User::factory()->create(['role' => 'owner', 'is_active' => true]);
+
+        foreach (['olive', 'sage', 'palay'] as $theme) {
+            $this->actingAs($owner)
+                ->post(route('appearance.update'), [
+                    'theme_preference' => $theme,
+                    'display_mode' => 'system',
+                ])
+                ->assertRedirect()
+                ->assertSessionHasNoErrors();
+
+            $this->assertSame($theme, $owner->fresh()->theme_preference);
+        }
+    }
 }

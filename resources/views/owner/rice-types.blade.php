@@ -3,9 +3,9 @@
 @section('content')
 
 @php
-    $totalRiceTypes = $riceTypes->count();
-    $activeRiceTypes = $riceTypes->where('status', 'active')->count();
-    $inactiveRiceTypes = $riceTypes->where('status', 'inactive')->count();
+$totalRiceTypes = $riceTypes->count();
+$activeRiceTypes = $riceTypes->where('status', 'active')->count();
+$inactiveRiceTypes = $riceTypes->where('status', 'inactive')->count();
 @endphp
 
 <style>
@@ -15,193 +15,21 @@
         align-items: flex-start;
         gap: 16px;
         flex-wrap: wrap;
-        margin-bottom: 28px;
+        margin-bottom: 10px;
     }
 
     .page-title {
-        font-size: 2rem;
+        margin: 0 0 4px;
+        font-size: 1.65rem;
         font-weight: 800;
         color: #0f172a;
-        margin: 0 0 6px;
         line-height: 1.2;
     }
 
     .page-subtitle {
         color: #64748b;
-        font-size: 1rem;
         margin: 0;
-    }
-
-    .btn-main {
-        min-height: 42px;
-        border-radius: 10px;
-        padding: 9px 14px;
-        background: linear-gradient(135deg, #2f5d1e 0%, #3f7a28 100%);
-        border: none;
-        color: #fff;
-        font-size: .86rem;
-        font-weight: 800;
-        box-shadow: 0 8px 16px rgba(47, 93, 30, 0.16);
-    }
-
-    .btn-main:hover {
-        background: linear-gradient(135deg, #274d19 0%, #35671f 100%);
-        color: #fff;
-        transform: translateY(-1px);
-    }
-
-    .summary-card {
-        border: none;
-        border-radius: 22px;
-        padding: 22px 22px 20px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-        background: linear-gradient(135deg, #ffffff 0%, #f4faf3 100%);
-        height: 100%;
-        position: relative;
-        overflow: hidden;
-        border-top: 5px solid #15803d;
-    }
-
-    .summary-card.orange {
-        background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%);
-        border-top-color: #f59e0b;
-    }
-
-    .summary-card.gray {
-        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-        border-top-color: #64748b;
-    }
-
-    .summary-card::after {
-        content: "";
-        position: absolute;
-        right: -35px;
-        bottom: -35px;
-        width: 110px;
-        height: 110px;
-        border-radius: 50%;
-        background: rgba(47, 93, 30, 0.08);
-    }
-
-    .summary-card.orange::after {
-        background: rgba(245, 158, 11, 0.12);
-    }
-
-    .summary-card.gray::after {
-        background: rgba(100, 116, 139, 0.10);
-    }
-
-    .summary-top,
-    .summary-value,
-    .summary-note {
-        position: relative;
-        z-index: 1;
-    }
-
-    .summary-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 16px;
-    }
-
-    .summary-label {
-        font-size: 0.95rem;
-        color: #334155;
-        font-weight: 800;
-        margin: 0;
-    }
-
-    .summary-icon {
-        width: 46px;
-        height: 46px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        background: #eef6ea;
-        color: #2f5d1e;
-    }
-
-    .summary-card.orange .summary-icon {
-        background: #fff7ed;
-        color: #ea580c;
-    }
-
-    .summary-card.gray .summary-icon {
-        background: #eef2f7;
-        color: #475569;
-    }
-
-    .summary-icon svg {
-        width: 22px;
-        height: 22px;
-        stroke-width: 2.2;
-    }
-
-    .summary-value {
-        font-size: 2.15rem;
-        font-weight: 900;
-        color: #0f172a;
-        line-height: 1;
-        margin: 0 0 8px;
-    }
-
-    .summary-note {
-        color: #64748b;
-        font-size: 0.9rem;
-        margin: 0;
-    }
-
-    .section-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8fbf7 100%);
-        border: 1px solid #edf2f7;
-        border-radius: 24px;
-        padding: 24px;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-    }
-
-    .section-heading-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 14px;
-        margin-bottom: 18px;
-        flex-wrap: wrap;
-    }
-
-    .section-heading-row .section-subtitle {
-        margin-bottom: 0;
-    }
-
-    .history-link {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        color: #15803d;
-        font-size: 0.86rem;
-        font-weight: 800;
-        text-decoration: none;
-        min-height: 42px;
-        padding: 9px 14px;
-        border: 1px solid #bbd7c0;
-        border-radius: 10px;
-        background: #fff;
-        white-space: nowrap;
-    }
-
-    .history-link:hover {
-        color: #166534;
-        background: #f0fdf4;
-        text-decoration: none;
-    }
-
-    .history-link svg {
-        width: 17px;
-        height: 17px;
+        font-size: .9rem;
     }
 
     .page-actions {
@@ -211,101 +39,437 @@
         flex-wrap: wrap;
     }
 
-    .section-title {
-        font-size: 1.2rem;
-        font-weight: 900;
-        color: #111827;
-        margin-bottom: 8px;
+    .btn-main,
+    .history-link {
+        min-height: 38px;
+        padding: 8px 13px;
+        border-radius: 10px;
+        font-size: .875rem;
+        font-weight: 700;
+    }
+
+    .btn-main {
+        background: var(--user-accent, #15803d);
+        border: 1px solid var(--user-accent, #15803d);
+        color: #fff;
+    }
+
+    .btn-main:hover {
+        background: var(--user-accent-dark, #166534);
+        color: #fff;
+    }
+
+    .history-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        border: 1px solid #dce5df;
+        color: #166534;
+        text-decoration: none;
+    }
+
+    .history-link:hover {
+        background: #f0f7f2;
+        color: #14532d;
+    }
+
+    .page-actions svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .summary-card {
+        position: relative;
+        height: 100%;
+        padding: 14px 16px 12px;
+        border: none;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #ffffff 0%, #f4faf3 100%);
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        overflow: hidden;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        min-height: 124px;
+    }
+
+    .summary-card.green {
+        background: linear-gradient(135deg, #ffffff 0%, #f1faf2 100%);
+    }
+
+    .summary-card.orange {
+        background: linear-gradient(135deg, #ffffff 0%, #fffaf1 100%);
+    }
+
+    .summary-card.yellow {
+        background: linear-gradient(135deg, #ffffff 0%, #fffdf1 100%);
+    }
+
+    .summary-card.gray {
+        background: linear-gradient(135deg, #ffffff 0%, #f6f8fb 100%);
+    }
+
+    .summary-card:hover,
+    .summary-card:active {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 32px rgba(15, 23, 42, 0.10);
+    }
+
+    .summary-card::after {
+        content: "";
+        position: absolute;
+        right: -32px;
+        bottom: -32px;
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: rgba(47, 93, 30, 0.08);
+        z-index: 0;
+    }
+
+    .summary-card.orange::after {
+        background: rgba(245, 158, 11, 0.12);
+    }
+
+    .summary-card.yellow::after {
+        background: rgba(234, 179, 8, 0.12);
+    }
+
+    .summary-card.gray::after {
+        background: rgba(100, 116, 139, 0.1);
+    }
+
+    .summary-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .summary-label {
+        margin: 0;
+        font-size: 1.04rem;
+        font-weight: 800;
         line-height: 1.3;
+        color: #0f172a;
+    }
+
+    .summary-icon {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #eaf5eb;
+        color: #2e7d32;
+        position: relative;
+        z-index: 1;
+        flex-shrink: 0;
+    }
+
+    .summary-card.orange .summary-icon {
+        background: #fff1e3;
+        color: #f97316;
+    }
+
+    .summary-card.yellow .summary-icon {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .summary-card.gray .summary-icon {
+        background: #eef2f7;
+        color: #64748b;
+    }
+
+    .summary-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .main-content .summary-card .summary-value {
+        margin: 0;
+        font-size: 2.35rem;
+        font-weight: 900;
+        line-height: 1.1;
+        color: #0f172a;
+        font-variant-numeric: tabular-nums;
+        position: relative;
+        z-index: 1;
+    }
+
+    .summary-note {
+        margin: 10px 0 0;
+        font-size: 0.78rem;
+        color: #64748b;
+        line-height: 1.4;
+        position: relative;
+        z-index: 1;
+    }
+
+    .summary-unit {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #475569;
+    }
+
+    .section-card {
+        background: #fff;
+        border: 1px solid #e2e8e4;
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, .04);
+    }
+
+    .section-heading-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+    }
+
+    .section-heading-main { display: flex; align-items: flex-start; gap: 10px; }
+    .section-heading-icon { display: grid; place-items: center; width: 34px; height: 34px; flex: 0 0 34px; border-radius: 10px; background: var(--user-accent-soft, #ecfdf5); color: var(--user-accent-dark, #166534); }
+    .section-heading-icon svg { width: 17px; height: 17px; }
+    .rice-list-card { padding: 14px 16px; }
+    .rice-list-card .section-heading-row { margin-bottom: 8px; }
+    .rice-list-card .section-heading-icon { width: 30px; height: 30px; flex-basis: 30px; border-radius: 9px; }
+    .rice-list-card .section-heading-icon svg { width: 15px; height: 15px; }
+    .rice-list-card .section-title { font-size: 1.15rem; margin-bottom: 3px; }
+    .rice-list-card .section-subtitle { font-size: .84rem; }
+    .rice-list-card .list-count { padding: 6px 11px; align-self: flex-start; margin: 1px 32px 0 auto; border: 1px solid #dbe3ec; border-radius: 999px; background: #f8fafc; color: #64748b; }
+
+    .main-content .section-card .section-title {
+        font-size: 1.35rem;
+        font-weight: 900;
+        margin: 0 0 6px;
+        letter-spacing: -.015em;
+        color: #0f172a;
     }
 
     .section-subtitle {
+        margin: 0;
         color: #64748b;
-        font-size: 0.95rem;
-        margin-bottom: 20px;
+        font-size: .9rem;
+    }
+
+    .list-count {
+        padding: 6px 10px;
+        border: 1px solid #e2e8e4;
+        border-radius: 8px;
+        color: #64748b;
+        font-size: .75rem;
+        white-space: nowrap;
     }
 
     .rice-table {
         margin-bottom: 0;
+        min-width: 720px;
     }
 
     .rice-table thead th {
-        background: #f8fafc;
-        color: #334155;
-        font-size: 0.92rem;
-        font-weight: 800;
-        border-bottom: 1px solid #e5e7eb;
-        padding: 14px 16px;
+        padding: 12px 16px;
+        background: #f7f9f8;
+        color: #64748b;
+        font-size: .75rem;
+        font-weight: 700;
+        border-bottom: 1px solid #e2e8e4;
         white-space: nowrap;
     }
 
     .rice-table tbody td {
+        padding: 14px 12px;
+        font-size: .875rem;
         color: #334155;
-        font-size: 0.95rem;
-        padding: 14px 16px;
         vertical-align: middle;
-        border-bottom: 1px solid #eef2f7;
-    }
-
-    .rice-table tbody tr:hover {
-        background: #f8fafc;
+        border-bottom: 1px solid #edf1ee;
     }
 
     .rice-table tbody tr:last-child td {
-        border-bottom: none;
+        border-bottom: 0;
+    }
+
+    .rice-table tbody tr:hover>td {
+        background-color: #f8fbf8;
+    }
+
+    /* Modern visual treatment */
+    .summary-card {
+        border: none;
+        border-top: none;
+        border-radius: 18px;
+        padding: 14px 16px 12px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, .08);
+    }
+
+    .summary-card.green,
+    .summary-card.orange,
+    .summary-card.yellow,
+    .summary-card.gray { border-top: none; }
+    .summary-card::after { display: block; }
+    .summary-card:hover,
+    .summary-card:active { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(15, 23, 42, .08); }
+    .summary-icon { width: 42px; height: 42px; border-radius: 12px; }
+    .summary-icon { border: 0; box-shadow: none; }
+    .summary-card.green .summary-value,
+    .summary-card.gray .summary-value { color: #0f172a; }
+
+    .section-card {
+        border-radius: 14px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, .05);
+    }
+
+    .rice-table thead th { background: #f8fafc; color: #64748b; font-size: .82rem; font-weight: 800; }
+    .rice-table thead th:first-child { border-top-left-radius: 10px; }
+    .rice-table thead th:last-child { border-top-right-radius: 10px; }
+
+    .variety-cell {
+        display: flex;
+        align-items: center;
+        gap: 0;
+    }
+
+    .variety-icon {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        border: 1px solid #dfe9df;
+        background: #f4f8f2;
+        color: #527044;
+        border-radius: 10px;
+        box-shadow: none;
+    }
+
+    .variety-icon svg {
+        width: 16px;
+        height: 16px;
     }
 
     .rice-name {
-        font-weight: 800;
+        font-weight: 700;
+        color: #0f172a;
+        overflow-wrap: anywhere;
+        letter-spacing: -0.01em;
+    }
+
+    .rate-display {
+        width: 140px;
+        max-width: 100%;
+    }
+
+    .rate-value {
+        display: block;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        margin-bottom: 7px;
         color: #0f172a;
     }
 
-    .rate-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 8px 14px;
+    .rate-track {
+        height: 6px;
         border-radius: 999px;
-        background: #e8f9ef;
-        color: #15803d;
-        font-size: 0.88rem;
-        font-weight: 900;
-        white-space: nowrap;
+        background: #e9efea;
+        overflow: hidden;
+    }
+
+    .rate-fill {
+        display: block;
+        height: 100%;
+        background: linear-gradient(90deg, #7aa866 0%, #5e8d51 100%);
+        border-radius: inherit;
+    }
+
+    .rice-table .description-cell {
+        max-width: 280px;
+        color: #64748b;
+        overflow-wrap: anywhere;
     }
 
     .status-badge {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-        padding: 8px 14px;
+        gap: 6px;
+        padding: 5px 10px;
         border-radius: 999px;
-        font-size: 0.84rem;
-        font-weight: 800;
-        white-space: nowrap;
-    }
-
-    .status-active {
-        background: #dcfce7;
-        color: #15803d;
-    }
-
-    .status-inactive {
-        background: #eef2f7;
-        color: #475569;
-    }
-
-    .action-btn {
-        border-radius: 10px;
-        padding: 8px 14px;
+        font-size: .75rem;
         font-weight: 700;
         white-space: nowrap;
     }
 
+    .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    .status-active {
+        background: #edf8f0;
+        color: #187340;
+    }
+
+    .status-inactive {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    .rice-table .actions-cell {
+        text-align: center;
+        width: 165px;
+        min-width: 165px;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 10px;
+        width: 90px;
+        min-width: 90px;
+        min-height: 36px;
+        padding: 6px 10px;
+        font-size: .8125rem;
+        font-weight: 600;
+        justify-content: center;
+        white-space: nowrap;
+        border: 1px solid var(--user-accent, #15803d) !important;
+        background: #ffffff !important;
+        color: var(--user-accent-dark, #166534) !important;
+        transition: background .16s ease, border-color .16s ease, transform .16s ease;
+        margin-inline: auto;
+    }
+
+    .action-btn:hover { background: var(--user-accent-soft, #ecfdf5) !important; border-color: var(--user-accent-dark, #166534) !important; color: var(--user-accent-dark, #166534) !important; transform: translateY(-1px); }
+
+    .action-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
     .empty-state {
         text-align: center;
+        padding: 32px 16px;
         color: #64748b;
-        padding: 28px 16px;
-        font-size: 0.96rem;
+    }
+
+    html[data-theme="dark"] .variety-icon {
+        background: #20382d;
+        border-color: #365143;
+        color: #b6d9aa;
+    }
+
+    html[data-theme="dark"] .rate-track {
+        background: #35445a;
+    }
+
+    html[data-theme="dark"] .rate-fill {
+        background: #8ab87b;
+    }
+
+    html[data-theme="dark"] .list-count {
+        border-color: #35445a;
+        color: #b9c9df;
     }
 
     .modal-overlay {
@@ -317,6 +481,7 @@
         justify-content: center;
         z-index: 9999;
         padding: 18px;
+        backdrop-filter: blur(4px);
     }
 
     .modal-overlay.show {
@@ -325,11 +490,13 @@
 
     .modal-box {
         width: 100%;
-        max-width: 620px;
+        max-width: 680px;
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
         background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 18px;
-        padding: 24px;
+        border-radius: 22px;
+        padding: 26px 28px 24px;
         box-shadow: 0 22px 54px rgba(15, 23, 42, 0.22);
         animation: modalFade 0.2s ease;
     }
@@ -351,13 +518,13 @@
         justify-content: space-between;
         align-items: flex-start;
         gap: 16px;
-        margin-bottom: 18px;
+        margin-bottom: 14px;
         padding-bottom: 14px;
         border-bottom: 1px solid #eef2f7;
     }
 
     .modal-title-custom {
-        font-size: 1.35rem;
+        font-size: 1.5rem;
         font-weight: 800;
         color: #0f172a;
         margin: 0 0 4px;
@@ -365,7 +532,7 @@
 
     .modal-subtitle-custom {
         color: #64748b;
-        font-size: 0.88rem;
+        font-size: 0.92rem;
         margin: 0;
     }
 
@@ -407,9 +574,29 @@
         transition: 0.2s ease;
     }
 
+    .rice-type-name-input { text-transform: capitalize; }
+
+    .rate-input-wrap {
+        position: relative;
+    }
+
+    .rate-input-wrap .custom-input {
+        padding-right: 38px;
+    }
+
+    .rate-input-suffix {
+        position: absolute;
+        top: 50%;
+        right: 14px;
+        transform: translateY(-50%);
+        color: #64748b;
+        font-weight: 700;
+        pointer-events: none;
+    }
+
     .custom-textarea {
         min-height: 78px;
-        resize: vertical;
+        resize: none;
     }
 
     .custom-input:focus,
@@ -430,8 +617,11 @@
         background: #f0fdf4;
         border: 1px solid #86efac;
         border-radius: 11px;
-        padding: 12px 14px;
-        min-height: 72px;
+        padding: 13px 15px;
+        min-height: 76px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .preview-label {
@@ -452,7 +642,7 @@
         display: flex;
         justify-content: flex-end;
         gap: 10px;
-        margin-top: 18px;
+        margin-top: 14px;
         flex-wrap: wrap;
     }
 
@@ -535,9 +725,9 @@
     </div>
 </div>
 
-<div class="row g-4 mb-4">
+<div class="row g-3 mb-4">
     <div class="col-md-4">
-        <div class="summary-card">
+        <div class="summary-card green">
             <div class="summary-top">
                 <p class="summary-label">Total Rice Types</p>
                 <div class="summary-icon">
@@ -550,7 +740,7 @@
     </div>
 
     <div class="col-md-4">
-        <div class="summary-card orange">
+        <div class="summary-card green">
             <div class="summary-top">
                 <p class="summary-label">Active Rice Types</p>
                 <div class="summary-icon">
@@ -576,66 +766,80 @@
     </div>
 </div>
 
-<div class="section-card">
+<div class="section-card rice-list-card">
     <div class="section-heading-row">
-        <div>
-            <h2 class="section-title">Rice Type List</h2>
-            <p class="section-subtitle">Recovery rates are used to estimate milled rice output during delivery recording.</p>
+        <div class="section-heading-main">
+            <span class="section-heading-icon"><i data-lucide="list-checks"></i></span>
+            <div>
+                <h2 class="section-title">Rice Type List</h2>
+                <p class="section-subtitle">Manage varieties and the recovery rates used for delivery estimates.</p>
+            </div>
         </div>
+        <span class="list-count">{{ $totalRiceTypes }} {{ $totalRiceTypes === 1 ? 'variety' : 'varieties' }}</span>
     </div>
 
     <div class="table-responsive">
         <table class="table rice-table align-middle">
             <thead>
                 <tr>
-                    <th>Rice Type / Variety</th>
-                    <th>Recovery Rate (%)</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th scope="col">Rice variety</th>
+                    <th scope="col">Recovery rate</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="actions-cell">Actions</th>
                 </tr>
             </thead>
 
             <tbody>
                 @forelse($riceTypes as $riceType)
-                    <tr>
-                        <td class="rice-name">{{ $riceType->name }}</td>
+                @php
+                $rateWidth = min(max((float) $riceType->recovery_rate, 0), 100);
+                @endphp
+                <tr>
+                    <td>
+                        <div class="variety-cell">
+                            <span class="rice-name">{{ $riceType->name }}</span>
+                        </div>
+                    </td>
 
-                        <td>
-                            <span class="rate-badge">
-                                {{ number_format($riceType->recovery_rate, 2) }}%
-                            </span>
-                        </td>
+                    <td>
+                        <div class="rate-display">
+                            <span class="rate-value">{{ number_format($riceType->recovery_rate, 2) }}%</span>
+                            <div class="rate-track" aria-hidden="true">
+                                <span class="rate-fill" data-rate="{{ $rateWidth }}"></span>
+                            </div>
+                        </div>
+                    </td>
 
-                        <td>{{ $riceType->description ?? 'No description' }}</td>
+                    <td class="description-cell">{{ $riceType->description ?: 'No description added' }}</td>
 
-                        <td>
-                            <span class="status-badge {{ $riceType->status === 'active' ? 'status-active' : 'status-inactive' }}">
-                                {{ ucfirst($riceType->status) }}
-                            </span>
-                        </td>
+                    <td>
+                        <span class="status-badge {{ $riceType->status === 'active' ? 'status-active' : 'status-inactive' }}">
+                            {{ ucfirst($riceType->status) }}
+                        </span>
+                    </td>
 
-                        <td>
-                           <button
-    type="button"
-    class="btn btn-outline-success btn-sm action-btn"
-    onclick="openEditModal(this)"
-    data-id="{{ $riceType->id }}"
-    data-name="{{ $riceType->name }}"
-    data-recovery-rate="{{ $riceType->recovery_rate }}"
-    data-status="{{ $riceType->status }}"
-    data-description="{{ $riceType->description }}"
->
-    Edit
-</button>
-                        </td>
-                    </tr>
+                    <td class="actions-cell">
+                        <button
+                            type="button"
+                            class="btn btn-outline-success btn-sm action-btn"
+                            aria-label="Edit {{ $riceType->name }}"
+                            onclick="openEditModal(this)"
+                            data-id="{{ $riceType->id }}"
+                            data-name="{{ $riceType->name }}"
+                            data-recovery-rate="{{ $riceType->recovery_rate }}"
+                            data-status="{{ $riceType->status }}"
+                            data-description="{{ $riceType->description }}">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="5" class="empty-state">
-                            No rice types found.
-                        </td>
-                    </tr>
+                <tr>
+                    <td colspan="5" class="empty-state">
+                        No rice types found.
+                    </td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
@@ -662,33 +866,33 @@
                     <input
                         type="text"
                         name="name"
-                        class="form-control custom-input"
+                        class="form-control custom-input rice-type-name-input"
                         placeholder="Enter rice type name"
-                        required
-                    >
+                        required>
                 </div>
 
                 <div class="col-md-6">
                     <label class="field-label">Recovery Rate (%) *</label>
-                    <input
-                        type="number"
-                        step="0.01"
-                        min="0.01"
-                        max="100"
-                        id="addRecoveryRate"
-                        name="recovery_rate"
-                        class="form-control custom-input"
-                        placeholder="Enter recovery rate"
-                        required
-                    >
+                    <div class="rate-input-wrap">
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0.01"
+                            max="100"
+                            id="addRecoveryRate"
+                            name="recovery_rate"
+                            class="form-control custom-input"
+                            placeholder="Enter recovery rate"
+                            required>
+                        <span class="rate-input-suffix">%</span>
+                    </div>
                     <div class="help-text">Used to estimate milled rice output.</div>
                 </div>
 
                 <div class="col-md-6">
                     <label class="field-label">Status *</label>
                     <select name="status" class="form-select custom-select" required>
-                        <option value="">Select status</option>
-                        <option value="active">Active</option>
+                        <option value="active" selected>Active</option>
                         <option value="inactive">Inactive</option>
                     </select>
                 </div>
@@ -696,7 +900,7 @@
                 <div class="col-md-6">
                     <label class="field-label">Typical Milling Output Preview</label>
                     <div class="preview-box">
-                        <div class="preview-label">Based on 100 kg of palay</div>
+                        <div class="preview-label">Estimated output from 100 kg palay</div>
                         <div id="addPreviewOutput" class="preview-value">0.00 kg</div>
                     </div>
                 </div>
@@ -706,18 +910,17 @@
                     <textarea
                         name="description"
                         class="form-control custom-textarea"
-                        placeholder="Describe this rice type or variety"
-                    ></textarea>
+                        placeholder="Describe this rice type or variety"></textarea>
                 </div>
             </div>
 
             <div class="modal-actions">
-                <button type="submit" class="btn btn-save">
-                    Save Rice Type
-                </button>
-
                 <button type="button" class="btn btn-cancel" onclick="closeAddModal()">
                     Cancel
+                </button>
+
+                <button type="submit" class="btn btn-save">
+                    Save Rice Type
                 </button>
             </div>
         </form>
@@ -745,25 +948,26 @@
                         type="text"
                         id="editName"
                         name="name"
-                        class="form-control custom-input"
+                        class="form-control custom-input rice-type-name-input"
                         placeholder="Enter rice type name"
-                        required
-                    >
+                        required>
                 </div>
 
                 <div class="col-md-6">
                     <label class="field-label">Recovery Rate (%) *</label>
-                    <input
-                        type="number"
-                        step="0.01"
-                        min="0.01"
-                        max="100"
-                        id="editRecoveryRate"
-                        name="recovery_rate"
-                        class="form-control custom-input"
-                        placeholder="Enter recovery rate"
-                        required
-                    >
+                    <div class="rate-input-wrap">
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0.01"
+                            max="100"
+                            id="editRecoveryRate"
+                            name="recovery_rate"
+                            class="form-control custom-input"
+                            placeholder="Enter recovery rate"
+                            required>
+                        <span class="rate-input-suffix">%</span>
+                    </div>
                     <div class="help-text">Used to estimate milled rice output.</div>
                 </div>
 
@@ -778,7 +982,7 @@
                 <div class="col-md-6">
                     <label class="field-label">Typical Milling Output Preview</label>
                     <div class="preview-box">
-                        <div class="preview-label">Based on 100 kg of palay</div>
+                        <div class="preview-label">Estimated output from 100 kg palay</div>
                         <div id="editPreviewOutput" class="preview-value">0.00 kg</div>
                     </div>
                 </div>
@@ -789,18 +993,17 @@
                         id="editDescription"
                         name="description"
                         class="form-control custom-textarea"
-                        placeholder="Describe this rice type or variety"
-                    ></textarea>
+                        placeholder="No description added"></textarea>
                 </div>
             </div>
 
             <div class="modal-actions">
-                <button type="submit" class="btn btn-save">
-                    Save Changes
-                </button>
-
                 <button type="button" class="btn btn-cancel" onclick="closeEditModal()">
                     Cancel
+                </button>
+
+                <button type="submit" class="btn btn-save">
+                    Save Changes
                 </button>
             </div>
         </form>
@@ -883,6 +1086,11 @@
         if (event.target === editModal) {
             closeEditModal();
         }
+    });
+
+    document.querySelectorAll('.rate-fill').forEach(function(element) {
+        const rate = parseFloat(element.dataset.rate || 0);
+        element.style.width = rate + '%';
     });
 
     document.addEventListener('keydown', function(event) {

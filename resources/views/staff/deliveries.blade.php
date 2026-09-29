@@ -16,10 +16,11 @@
     }
 
     .page-title {
-        font-size: 2rem;
-        font-weight: 800;
+        font-size: 1.8rem;
+        font-weight: 900;
         color: #0f172a;
         margin: 0 0 6px;
+        line-height: 1.2;
     }
 
     .page-subtitle {
@@ -90,7 +91,10 @@
         font-size: 0.76rem;
     }
 
-    .queue-tab.active .queue-count { background: rgba(255,255,255,.18); color: #ffffff; }
+    .queue-tab.active .queue-count {
+        background: rgba(255, 255, 255, .18);
+        color: #ffffff;
+    }
 
     .filter-grid {
         display: grid;
@@ -107,8 +111,15 @@
         margin-bottom: 8px;
     }
 
-    .filter-control { min-height: 48px; border-radius: 12px; }
-    .filter-actions { display: flex; gap: 8px; }
+    .filter-control {
+        min-height: 48px;
+        border-radius: 12px;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 8px;
+    }
 
     .card-title {
         font-size: 1.15rem;
@@ -249,7 +260,9 @@
         justify-content: center;
     }
 
-    .row-actions form { margin: 0; }
+    .row-actions form {
+        margin: 0;
+    }
 
     .workflow-btn {
         border-radius: 10px;
@@ -295,43 +308,115 @@
         border-color: #facc15;
     }
 
-    .pagination-wrap { padding-top: 18px; }
+    .pagination-wrap {
+        padding-top: 18px;
+    }
 
     /* Shared compact module styling */
-    .page-header { margin-bottom: 18px; }
-    .page-title { font-size: 1.8rem; }
-    .page-subtitle { font-size: .92rem; }
-    .quick-btn { min-height: 44px; border-radius: 10px; padding: 9px 14px; }
+    .page-header {
+        margin-bottom: 14px;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+    }
+
+    .page-subtitle {
+        font-size: .92rem;
+    }
+
+    .quick-btn {
+        min-height: 44px;
+        border-radius: 10px;
+        padding: 9px 14px;
+    }
+
     .filter-card,
     .table-card {
         border: 1px solid #e3e9e1;
         border-radius: 20px;
         box-shadow: 0 10px 26px rgba(15, 23, 42, .06);
     }
-    .filter-card { padding: 14px 16px; margin-bottom: 16px; }
-    .table-card { padding: 18px; }
-    .queue-tabs { margin-bottom: 14px; }
-    .queue-tab { min-height: 38px; }
-    .filter-grid { gap: 12px; }
-    .filter-label { margin-bottom: 6px; }
-    .filter-control { min-height: 44px; border-radius: 11px; }
-    .soft-table tbody td { padding-top: 12px; padding-bottom: 12px; }
+
+    .filter-card {
+        padding: 14px 16px;
+        margin-bottom: 12px;
+    }
+
+    .table-card {
+        padding: 12px 14px;
+    }
+    .pagination-wrap { padding-top: 8px; margin-top: 8px; border-top: 1px solid #e5e7eb; }
+    .pagination-wrap .pagination { margin: 0; gap: 3px; }
+    .pagination-wrap .page-link { min-width: 32px; height: 32px; padding: 5px 8px; border-radius: 8px !important; border-color: #dbe3ec; color: var(--user-accent-dark, #166534); font-size: .82rem; text-align: center; }
+    .pagination-wrap .page-item.active .page-link { background: var(--user-accent, #15803d); border-color: var(--user-accent, #15803d); color: #fff; }
+    .pagination-wrap .page-item.disabled .page-link { color: #94a3b8; background: #f8fafc; }
+
+    .queue-tabs {
+        margin-bottom: 10px;
+    }
+
+    .queue-tab {
+        min-height: 38px;
+    }
+
+    .filter-grid {
+        gap: 12px;
+    }
+
+
+    .filter-label {
+        margin-bottom: 6px;
+    }
+
+    .filter-control {
+        min-height: 44px;
+        border-radius: 11px;
+    }
+
+    .soft-table thead th { padding: 10px 10px; font-size: .82rem; }
+    .soft-table tbody td { padding: 8px 10px; line-height: 1.25; }
+
+    .soft-table tbody tr {
+        transition: background-color .16s ease;
+    }
+
+    .soft-table tbody tr:hover {
+        background: #f4faf3;
+    }
+
     .soft-table .status-column,
     .soft-table .actions-column {
         text-align: center;
         vertical-align: middle;
     }
-    .soft-table .status-column { width: 165px; }
-    .soft-table .actions-column { width: 165px; }
-    .pagination-wrap { padding-top: 12px; }
+
+    .soft-table .status-column {
+        width: 165px;
+    }
+
+    .soft-table .actions-column {
+        width: 165px;
+    }
+
+    .pagination-wrap {
+        padding-top: 12px;
+    }
 
     @media (max-width: 1100px) {
-        .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .filter-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     @media (max-width: 700px) {
-        .filter-grid { grid-template-columns: 1fr; }
-        .filter-actions .filter-btn { flex: 1; }
+        .filter-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-actions .filter-btn {
+            flex: 1;
+        }
     }
 </style>
 
@@ -348,11 +433,11 @@
 
 <nav class="queue-tabs" aria-label="Delivery record view">
     <a href="{{ route('staff.deliveries', ['view' => 'active']) }}"
-       class="queue-tab {{ $selectedView === 'active' ? 'active' : '' }}">
+        class="queue-tab {{ $selectedView === 'active' ? 'active' : '' }}">
         Active Queue
     </a>
     <a href="{{ route('staff.deliveries', ['view' => 'history']) }}"
-       class="queue-tab {{ $selectedView === 'history' ? 'active' : '' }}">
+        class="queue-tab {{ $selectedView === 'history' ? 'active' : '' }}">
         Claimed History
     </a>
 </nav>
@@ -363,25 +448,25 @@
         <div>
             <label for="delivery-search" class="filter-label">Search Delivery</label>
             <input id="delivery-search" type="search" name="search" value="{{ request('search') }}"
-                   class="form-control filter-control" placeholder="Client name or delivery ID">
+                class="form-control filter-control" placeholder="Client name or delivery ID">
         </div>
 
         <div>
             <label for="delivery-date" class="filter-label">Delivery Date</label>
             <input id="delivery-date" type="date" name="date" value="{{ request('date') }}"
-                   class="form-control filter-control">
+                class="form-control filter-control">
         </div>
 
         <div>
             <label for="delivery-status" class="filter-label">Status</label>
             <select id="delivery-status" name="status" class="form-select filter-control">
                 @if($selectedView === 'active')
-                    <option value="">All Active Statuses</option>
-                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Processing</option>
-                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                <option value="">All Active Statuses</option>
+                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Processing</option>
+                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
                 @else
-                    <option value="claimed">Claimed</option>
+                <option value="claimed">Claimed</option>
                 @endif
             </select>
         </div>
@@ -402,7 +487,7 @@
     <h2 class="card-title">{{ $selectedView === 'active' ? 'Active Delivery Queue' : 'Claimed Delivery History' }}</h2>
     <p class="card-subtitle">
         {{ $selectedView === 'active'
-            ? 'Pending and processing deliveries follow First-Come, First-Served (FCFS) order.'
+            ? 'Prioritized by next required action, then First-Come, First-Served (FCFS) within each group.'
             : 'Released deliveries retained for payment, receipt, inventory, and audit reference.' }}
     </p>
 
@@ -423,16 +508,16 @@
             <tbody>
                 @forelse ($deliveries as $delivery)
                 @php
-                    $isPaid = $delivery->transaction?->payment_status === 'paid';
-                    $isNotified = $delivery->hasSuccessfulNotification();
-                    $displayStatus = match ($delivery->status) {
-                        'completed' => !$isNotified ? 'Awaiting Notification' : ($isPaid ? 'Ready for Claim' : 'Payment Required'),
-                        default => ucfirst($delivery->status),
-                    };
-                    $statusClass = match ($delivery->status) {
-                        'completed' => !$isNotified ? 'awaiting-notification' : ($isPaid ? 'ready-for-claim' : 'payment-required'),
-                        default => $delivery->status,
-                    };
+                $isPaid = $delivery->transaction?->payment_status === 'paid';
+                $isNotified = $delivery->hasSuccessfulNotification();
+                $displayStatus = match ($delivery->status) {
+                'completed' => !$isNotified ? 'Awaiting Notification' : ($isPaid ? 'Ready for Claim' : 'Payment Required'),
+                default => ucfirst($delivery->status),
+                };
+                $statusClass = match ($delivery->status) {
+                'completed' => !$isNotified ? 'awaiting-notification' : ($isPaid ? 'ready-for-claim' : 'payment-required'),
+                default => $delivery->status,
+                };
                 @endphp
                 <tr>
                     <td>
@@ -444,8 +529,8 @@
                         <div class="client-name">{{ $delivery->client_name }}</div>
                         <div class="sub-text">
                             <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}"
-                               class="delivery-link"
-                               title="View delivery details">
+                                class="delivery-link"
+                                title="View delivery details">
                                 {{ $delivery->delivery_id }}
                             </a>
                         </div>
@@ -475,50 +560,50 @@
                     <td class="actions-column">
                         <div class="row-actions">
                             @if($selectedView === 'active' && $delivery->status === 'completed' && !$isNotified)
-                                <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}"
-                                   class="btn btn-sm workflow-btn notify-btn">
-                                    Notify Farmer
-                                </a>
+                            <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}"
+                                class="btn btn-sm workflow-btn notify-btn">
+                                Notify Farmer
+                            </a>
                             @elseif($selectedView === 'active' && $delivery->status === 'completed' && !$isPaid)
-                                <a href="{{ route('staff.pos.create', $delivery) }}"
-                                   class="btn btn-sm workflow-btn payment-btn">
-                                    Record Payment
-                                </a>
+                            <a href="{{ route('staff.pos.create', $delivery) }}"
+                                class="btn btn-sm workflow-btn payment-btn">
+                                Record Payment
+                            </a>
                             @elseif($selectedView === 'active' && $delivery->status === 'completed' && $isPaid)
-                                <form method="POST" action="{{ route('staff.claim-delivery', $delivery->id) }}"
-                                      data-confirm-title="Mark as Claimed?"
-                                      data-confirm-message="Confirm that the milled rice has been released to the customer."
-                                      data-confirm-button="Mark as Claimed">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success btn-sm workflow-btn">
-                                        Mark Claimed
-                                    </button>
-                                </form>
+                            <form method="POST" action="{{ route('staff.claim-delivery', $delivery->id) }}"
+                                data-confirm-title="Mark as Claimed?"
+                                data-confirm-message="Confirm that the milled rice has been released to the customer."
+                                data-confirm-button="Mark as Claimed">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-sm workflow-btn">
+                                    Mark Claimed
+                                </button>
+                            </form>
                             @else
-                                <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}"
-                                   class="btn btn-outline-success btn-sm details-btn">
-                                    View
-                                </a>
+                            <a href="{{ url('/staff/delivery-details/' . $delivery->id) }}"
+                                class="btn btn-outline-success btn-sm details-btn">
+                                View
+                            </a>
                             @endif
                         </div>
                     </td>
                 </tr>
-               @empty
-<tr>
-    <td colspan="7" class="empty-state text-center">
-        <div style="padding: 30px 0;">
-            <strong>No deliveries found</strong><br>
-            <span class="sub-text">Try changing the filter or record a new delivery.</span>
-        </div>
-    </td>
-</tr>
-@endforelse
+                @empty
+                <tr>
+                    <td colspan="7" class="empty-state text-center">
+                        <div style="padding: 30px 0;">
+                            <strong>No deliveries found</strong><br>
+                            <span class="sub-text">Try changing the filter or record a new delivery.</span>
+                        </div>
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
 
     @if ($deliveries->hasPages())
-        <div class="pagination-wrap">{{ $deliveries->links() }}</div>
+    <div class="pagination-wrap">{{ $deliveries->links() }}</div>
     @endif
 </div>
 

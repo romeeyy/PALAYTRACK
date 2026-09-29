@@ -26,7 +26,7 @@ class StaffDeliveriesTest extends TestCase
         ]);
     }
 
-    public function test_staff_list_separates_active_queue_from_claimed_history_and_uses_fcfs(): void
+    public function test_staff_list_separates_history_and_prioritizes_next_action_then_fcfs(): void
     {
         $first = $this->delivery('DEL-FIRST1', 'First Client', 'pending', '2026-07-21 08:00:00', 1);
         $second = $this->delivery('DEL-SECOND', 'Second Client', 'processing', '2026-07-22 08:00:00', 1);
@@ -35,7 +35,7 @@ class StaffDeliveriesTest extends TestCase
         $this->actingAs($this->staff)
             ->get(route('staff.deliveries'))
             ->assertOk()
-            ->assertSeeInOrder([$first->delivery_id, $second->delivery_id])
+            ->assertSeeInOrder([$second->delivery_id, $first->delivery_id])
             ->assertDontSee('DEL-CLAIMD');
 
         $this->actingAs($this->staff)

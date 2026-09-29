@@ -141,7 +141,7 @@
 
     .claim-ticket-row {
         display: grid;
-        grid-template-columns: 42% 58%;
+        grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
         gap: 8px;
         align-items: baseline;
         min-height: 27px;
@@ -210,18 +210,24 @@
         font-weight: 600;
     }
 
-    @media print {
+</style>
+
+{{-- The driver shown as Printer 58 exposes a 48mm-wide page. --}}
+<style id="claim-ticket-print-layout" media="print">
         @page {
-            size: 80mm 170mm;
-            margin: 3mm;
+            /* Use the selected printer form; custom CSS heights can split the footer. */
+            size: auto;
+            margin: 0;
         }
 
         html,
         body {
-            width: 74mm !important;
-            min-width: 74mm !important;
+            width: 100% !important;
+            min-width: 0 !important;
             margin: 0 !important;
             padding: 0 !important;
+            height: auto !important;
+            min-height: 0 !important;
             background: #fff !important;
         }
 
@@ -236,9 +242,9 @@
         .main-content,
         .content {
             display: block !important;
-            width: 74mm !important;
-            min-width: 74mm !important;
-            max-width: 74mm !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            max-width: 48mm !important;
             min-height: 0 !important;
             margin: 0 !important;
             padding: 0 !important;
@@ -246,15 +252,18 @@
         }
 
         .claim-ticket-page {
-            width: 74mm !important;
-            max-width: 74mm !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+            width: 100% !important;
+            max-width: 48mm !important;
             margin: 0 !important;
         }
 
         .claim-ticket {
-            width: 74mm !important;
+            width: 100% !important;
             margin: 0 !important;
-            padding: 3mm 3.5mm 2.5mm !important;
+            padding: 4mm 3mm 3mm !important;
+            overflow: visible !important;
             border: 0 !important;
             border-radius: 0 !important;
             box-shadow: none !important;
@@ -266,10 +275,53 @@
         }
 
         .claim-ticket-rice-icon {
-            width: 9mm !important;
-            height: 11mm !important;
+            width: 6mm !important;
+            height: 8mm !important;
             color: #000 !important;
         }
+
+        .claim-ticket-brand-row { gap: 2mm; }
+
+        .claim-ticket .claim-ticket-mill {
+            margin: 0;
+            font-size: 12px;
+            letter-spacing: 0;
+        }
+
+        .claim-ticket-brand { font-size: 8px; }
+        .claim-ticket-title { margin-top: 6px; font-size: 15px; }
+        .claim-ticket-rule { margin: 7px 0; }
+        .claim-ticket-queue-label { font-size: 8px; margin-bottom: 3px; }
+        .claim-ticket-queue { padding: 4px; font-size: 30px; }
+        .claim-ticket-section-title {
+            margin-top: 8px;
+            padding-bottom: 3px;
+            font-size: 8px;
+        }
+
+        .claim-ticket-row {
+            gap: 4px;
+            min-height: 0;
+            padding: 3px 0;
+            font-size: 9px;
+            break-inside: avoid;
+        }
+
+        .claim-ticket-row strong { min-width: 0; font-size: 9px; }
+        .claim-ticket-estimate { margin-top: 8px; padding: 5px; }
+        .claim-ticket-estimate-label { font-size: 8px; }
+        .claim-ticket-estimate-value { font-size: 20px; }
+        .claim-ticket-estimate-note { font-size: 8px; }
+        .claim-ticket .claim-ticket-reminder {
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+            margin: 8px 0 0;
+            padding-top: 6px;
+            color: #000;
+            font-size: 8px;
+        }
+
+        .claim-ticket-reminder small { font-size: 8px; }
 
         .claim-ticket-mill,
         .claim-ticket-brand,
@@ -278,7 +330,6 @@
         .claim-ticket-reminder small {
             color: #000 !important;
         }
-    }
 </style>
 
 <div class="claim-ticket-actions no-print">

@@ -3,8 +3,13 @@
 @section('content')
 <style>
     .page-shell {
-        max-width: 820px;
-        margin: 0 auto;
+        max-width: 1100px;
+        margin: 18px auto 24px;
+        padding: 24px;
+        border: 1px solid #edf2f7;
+        border-radius: 24px;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fbf7 100%);
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
     }
 
     .page-header {
@@ -46,6 +51,7 @@
 
     .back-btn:hover { border-color:#2f5d1e; background:#f8fafc; color:#2f5d1e; }
 
+
     .staff-card {
         background: #ffffff;
         border: 1px solid #e2e8f0;
@@ -80,7 +86,7 @@
     .header-icon i { width:20px; height:20px; }
 
     .staff-card-body {
-        padding: 20px;
+        padding: 20px 20px 14px;
     }
 
     .form-group {
@@ -111,6 +117,29 @@
         box-shadow: 0 0 0 3px rgba(47, 93, 30, 0.10);
     }
 
+    .password-field { position: relative; }
+    .password-field .form-control-custom { padding-right: 46px; }
+    .password-field .form-control-custom::-ms-reveal,
+    .password-field .form-control-custom::-ms-clear,
+    .password-field .form-control-custom::-webkit-credentials-auto-fill-button { display:none !important; }
+    .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #64748b;
+        cursor: pointer;
+    }
+    .password-toggle:hover { color: #166534; }
+    .password-toggle i { width: 18px; height: 18px; }
+
     .input-error {
         border-color: #dc2626 !important;
         box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08) !important;
@@ -126,6 +155,12 @@
         color: #64748b;
         margin-top: 6px;
     }
+
+    .password-checklist { display: flex; flex-wrap: nowrap; gap: 5px 9px; margin-top: 6px; color: #64748b; font-size: .7rem; white-space: nowrap; }
+    .password-check { display: inline-flex; align-items: center; gap: 5px; }
+    .password-check::before { content: '○'; font-size: .9rem; color: #94a3b8; }
+    .password-check.valid { color: #15803d; }
+    .password-check.valid::before { content: '✓'; font-weight: 800; color: #15803d; }
 
     .password-warning {
         font-size: 0.82rem;
@@ -181,22 +216,10 @@
     .access-note i { width:17px; height:17px; color:#15803d; flex:0 0 auto; }
     .access-note strong { color:#166534; }
 
-    .show-passwords {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        color: #475569;
-        font-size: .8rem;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-    .show-passwords input { width:16px; height:16px; accent-color:#15803d; }
-
     .submit-btn {
         border: none;
         border-radius: 11px;
-        background: #15803d;
+        background: var(--user-accent, #168344);
         color: #fff;
         font-weight: 800;
         padding: 11px 18px;
@@ -238,7 +261,7 @@
         border-radius: 12px;
         font-size: 0.9rem;
         font-weight: 800;
-        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+        box-shadow: 0 12px 28px var(--user-accent-ring, rgba(15, 23, 42, 0.18));
         opacity: 0;
         visibility: hidden;
         transform: translateY(-10px);
@@ -250,6 +273,11 @@
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
+    }
+
+    @media (max-width: 700px) {
+        .password-checklist { flex-wrap: wrap; white-space: normal; }
+        .page-shell { margin: 12px 0 18px; padding: 16px; border-radius: 20px; }
     }
 </style>
 @include('partials.form-dark-mode')
@@ -277,7 +305,10 @@
         </div>
 
         <div class="staff-card-body">
-            <form id="staffForm" method="POST" action="{{ route('owner.staff-accounts.store') }}">
+            <form id="staffForm" method="POST" action="{{ route('owner.staff-accounts.store') }}"
+                data-confirm-title="Create staff account?"
+                data-confirm-message="Are you sure you want to create this staff account?"
+                data-confirm-button="Yes, Create Account">
                 @csrf
 
                 <div class="access-note">
@@ -322,14 +353,19 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="password" class="form-label form-label-custom">Password</label>
-                            <input
-                                type="password"
-                                name="password"
-                                id="password"
-                                class="form-control form-control-custom @error('password') is-invalid @enderror"
-                                placeholder="Enter password"
-                                required
-                            >
+                            <div class="password-field">
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    class="form-control form-control-custom @error('password') is-invalid @enderror"
+                                    placeholder="Enter password"
+                                    required
+                                >
+                                <button type="button" class="password-toggle" data-target="password" aria-label="Show password">
+                                    <i data-lucide="eye"></i>
+                                </button>
+                            </div>
                             @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             <div id="passwordLengthWarning" class="password-warning">
                                 Use at least 8 characters with a letter and a number.
@@ -337,21 +373,31 @@
                             <div id="passwordLengthSuccess" class="password-success">
                                 Password format is valid.
                             </div>
-                            <div class="password-note">Use at least 8 characters with letters and numbers.</div>
+                            <div class="password-checklist" aria-label="Password requirements">
+                                <span class="password-check" data-rule="length">8+ characters</span>
+                                <span class="password-check" data-rule="letter">A letter</span>
+                                <span class="password-check" data-rule="number">A number</span>
+                                <span class="password-check" data-rule="special">A special character</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="password_confirmation" class="form-label form-label-custom">Confirm Password</label>
-                            <input
-                                type="password"
-                                name="password_confirmation"
-                                id="password_confirmation"
-                                class="form-control form-control-custom @error('password') is-invalid @enderror"
-                                placeholder="Re-enter password"
-                                required
-                            >
+                            <div class="password-field">
+                                <input
+                                    type="password"
+                                    name="password_confirmation"
+                                    id="password_confirmation"
+                                    class="form-control form-control-custom @error('password') is-invalid @enderror"
+                                    placeholder="Re-enter password"
+                                    required
+                                >
+                                <button type="button" class="password-toggle" data-target="password_confirmation" aria-label="Show password">
+                                    <i data-lucide="eye"></i>
+                                </button>
+                            </div>
                             <div id="passwordMatchWarning" class="password-warning">
                                 Passwords do not match.
                             </div>
@@ -361,11 +407,6 @@
                         </div>
                     </div>
                 </div>
-
-                <label class="show-passwords">
-                    <input type="checkbox" id="showPasswords">
-                    <span>Show passwords</span>
-                </label>
 
                 <div class="form-actions">
                     <a href="{{ route('owner.staff-accounts') }}" class="cancel-btn">Cancel</a>
@@ -388,7 +429,6 @@
     const confirmPassword = document.getElementById('password_confirmation');
     const submitBtn = document.getElementById('submitBtn');
     const toastMessage = document.getElementById('toastMessage');
-    const showPasswords = document.getElementById('showPasswords');
 
     const passwordLengthWarning = document.getElementById('passwordLengthWarning');
     const passwordLengthSuccess = document.getElementById('passwordLengthSuccess');
@@ -398,8 +438,13 @@
     function validatePasswordFields() {
         const passwordValue = password.value;
         const confirmValue = confirmPassword.value;
+        const hasSpecialCharacter = /[^A-Za-z0-9]/.test(passwordValue);
 
-        const isLengthValid = passwordValue.length >= 8 && /[A-Za-z]/.test(passwordValue) && /\d/.test(passwordValue);
+        const isLengthValid = passwordValue.length >= 8 && /[A-Za-z]/.test(passwordValue) && /\d/.test(passwordValue) && hasSpecialCharacter;
+        document.querySelector('[data-rule="length"]').classList.toggle('valid', passwordValue.length >= 8);
+        document.querySelector('[data-rule="letter"]').classList.toggle('valid', /[A-Za-z]/.test(passwordValue));
+        document.querySelector('[data-rule="number"]').classList.toggle('valid', /\d/.test(passwordValue));
+        document.querySelector('[data-rule="special"]').classList.toggle('valid', hasSpecialCharacter);
         const isMatch = passwordValue === confirmValue && confirmValue.length > 0;
 
         password.classList.remove('input-error', 'input-success');
@@ -439,13 +484,27 @@
 
     password.addEventListener('input', validatePasswordFields);
     confirmPassword.addEventListener('input', validatePasswordFields);
-    showPasswords.addEventListener('change', function () {
-        const inputType = this.checked ? 'text' : 'password';
-        password.type = inputType;
-        confirmPassword.type = inputType;
+    document.querySelectorAll('.password-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function () {
+            const showing = password.type === 'text';
+            const inputType = showing ? 'password' : 'text';
+            password.type = inputType;
+            confirmPassword.type = inputType;
+            document.querySelectorAll('.password-toggle').forEach(function (button) {
+                button.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+                button.innerHTML = `<i data-lucide="${showing ? 'eye' : 'eye-off'}"></i>`;
+            });
+            if (window.lucide) lucide.createIcons();
+        });
     });
 
     staffForm.addEventListener('submit', function(event) {
+        // The shared confirmation modal handles the first submit attempt.
+        // Only show the progress feedback after the user confirms.
+        if (staffForm.dataset.confirmed !== 'true') {
+            return;
+        }
+
         if (!validatePasswordFields()) {
             event.preventDefault();
             return;

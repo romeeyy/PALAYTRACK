@@ -18,3 +18,22 @@ storage/framework/views/*
 tests
 *.log
 Thumbs.db
+
+# Local documents, generated diagrams, and temporary review artifacts
+output
+outputs
+tmp
+.agents
+.codex
+
+# Development metadata and machine-specific caches
+.phpunit.result.cache
+.phpunit.cache
+phpunit.xml
+README.md
+.editorconfig
+.gitattributes
+.gitignore
+bootstrap/cache/*.php
+database/*.sqlite
+database/*.sqlite-*

@@ -12,19 +12,26 @@
 </div>
 
 <div class="audit-card">
+    <div class="audit-card-header">
+        <div>
+            <h2>Change Log</h2>
+            <p>Track client profile and classification updates.</p>
+        </div>
+        <span class="audit-count">{{ $histories->total() }} {{ $histories->total() === 1 ? 'change' : 'changes' }}</span>
+    </div>
     <div class="audit-table-scroll">
         <table class="audit-table">
             <thead>
-                <tr><th>Date &amp; Time</th><th>Client</th><th>Field</th><th>Old Value</th><th>New Value</th><th>Owner</th></tr>
+                <tr><th>Date &amp; Time</th><th>Client</th><th>Field</th><th>Old Value</th><th>New Value</th><th>Changed By</th></tr>
             </thead>
             <tbody>
                 @forelse($histories as $item)
                     <tr>
-                        <td><span class="audit-muted">{{ $item->changed_at->format('M d, Y h:i A') }}</span></td>
+                        <td><span class="audit-muted">{{ $item->changed_at->format('M d, Y · g:i A') }}</span></td>
                         <td>{{ $item->client->name ?? 'Unknown' }}</td>
                         <td>{{ str_replace('_', ' ', ucfirst($item->field)) }}</td>
-                        <td>{{ $item->old_value ?? '—' }}</td>
-                        <td>{{ $item->new_value ?? '—' }}</td>
+                        <td><span class="audit-pill audit-pill-old audit-value">{{ $item->old_value ?? '—' }}</span></td>
+                        <td><span class="audit-pill audit-pill-new audit-value">{{ $item->new_value ?? '—' }}</span></td>
                         <td>{{ $item->owner->name ?? 'Owner' }}</td>
                     </tr>
                 @empty

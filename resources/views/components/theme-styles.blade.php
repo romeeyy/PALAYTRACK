@@ -3,6 +3,8 @@
     html[data-accent="classic"] {
         --user-accent: #168344;
         --user-accent-dark: #125f34;
+        --user-accent-soft: #eaf7ef;
+        --user-accent-ring: rgba(22, 131, 68, .20);
         --user-sidebar-start: #0f3d1c;
         --user-sidebar-main: #166534;
     }
@@ -10,6 +12,8 @@
     html[data-accent="forest"] {
         --user-accent: #356b3d;
         --user-accent-dark: #244c2a;
+        --user-accent-soft: #edf4ee;
+        --user-accent-ring: rgba(53, 107, 61, .22);
         --user-sidebar-start: #18351f;
         --user-sidebar-main: #294f2f;
     }
@@ -17,8 +21,37 @@
     html[data-accent="emerald"] {
         --user-accent: #059669;
         --user-accent-dark: #047857;
+        --user-accent-soft: #ecfdf5;
+        --user-accent-ring: rgba(5, 150, 105, .22);
         --user-sidebar-start: #064e3b;
         --user-sidebar-main: #047857;
+    }
+
+    html[data-accent="olive"] {
+        --user-accent: #6b7f2a;
+        --user-accent-dark: #4d5f1f;
+        --user-accent-soft: #f3f6e7;
+        --user-accent-ring: rgba(107, 127, 42, .23);
+        --user-sidebar-start: #29330f;
+        --user-sidebar-main: #53651f;
+    }
+
+    html[data-accent="sage"] {
+        --user-accent: #4f7d67;
+        --user-accent-dark: #385c4a;
+        --user-accent-soft: #edf5f0;
+        --user-accent-ring: rgba(79, 125, 103, .23);
+        --user-sidebar-start: #203a2f;
+        --user-sidebar-main: #416b57;
+    }
+
+    html[data-accent="palay"] {
+        --user-accent: #65a30d;
+        --user-accent-dark: #4d7c0f;
+        --user-accent-soft: #f7fee7;
+        --user-accent-ring: rgba(101, 163, 13, .23);
+        --user-sidebar-start: #365314;
+        --user-sidebar-main: #4d7c0f;
     }
 
     html[data-accent] .sidebar {
@@ -40,7 +73,8 @@
         .btn-main, .btn-print, .btn-filter, .add-btn,
         .submit-btn, .modal-save, .audit-button-primary,
         .system-confirm-submit:not(.danger),
-        .filter-btn:not(.btn-outline-secondary)
+        .filter-btn:not(.btn-outline-secondary),
+        .queue-tab.active, .tab.active
     ) {
         background: var(--user-accent) !important;
         border-color: var(--user-accent) !important;
@@ -64,7 +98,8 @@
         .btn-main, .btn-print, .btn-filter, .add-btn,
         .submit-btn, .modal-save, .audit-button-primary,
         .system-confirm-submit:not(.danger),
-        .filter-btn:not(.btn-outline-secondary)
+        .filter-btn:not(.btn-outline-secondary),
+        .queue-tab.active, .tab.active
     ):hover {
         background: var(--user-accent-dark) !important;
         border-color: var(--user-accent-dark) !important;
@@ -73,6 +108,23 @@
 
     html[data-accent] .avatar-small { background-color: var(--user-accent-dark) !important; }
 
+    html[data-accent] .main-content :is(.btn-outline-success,.details-btn) {
+        background: transparent !important;
+        border-color: var(--user-accent) !important;
+        color: var(--user-accent-dark) !important;
+    }
+
+    html[data-accent] .main-content :is(.btn-outline-success,.details-btn):hover {
+        background: var(--user-accent) !important;
+        border-color: var(--user-accent) !important;
+        color: #fff !important;
+    }
+
+    html[data-accent] .main-content .queue-tab:not(.active):hover {
+        background: var(--user-accent-soft) !important;
+        color: var(--user-accent-dark) !important;
+    }
+
     html[data-theme="dark"] {
         color-scheme: dark;
         --page-bg: #0f172a;
@@ -80,6 +132,39 @@
         --text-muted: #9fb0c5;
         --border-soft: #334155;
         --shadow-soft: 0 14px 35px rgba(0, 0, 0, .24);
+    }
+
+    html[data-theme="dark"][data-accent] .sidebar {
+        background: linear-gradient(155deg,
+            color-mix(in srgb, var(--user-accent-dark) 42%, #0b1220) 0%,
+            #111827 42%,
+            #0b1220 100%) !important;
+        border-color: #263449 !important;
+        box-shadow: 8px 0 28px rgba(0, 0, 0, .28) !important;
+    }
+
+    html[data-theme="dark"] .sidebar::after {
+        opacity: .08 !important;
+    }
+
+    html[data-theme="dark"] .sidebar .nav-link-custom {
+        color: #cbd5e1 !important;
+    }
+
+    html[data-theme="dark"] .sidebar .nav-link-custom:hover {
+        background: rgba(255, 255, 255, .08) !important;
+        color: #fff !important;
+    }
+
+    html[data-theme="dark"][data-accent] .sidebar .nav-link-custom.active {
+        background: color-mix(in srgb, var(--user-accent) 42%, #1e293b) !important;
+        color: #fff !important;
+        box-shadow: inset 3px 0 0 var(--user-accent), 0 6px 16px rgba(0, 0, 0, .16) !important;
+    }
+
+    html[data-theme="dark"] .sidebar :is(.nav-section-label,.sidebar-footer) {
+        color: #94a3b8 !important;
+        border-color: #334155 !important;
     }
 
     html[data-theme="dark"] :is(body,.main-content) {
@@ -220,6 +305,24 @@
         background-color: transparent !important;
         border-color: #35445a !important;
         color: #dce6f2 !important;
+        box-shadow: none !important;
+    }
+    html[data-theme="dark"] .main-content table {
+        --bs-table-bg: transparent;
+        --bs-table-accent-bg: transparent;
+        --bs-table-striped-bg: transparent;
+        --bs-table-hover-bg: transparent;
+        --bs-table-active-bg: transparent;
+    }
+    html[data-theme="dark"] .main-content .soft-table td.actions-column,
+    html[data-theme="dark"] .main-content .soft-table td.actions-column .row-actions {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    html[data-theme="dark"] .main-content .soft-table td.actions-column .details-btn {
+        background: transparent !important;
+        background-image: none !important;
+        box-shadow: none !important;
     }
     html[data-theme="dark"] .main-content thead th { background: #202c40 !important; color: #edf3fb !important; }
     html[data-theme="dark"] .main-content tbody tr:hover { background: #1d293b !important; }
@@ -293,9 +396,10 @@
         color: #cbd5e1 !important;
     }
 
-    html[data-theme="dark"] .main-content :is(.queue-tab.active,.tab.active,.nav-link.active) {
-        background: #26364d !important;
-        color: #dcfce7 !important;
+    html[data-theme="dark"][data-accent] .main-content :is(.queue-tab.active,.tab.active) {
+        background: var(--user-accent) !important;
+        border-color: var(--user-accent) !important;
+        color: #fff !important;
     }
 
     html[data-theme="dark"] .main-content .btn-outline-secondary {
@@ -347,13 +451,41 @@
 
     html[data-theme="dark"] .theme-choice,
     html[data-theme="dark"] .mode-choice { background: #111827 !important; border-color: #42516a !important; }
+    html[data-theme="dark"][data-accent] :is(.theme-option,.mode-option) input:checked + :is(.theme-choice,.mode-choice) {
+        background: color-mix(in srgb, var(--user-accent) 18%, #111827) !important;
+        border-color: var(--user-accent) !important;
+        box-shadow: 0 0 0 3px var(--user-accent-ring) !important;
+    }
     html[data-theme="dark"] .appearance-section + .appearance-section,
     html[data-theme="dark"] .appearance-actions { border-color: #35445a !important; }
 
-    /* Receipts stay paper-white on screen and when printed. */
-    html[data-theme="dark"] .thermal-receipt { background: #fff !important; color: #000 !important; }
-    html[data-theme="dark"] .thermal-receipt * { color: #000 !important; }
-    html[data-theme="dark"] .thermal-receipt [class$="-box"] { background: #fff !important; }
+    /* Receipts and claim tickets remain readable paper documents in dark mode. */
+    html[data-theme="dark"] .main-content .thermal-receipt,
+    html[data-theme="dark"] .main-content .claim-ticket {
+        background: #fff !important;
+        color: #111827 !important;
+        border-color: #94a3b8 !important;
+    }
+    html[data-theme="dark"] .main-content .thermal-receipt *,
+    html[data-theme="dark"] .main-content .claim-ticket * {
+        background-color: transparent !important;
+        background-image: none !important;
+        color: #111827 !important;
+        box-shadow: none !important;
+    }
+    html[data-theme="dark"] .main-content .thermal-receipt :is(.line,.total-box),
+    html[data-theme="dark"] .main-content .claim-ticket :is(.claim-ticket-rule,.claim-ticket-section-title,.claim-ticket-row,.claim-ticket-estimate,.claim-ticket-reminder) {
+        border-color: #334155 !important;
+    }
+    html[data-theme="dark"] .main-content .claim-ticket .claim-ticket-rice-icon {
+        color: var(--user-accent-dark) !important;
+    }
+    html[data-theme="dark"] .main-content .claim-ticket :is(.claim-ticket-mill,.claim-ticket-title,.claim-ticket-queue,.claim-ticket-estimate-value) {
+        color: #0f172a !important;
+    }
+    html[data-theme="dark"] .main-content .claim-ticket :is(.claim-ticket-brand,.claim-ticket-row span:first-child,.claim-ticket-estimate-note,.claim-ticket-reminder small) {
+        color: #475569 !important;
+    }
     html[data-theme="dark"] .receipt-preview-area { background: #111827 !important; }
 
     /* Printable report paper remains white even while its surrounding screen is dark. */

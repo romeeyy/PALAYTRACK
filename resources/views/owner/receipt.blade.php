@@ -167,71 +167,9 @@
         }
     }
 
-    @media print {
-
-        @page {
-            size: 80mm 210mm;
-            margin: 3mm;
-        }
-
-        html,
-        body {
-            width: 74mm !important;
-            min-width: 74mm !important;
-            background: white !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        .sidebar,
-        .topbar,
-        .receipt-page-header,
-        .btn,
-        .no-print {
-            display: none !important;
-        }
-
-        .app-wrapper,
-        .main-content,
-        .content,
-        .receipt-page,
-        .receipt-preview-area {
-            display: block !important;
-            width: 74mm !important;
-            min-width: 74mm !important;
-            max-width: 74mm !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: transparent !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
-        }
-
-        .thermal-wrapper {
-            width: 74mm !important;
-            max-width: 74mm !important;
-            transform: none !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
-            background: transparent !important;
-        }
-
-        .thermal-receipt {
-            border: none !important;
-            padding: 0 !important;
-            width: 100% !important;
-            box-shadow: none !important;
-        }
-
-        * {
-            color: #000 !important;
-            background: transparent !important;
-            box-shadow: none !important;
-        }
-    }
 </style>
+
+@include('components.receipt-print-styles')
 
 <div class="receipt-page">
 

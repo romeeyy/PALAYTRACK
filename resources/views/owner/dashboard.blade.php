@@ -4,14 +4,14 @@
 
 <style>
     .page-header {
-        margin-bottom: 28px;
+        margin-bottom: 16px;
     }
 
     .page-title {
         font-size: 2rem;
         font-weight: 800;
         color: #0f172a;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         line-height: 1.2;
     }
 
@@ -24,7 +24,7 @@
     .summary-card {
         border: none;
         border-radius: 22px;
-        padding: 22px 22px 20px;
+        padding: 18px 18px 16px;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
         height: 100%;
         position: relative;
@@ -88,7 +88,7 @@
         justify-content: space-between;
         align-items: flex-start;
         gap: 14px;
-        margin-bottom: 18px;
+        margin-bottom: 12px;
     }
 
     .summary-label {
@@ -144,6 +144,10 @@
         gap: 4px;
     }
 
+    .main-content .summary-card .summary-value {
+        font-weight: 900;
+    }
+
     .summary-unit {
         font-size: 0.98rem;
         color: #475569;
@@ -160,10 +164,10 @@
     }
 
     .insight-header {
-        margin-bottom: 18px;
+        margin-bottom: 14px;
     }
 
-    .insight-title {
+    .main-content .insight-card .insight-title {
         font-size: 1.35rem;
         font-weight: 900;
         color: #0f172a;
@@ -569,40 +573,42 @@
     </div>
 </div>
 
-<div class="section-header">
-    <h2 class="section-title">Analytics</h2>
-    <p class="section-subtitle">Production and operational insights.</p>
-</div>
+<section class="insight-card" aria-labelledby="analytics-title">
+    <div class="section-header">
+        <h2 id="analytics-title" class="insight-title">Analytics</h2>
+        <p class="section-subtitle">Production and operational insights.</p>
+    </div>
 
-<div class="row g-4">
-    <div class="col-lg-6">
-        <div class="card chart-card">
-            <div class="chart-card-header">
-                <h5>This Month Milled Rice Production</h5>
-                <p>Rice production overview for {{ now()->format('F Y') }}</p>
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card chart-card">
+                <div class="chart-card-header">
+                    <h5>This Month Milled Rice Production</h5>
+                    <p>Rice production overview for {{ now()->format('F Y') }}</p>
+                </div>
+                <div class="chart-card-body">
+                    <div class="chart-wrap">
+                        <canvas id="productionChart"></canvas>
+                    </div>
+                </div>
             </div>
-            <div class="chart-card-body">
-                <div class="chart-wrap">
-                    <canvas id="productionChart"></canvas>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card chart-card">
+                <div class="chart-card-header">
+                    <h5>This Month Delivery Status Distribution</h5>
+                    <p>Current status of deliveries received in {{ now()->format('F Y') }}</p>
+                </div>
+                <div class="chart-card-body">
+                    <div class="chart-wrap">
+                        <canvas id="deliveryChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="col-lg-6">
-        <div class="card chart-card">
-            <div class="chart-card-header">
-                <h5>This Month Delivery Status Distribution</h5>
-                <p>Current status of deliveries received in {{ now()->format('F Y') }}</p>
-            </div>
-            <div class="chart-card-body">
-                <div class="chart-wrap">
-                    <canvas id="deliveryChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+</section>
 
 <script id="revenue-trend-data" type="application/json">
     @json([
