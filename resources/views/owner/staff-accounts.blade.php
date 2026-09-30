@@ -63,11 +63,11 @@
     }
 
     .staff-card {
-        background: #fff;
-        border: 1px solid #e3e9e1;
+        background: linear-gradient(135deg, #f9fdf9 0%, #eaf5ec 100%);
+        border: 1px solid #b9d2bd;
         border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0 14px 35px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
     }
 
     .staff-filters {
@@ -77,8 +77,8 @@
         margin: 0 0 14px;
         padding: 14px 16px;
         align-items: center;
-        background: #fff;
-        border: 1px solid #e3e9e1;
+        background: #eef7f0;
+        border: 1px solid #cbdccf;
         border-radius: 16px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
     }
@@ -118,7 +118,7 @@
 
     .staff-card-header {
         padding: 18px 20px;
-        border-bottom: 1px solid #eef2f7;
+        border-bottom: 1px solid #cbdccf;
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
@@ -160,8 +160,8 @@
     }
 
     .table-custom th {
-        background: #f7f9f8;
-        color: #475569;
+        background: #edf5ef;
+        color: #244c2d;
         font-size: 0.8rem;
         font-weight: 900;
         padding: 12px 20px;
@@ -171,18 +171,18 @@
 
     .table-custom td {
         padding: 15px 20px;
-        border-bottom: 1px solid #f1f5f9;
+        border-bottom: 1px solid #dce9df;
         font-size: 0.88rem;
         color: #1f2937;
         vertical-align: middle;
     }
 
     .table-custom tbody tr:hover {
-        background: #f9fafb;
+        background: #e8f5ea;
     }
 
     .table-custom tbody tr:nth-child(even) {
-        background: #fcfdfc;
+        background: #f5fbf6;
     }
 
     .table-custom tbody tr:last-child td {
@@ -367,8 +367,8 @@
             <option value="active" {{ $status === 'active' ? 'selected' : '' }}>Active</option>
             <option value="inactive" {{ $status === 'inactive' ? 'selected' : '' }}>Inactive</option>
         </select>
-        <button class="filter-btn" type="submit"><i data-lucide="search"></i> Filter</button>
-        <a class="filter-reset" href="{{ route('owner.staff-accounts') }}">Reset</a>
+        <button class="filter-btn" type="submit"><i data-lucide="sliders-horizontal"></i> Filter</button>
+        <a class="filter-reset" href="{{ route('owner.staff-accounts') }}"><i data-lucide="rotate-ccw"></i> Reset</a>
     </form>
 
     <div class="staff-card">

@@ -5,10 +5,11 @@
 <style>
     .receipt-page {
         min-height: calc(100vh - 110px);
-        background: #ffffff;
+        background: linear-gradient(135deg, #ffffff 0%, #f2f8f3 100%);
         border-radius: 24px;
         padding: 28px;
-        box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+        border: 1px solid #d5e5d8;
+        box-shadow: 0 14px 35px rgba(24, 65, 35, 0.10);
     }
 
     .receipt-page-header {
@@ -60,7 +61,8 @@
         background: #ffffff;
         padding: 16px;
         border-radius: 18px;
-        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+        border: 1px solid #d5e5d8;
+        box-shadow: 0 18px 40px rgba(24, 65, 35, 0.16);
         font-family: "Courier New", monospace;
     }
 
@@ -177,7 +179,7 @@
             </a>
             @endif
 
-            <button onclick="window.print()" class="btn btn-success">
+            <button onclick="window.print()" class="btn btn-success btn-print">
                 Print Receipt
             </button>
         </div>

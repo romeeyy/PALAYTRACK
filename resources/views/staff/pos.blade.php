@@ -37,18 +37,18 @@
 
     .pos-card {
         background: linear-gradient(135deg, #ffffff 0%, #f7fbf5 100%);
-        border: 1px solid #e2e8f0;
+        border: 1px solid #cbdccf;
         border-radius: 18px;
         padding: 16px 18px;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.09);
         margin-bottom: 12px;
     }
 
     .pos-workspace {
         padding: 14px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid #cbdccf;
         border-radius: 22px;
-        background: linear-gradient(135deg, #eef6ea 0%, #f7fafc 55%, #eef6ea 100%);
+        background: linear-gradient(135deg, #f4faf5 0%, #eef7f0 55%, #f4faf5 100%);
     }
 
     .card-title {
@@ -80,8 +80,8 @@
     .custom-input,
     .custom-select,
     .custom-textarea {
-        border: 1px solid #e5e7eb;
-        background: #f8fafc;
+        border: 1px solid #d5e1d8;
+        background: #f7faf8;
         border-radius: 11px;
         min-height: 42px;
         padding: 8px 12px;
@@ -165,8 +165,8 @@
     .pricing-summary-note { color: #64748b; font-size: .78rem; line-height: 1.35; margin-top: 7px; }
 
     .summary-box {
-        background: #f8fafc;
-        border: 1px solid #e5e7eb;
+        background: #f5faf6;
+        border: 1px solid #cbdccf;
         border-radius: 14px;
         padding: 10px 14px;
     }

@@ -131,7 +131,21 @@
         padding: 24px;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
         height: auto;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
     }
+
+    .inventory-section-row > [class*="col-"] { display: flex; }
+    .inventory-section-row .section-card { width: 100%; height: 100%; }
+    .inventory-section-row .table-responsive { flex: 1 1 auto; display: flex; }
+    .inventory-section-row .inventory-table { height: 100%; display: flex; flex-direction: column; }
+    .inventory-section-row .inventory-table thead,
+    .inventory-section-row .inventory-table tbody { display: block; width: 100%; }
+    .inventory-section-row .inventory-table tbody { flex: 1 1 auto; display: flex; flex-direction: column; }
+    .inventory-section-row .inventory-table thead tr,
+    .inventory-section-row .inventory-table tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+    .inventory-section-row .inventory-table tbody tr:last-child { margin-top: auto; }
 
     .section-title {
         display: flex;
@@ -217,6 +231,35 @@
     .empty-state-content svg { width:22px; height:22px; color:#94a3b8; }
     .empty-state-content span { color:#64748b; }
 
+    .summary-card,
+    .section-card {
+        border-color: #cbdccf;
+        box-shadow: 0 14px 30px rgba(24, 65, 35, .10);
+    }
+
+    .summary-card {
+        background: linear-gradient(135deg, #fbfefb 0%, #eaf7ec 100%);
+    }
+
+    .summary-card.orange {
+        background: linear-gradient(135deg, #fffdf8 0%, #fff5dc 100%);
+        border-top-color: #d08b1d;
+    }
+
+    .section-card {
+        background: linear-gradient(135deg, #fbfefb 0%, #eef7f0 100%);
+    }
+
+    .inventory-table thead th {
+        background: #edf5ef;
+        border-bottom-color: #cbdccf;
+        color: #244c2d;
+    }
+
+    .inventory-table tbody tr:hover { background: #f0f8f1; }
+
+    .milled-total td { background: #fff6df; }
+
     .full-width-card {
         margin-top: 24px;
     }
@@ -271,7 +314,7 @@
     </div>
 </div>
 
-<div class="row g-4">
+<div class="row g-4 inventory-section-row">
     <div class="col-lg-6">
         <div class="section-card">
             <h2 class="section-title">

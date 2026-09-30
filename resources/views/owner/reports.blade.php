@@ -36,18 +36,18 @@
     }
 
     .report-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
+        background: linear-gradient(135deg, #ffffff 0%, #f3f9f4 100%);
+        border: 1px solid #cbdccf;
         border-radius: 20px;
         padding: 24px;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.09);
         margin-bottom: 18px;
     }
 
 
     .filter-card {
-        background: #f8fafc;
-        border: 1px solid #e5e7eb;
+        background: linear-gradient(135deg, #fbfefb 0%, #eaf5ec 100%);
+        border: 1px solid #cbdccf;
         border-radius: 18px;
         padding: 18px;
     }
@@ -194,10 +194,11 @@
     }
 
     .summary-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
+        background: linear-gradient(135deg, #ffffff 0%, #edf8ef 100%);
+        border: 1px solid #cbdccf;
         border-radius: 16px;
         padding: 16px;
+        box-shadow: 0 8px 18px rgba(24, 65, 35, .07);
     }
 
     .summary-label {
@@ -219,6 +220,10 @@
 
     .summary-orange {
         color: #ea580c;
+    }
+
+    .summary-card:has(.summary-orange) {
+        background: linear-gradient(135deg, #fffdf8 0%, #fff5dc 100%);
     }
 
     .section-head {
@@ -638,6 +643,7 @@
 
             <div>
                 <button type="submit" class="btn-main">
+                    <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
                     View Report
                 </button>
             </div>

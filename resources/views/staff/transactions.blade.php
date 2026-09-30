@@ -45,16 +45,16 @@
 
     .filter-panel {
         margin: 0 0 22px;
-        background: #f8faf9;
-        border: 1px solid #e3e9e2;
+        background: linear-gradient(135deg, #fbfefb 0%, #eef7f0 100%);
+        border: 1px solid #cbdccf;
         border-radius: 16px;
-        padding: 16px;
+        padding: 12px 14px;
     }
 
     .filter-grid {
         display: grid;
         grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(150px, 1fr)) auto;
-        gap: 12px;
+        gap: 9px;
         align-items: end;
     }
 
@@ -65,7 +65,7 @@
         font-size: 0.92rem;
         font-weight: 700;
         color: #475569;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
     }
 
     .filter-label i {
@@ -102,8 +102,8 @@
     .table-shell {
         background: #ffffff;
         border-radius: 24px;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-        border: 1px solid #edf2f7;
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.09);
+        border: 1px solid #cbdccf;
         overflow: hidden;
     }
 
@@ -115,7 +115,7 @@
         gap: 12px;
         flex-wrap: wrap;
         border-bottom: 1px solid #eef2f7;
-        background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
+        background: #ffffff;
     }
 
     .table-shell-title {
@@ -157,7 +157,8 @@
         font-weight: 800;
         padding-top: 16px;
         padding-bottom: 16px;
-        background: #ffffff;
+        background: #edf5ef;
+        color: #244c2d;
         white-space: nowrap;
     }
 
@@ -178,6 +179,10 @@
     .custom-table tbody tr:nth-child(even) {
         background: #fcfefd;
     }
+
+    .table-wrap { border-radius: 14px; overflow-x: auto; }
+    .custom-table thead th:first-child { border-top-left-radius: 14px; }
+    .custom-table thead th:last-child { border-top-right-radius: 14px; }
 
     .receipt-code {
         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -356,7 +361,6 @@
         <div class="filter-grid">
             <div>
                 <label for="search" class="filter-label">
-                    <i data-lucide="search"></i>
                     Search Transactions
                 </label>
                 <input id="search" type="search" name="search" value="{{ $search }}"
@@ -365,7 +369,6 @@
 
             <div>
                 <label for="date" class="filter-label">
-                    <i data-lucide="calendar-days"></i>
                     Filter by Date
                 </label>
 
@@ -379,7 +382,6 @@
 
             <div>
                 <label for="milling_type" class="filter-label">
-                    <i data-lucide="sliders-horizontal"></i>
                     Milling Type
                 </label>
 
@@ -395,7 +397,6 @@
 
             <div>
                 <label for="payment_method" class="filter-label">
-                    <i data-lucide="wallet-cards"></i>
                     Payment Method
                 </label>
                 <select id="payment_method" name="payment_method" class="form-select filter-select">
@@ -408,7 +409,7 @@
 
             <div class="filter-actions">
                 <button type="submit" class="btn btn-success filter-btn">
-                    <i data-lucide="search"></i>
+                    <i data-lucide="sliders-horizontal"></i>
                     Filter
                 </button>
                 <a href="{{ route('staff.transactions', ['date' => now()->toDateString()]) }}"

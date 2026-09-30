@@ -200,11 +200,11 @@
             height: 58px;
             padding: 0 14px;
             margin-bottom: 18px;
-            background: rgba(255, 255, 255, 0.72);
+            background: linear-gradient(135deg, rgba(255,255,255,.94) 0%, rgba(239,248,241,.94) 100%);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(229, 231, 235, 0.9);
+            border: 1px solid rgba(185, 210, 189, 0.9);
             border-radius: 18px;
-            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+            box-shadow: 0 12px 28px rgba(24, 65, 35, 0.10);
             position: relative;
             z-index: 9999;
             overflow: visible;
@@ -216,6 +216,19 @@
             gap: 10px;
             position: relative;
             z-index: 10000;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #d5e1d8;
+            border-radius: 12px;
+            background: #fff;
+            color: #276b16;
+            cursor: pointer;
         }
 
         .top-icon-btn {
@@ -356,28 +369,66 @@
         }
 
         @media (max-width: 768px) {
-            .app-wrapper {
-                display: block;
+            body { overflow-x: hidden; }
+            .app-wrapper { display: block; }
+            .sidebar {
+                position: fixed;
+                inset: 0 auto 0 0;
+                z-index: 1200;
+                width: min(82vw, 300px);
+                min-height: 100dvh;
+                max-height: 100dvh;
+                border-radius: 0 20px 20px 0;
+                transform: translateX(-105%);
+                transition: transform .22s ease;
+                overflow-y: auto;
             }
 
-            .sidebar {
-                position: relative;
-                top: 0;
-                left: 0;
-                width: 100%;
-                min-height: auto;
-                border-radius: 0;
+            .sidebar.mobile-open { transform: translateX(0); }
+            .sidebar-backdrop {
+                position: fixed;
+                inset: 0;
+                z-index: 1100;
+                display: block;
+                background: rgba(15, 23, 42, .42);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity .22s ease;
             }
+            .sidebar-backdrop.show { opacity: 1; pointer-events: auto; }
 
             .main-content {
                 margin-left: 0;
-                padding: 18px;
+                width: 100%;
+                padding: 12px;
             }
 
             .topbar {
-                height: 54px;
-                margin-bottom: 16px;
+                height: 58px;
+                margin-bottom: 14px;
+                padding: 8px 10px;
             }
+
+            .mobile-menu-toggle { display: inline-flex; position: absolute; left: 10px; }
+            .topbar-actions { gap: 8px; }
+            .main-content h1, .main-content .h1 { font-size: clamp(1.65rem, 7vw, 2.2rem); }
+            .main-content h2, .main-content .h2 { font-size: clamp(1.3rem, 5.5vw, 1.75rem); }
+            .page-header { gap: 10px; flex-wrap: wrap; }
+            .filter-card, .report-card, .section-card, .form-card, .operations-card { padding: 16px !important; }
+            .table-responsive, .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .notification-menu, .profile-menu { max-width: calc(100vw - 24px); }
+        }
+
+        @media (max-width: 480px) {
+            .main-content { padding: 8px; }
+            .topbar { border-radius: 16px; }
+            .main-content h1, .main-content .h1 { font-size: 1.55rem; }
+            .page-header .btn, .page-header a.btn { width: 100%; }
+            .filter-card .btn, .filter-card button { min-height: 44px; }
+            .table-responsive table, .table-scroll table { min-width: 700px; }
+        }
+        @media (min-width: 769px) {
+            .sidebar-backdrop { display: none; }
         }
     </style>
 </head>
@@ -439,10 +490,14 @@
                 Internal rice mill management system
             </div>
         </aside>
+        <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
 
         <main class="main-content">
             <header class="topbar">
                 <div class="topbar-actions">
+                    <button class="mobile-menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" onclick="toggleSidebar()">
+                        <i data-lucide="menu"></i>
+                    </button>
                     @include('components.notification-center')
 
                     <div class="profile-dropdown">
@@ -502,6 +557,19 @@
         function toggleProfileMenu() {
             document.getElementById('profileMenu').classList.toggle('show');
         }
+
+        function toggleSidebar(force) {
+            const sidebar = document.querySelector('.sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const button = document.querySelector('.mobile-menu-toggle');
+            const open = typeof force === 'boolean' ? force : !sidebar.classList.contains('mobile-open');
+            sidebar.classList.toggle('mobile-open', open);
+            backdrop.classList.toggle('show', open);
+            button?.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+
+        document.getElementById('sidebarBackdrop')?.addEventListener('click', () => toggleSidebar(false));
+        document.querySelectorAll('.sidebar .nav-link-custom').forEach(link => link.addEventListener('click', () => toggleSidebar(false)));
 
         document.addEventListener('click', function(event) {
             const dropdown = document.querySelector('.profile-dropdown');

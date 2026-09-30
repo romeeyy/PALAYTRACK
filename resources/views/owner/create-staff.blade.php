@@ -6,10 +6,10 @@
         max-width: 1100px;
         margin: 18px auto 24px;
         padding: 24px;
-        border: 1px solid #edf2f7;
+        border: 1px solid #b9d2bd;
         border-radius: 24px;
-        background: linear-gradient(135deg, #ffffff 0%, #f8fbf7 100%);
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+        background: linear-gradient(135deg, #f9fdf9 0%, #eaf5ec 100%);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
     }
 
     .page-header {
@@ -53,17 +53,17 @@
 
 
     .staff-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
+        background: #f9fdf9;
+        border: 1px solid #cbdccf;
         border-radius: 18px;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 12px 28px rgba(24, 65, 35, 0.09);
         overflow: hidden;
     }
 
     .staff-card-header {
         padding: 17px 20px;
-        border-bottom: 1px solid #eef2f7;
-        background: #f8fbf8;
+        border-bottom: 1px solid #cbdccf;
+        background: #edf7ef;
         display: flex;
         align-items: center;
         gap: 14px;
@@ -103,8 +103,8 @@
     .form-control-custom {
         border-radius: 11px;
         min-height: 46px;
-        border: 1px solid #d1d5db;
-        background: #ffffff;
+        border: 1px solid #cbdccf;
+        background: #f4faf5;
         padding: 11px 13px;
         font-size: 0.92rem;
         color: #111827;

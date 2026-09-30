@@ -44,11 +44,11 @@
     }
 
     .section-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
+        background: linear-gradient(135deg, #f9fdf9 0%, #eaf5ec 100%);
+        border: 1px solid #b9d2bd;
         border-radius: 16px;
         padding: 16px 18px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
         margin-bottom: 14px;
     }
 
@@ -158,9 +158,9 @@
         grid-column: 1 / -1;
         margin-top: 3px;
         padding: 9px 12px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid #cbdccf;
         border-radius: 12px;
-        background: #f8fafc;
+        background: #f4faf5;
     }
 
     .status-badge {
@@ -197,8 +197,8 @@
     .custom-input,
     .custom-select,
     .custom-textarea {
-        border: 1px solid #e5e7eb;
-        background: #f8fafc;
+        border: 1px solid #cbdccf;
+        background: #f4faf5;
         border-radius: 11px;
         min-height: 44px;
         padding: 10px 13px;
@@ -798,7 +798,7 @@
         </p>
     </div>
 
-    <a href="/staff/deliveries" class="btn btn-outline-secondary back-btn">
+    <a href="{{ route('staff.deliveries', ['view' => request('view', 'active')]) }}" class="btn btn-outline-secondary back-btn">
         <i data-lucide="arrow-left"></i>
         Back to Deliveries
     </a>
@@ -1310,6 +1310,15 @@
     </div>
 </div>
 </div>
+
+<script>
+    // Close the native date/time picker after a date is selected (including Today).
+    document.querySelectorAll('input[type="datetime-local"]').forEach(function (input) {
+        input.addEventListener('change', function () {
+            window.requestAnimationFrame(function () { input.blur(); });
+        });
+    });
+</script>
 
 @include('partials.field-validation-focus')
 @endsection

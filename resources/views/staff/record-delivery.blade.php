@@ -8,40 +8,43 @@
         margin: 0 auto;
     }
 
-    .form-page-header { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
+    .form-page-header { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:12px; }
 
     .back-btn {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        padding: 10px 16px;
-        border: 1px solid #d1d5db;
-        border-radius: 12px;
+        gap: 8px;
+        min-height: 40px;
+        padding: 8px 13px;
+        border: 1px solid color-mix(in srgb, var(--user-accent, #168344) 28%, #d1d5db);
+        border-radius: 10px;
         background: #ffffff;
-        color: #111827;
+        color: var(--user-accent-dark, #166534);
         text-decoration: none;
-        font-weight: 600;
+        font-size: .88rem;
+        font-weight: 800;
         transition: all 0.2s ease;
     }
 
     .back-btn:hover {
-        background: #f8fafc;
-        color: #111827;
+        background: var(--user-accent-soft, #f8fafc);
+        border-color: var(--user-accent, #168344);
+        color: var(--user-accent-dark, #166534);
     }
 
     .form-card {
-        background: #ffffff;
-        border: none;
+        background: linear-gradient(135deg, #ffffff 0%, #f4faf5 100%);
+        border: 1px solid #d5e5d8;
         border-radius: 18px;
         padding: 20px 22px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.09);
     }
 
-    .form-card .row { --bs-gutter-y: 1rem; }
+    .form-card .row { --bs-gutter-y: .75rem; }
     .form-card .mt-4 { margin-top: 1rem !important; }
 
     .form-title {
-        font-size: 1.8rem;
+        font-size: 1.7rem;
         font-weight: 800;
         color: #0f172a;
         margin-bottom: 8px;
@@ -50,7 +53,7 @@
 
     .form-subtitle {
         color: #64748b;
-        font-size: 1rem;
+        font-size: .95rem;
         margin: 0;
     }
 
@@ -61,11 +64,13 @@
         margin-bottom: 6px;
     }
 
+    .required-mark { color: var(--user-accent-dark, #166534); font-weight: 900; margin-left: 2px; }
+
     .custom-input,
     .custom-select,
     .custom-textarea {
-        border: 1px solid #e5e7eb;
-        background: #f8fafc;
+        border: 1px solid #d5e1d8;
+        background: #f7faf8;
         border-radius: 11px;
         min-height: 44px;
         padding: 10px 13px;
@@ -75,7 +80,7 @@
 
     .custom-textarea {
         min-height: 64px;
-        resize: vertical;
+        resize: none;
     }
 
     .custom-input:focus,
@@ -95,12 +100,12 @@
 
     .estimate-box {
         margin-top: 4px;
-        background: #f0fdf4;
-        border: 1px solid #22c55e;
+        background: linear-gradient(135deg, #effcf2 0%, #e2f7e8 100%);
+        border: 1px solid #38b866;
         border-radius: 12px;
         padding: 12px 14px;
         display: grid;
-        grid-template-columns: auto auto minmax(240px, 1fr);
+        grid-template-columns: auto auto auto minmax(240px, 1fr);
         align-items: center;
         gap: 14px;
     }
@@ -111,6 +116,9 @@
         color: #334155;
         margin-bottom: 0;
     }
+
+    .estimate-icon { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; background: var(--user-accent-soft, #eaf7ef); color: var(--user-accent-dark, #166534); }
+    .estimate-icon svg { width: 17px; height: 17px; }
 
     .estimate-value {
         font-size: 1.65rem;
@@ -130,16 +138,16 @@
         min-height: 44px;
         border-radius: 10px;
         padding: 9px 16px;
-        background: linear-gradient(135deg, #2f5d1e 0%, #3f7a28 100%);
+        background: var(--user-accent, #168344);
         border: none;
         color: #fff;
         font-weight: 700;
-        box-shadow: 0 10px 18px rgba(47, 93, 30, 0.18);
+        box-shadow: 0 10px 18px var(--user-accent-ring, rgba(47, 93, 30, 0.18));
         transition: all 0.2s ease;
     }
 
     .btn-main:hover {
-        background: linear-gradient(135deg, #274d19 0%, #35671f 100%);
+        background: var(--user-accent-dark, #125f34);
         color: #fff;
         transform: translateY(-1px);
     }
@@ -233,7 +241,7 @@
     @csrf
             <div class="row g-4">
                 <div class="col-md-6">
-                    <label class="field-label">Client / Palay Owner Name *</label>
+                    <label class="field-label">Client / Palay Owner Name <span class="required-mark" aria-hidden="true">*</span></label>
                     <input
                         type="text"
                         name="client_name"
@@ -248,7 +256,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="field-label">Contact Number *</label>
+                    <label class="field-label">Contact Number <span class="required-mark" aria-hidden="true">*</span></label>
                     <input
                         type="text"
                         name="contact_number"
@@ -265,7 +273,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="field-label">Rice Type / Variety *</label>
+                    <label class="field-label">Rice Type / Variety <span class="required-mark" aria-hidden="true">*</span></label>
                     <select id="riceType" name="rice_type_id" class="form-select custom-select" required>
                         <option value="" selected disabled>Select rice type</option>
                         @foreach($riceTypes as $riceType)
@@ -277,7 +285,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="field-label">Number of Sacks *</label>
+                    <label class="field-label">Number of Sacks <span class="required-mark" aria-hidden="true">*</span></label>
                     <input
                         type="number"
                         name="sacks"
@@ -291,20 +299,25 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="field-label">Total Weight of Palay (kg) *</label>
+                    <label class="field-label">Total Weight of Palay (kg) <span class="required-mark" aria-hidden="true">*</span></label>
                     <input
                         id="palayWeight"
                         type="number"
                         step="0.01"
+                        min="1"
                         name="palay_weight"
-                        class="form-control custom-input"
+                        value="{{ old('palay_weight') }}"
+                        class="form-control custom-input @error('palay_weight') is-invalid @enderror"
                         placeholder="Enter weight in kg"
                         required
                     >
+                    @error('palay_weight')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="col-md-6">
-                    <label class="field-label">Recovery Rate (%) *</label>
+                    <label class="field-label">Recovery Rate (%) <span class="required-mark" aria-hidden="true">*</span></label>
                     <input
                         id="recoveryRate"
                         type="number"
@@ -319,6 +332,7 @@
 
                 <div class="col-12">
                     <div class="estimate-box">
+                        <div class="estimate-icon" aria-hidden="true"><i data-lucide="calculator"></i></div>
                         <div class="estimate-label">Estimated Output</div>
                         <div id="estimatedRice" class="estimate-value">0.00 kg</div>
                         <div class="estimate-note">Automatically calculated based on palay weight and recovery rate.</div>
@@ -336,13 +350,13 @@
             </div>
 
             <div class="d-flex gap-3 mt-4 flex-wrap">
-                <button type="submit" class="btn btn-main">
-                    Submit & Generate Claim Stub
-                </button>
-
                 <a href="/staff/deliveries" class="btn btn-cancel">
                     Cancel
                 </a>
+
+                <button type="submit" class="btn btn-main">
+                    Submit & Generate Claim Stub
+                </button>
             </div>
         </form>
     </div>

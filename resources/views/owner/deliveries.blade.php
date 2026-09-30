@@ -48,6 +48,8 @@
         margin-bottom: 18px;
     }
 
+    .table-card { margin-top: 10px; }
+
     .queue-tabs {
         display: inline-flex;
         gap: 4px;
@@ -144,7 +146,9 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: 7px;
     }
+    .filter-btn svg { width: 17px; height: 17px; stroke-width: 2.2; }
 
     .queue-badge {
         padding: 6px 12px;
@@ -289,6 +293,51 @@
     .soft-table .actions-column { width: 165px; }
     .pagination-wrap { padding-top: 12px; }
 
+    .filter-card,
+    .table-card {
+        background: linear-gradient(135deg, #fbfefb 0%, #eef7f0 100%);
+        border-color: #cbdccf;
+        box-shadow: 0 14px 30px rgba(24, 65, 35, .09);
+    }
+
+    .queue-tabs {
+        background: #f7fbf7;
+        border-color: #cbdccf;
+        box-shadow: 0 6px 14px rgba(24, 65, 35, .08);
+    }
+
+    .soft-table thead th {
+        background: #edf5ef;
+        color: #244c2d;
+    }
+
+    .soft-table tbody tr:hover { background: #f0f8f1; }
+
+    .table-card .soft-table tbody td { background: rgba(255, 255, 255, .42); }
+    .table-card .soft-table tbody tr:nth-child(even) td { background: rgba(245, 251, 246, .72); }
+    .table-card .soft-table tbody tr:hover td { background: #e8f5ea; }
+
+    .empty-state {
+        padding: 28px 20px;
+        background: rgba(255, 255, 255, .48);
+    }
+
+    .table-card .table-responsive {
+        border-radius: 14px;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .table-card .soft-table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .table-card .soft-table thead th:first-child { border-top-left-radius: 14px; }
+    .table-card .soft-table thead th:last-child { border-top-right-radius: 14px; }
+    .table-card .soft-table tbody tr:last-child td:first-child { border-bottom-left-radius: 14px; }
+    .table-card .soft-table tbody tr:last-child td:last-child { border-bottom-right-radius: 14px; }
+
     @media (max-width: 1100px) {
         .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -352,10 +401,12 @@
 
         <div class="filter-actions">
             <button type="submit" class="btn btn-success filter-btn">
+                <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
                 Filter
             </button>
 
             <a href="{{ route('owner.deliveries', ['view' => $selectedView]) }}" class="btn btn-outline-secondary filter-btn">
+                <i data-lucide="rotate-ccw" aria-hidden="true"></i>
                 Reset
             </a>
         </div>
@@ -435,7 +486,7 @@
                         </td>
 
                         <td class="actions-column">
-                            <a href="{{ url('/owner/delivery-details/' . $delivery->id) }}"
+                            <a href="{{ url('/owner/delivery-details/' . $delivery->id) }}?view={{ $selectedView }}"
                                class="btn btn-outline-success btn-sm details-btn">
                                 View
                             </a>

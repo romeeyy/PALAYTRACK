@@ -26,20 +26,20 @@
     }
 
     .content-card {
-        background: #fff;
+        background: linear-gradient(135deg, #f9fdf9 0%, #eaf5ec 100%);
         border-radius: 20px;
         padding: 0;
         overflow: hidden;
-        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
-        border: 1px solid #e3e9e1;
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
+        border: 1px solid #b9d2bd;
     }
 
     .filter-card {
-        background: #ffffff;
+        background: #eef7f0;
         border-radius: 16px;
         padding: 16px 18px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
-        border: 1px solid #e5ebe4;
+        border: 1px solid #cbdccf;
         margin-bottom: 14px;
     }
 
@@ -99,9 +99,9 @@
     }
 
     .table thead th {
-        background: #f8fafc;
-        border-bottom: 1px solid #e5e7eb;
-        color: #374151;
+        background: #edf5ef;
+        border-bottom: 1px solid #cbdccf;
+        color: #244c2d;
         font-weight: 800;
         padding: 13px 18px;
         white-space: nowrap;
@@ -111,7 +111,11 @@
         vertical-align: middle;
         padding: 10px 18px;
         white-space: nowrap;
+        background: rgba(255,255,255,.42);
     }
+
+    .table tbody tr:nth-child(even) td { background: rgba(245,251,246,.72); }
+    .table tbody tr:hover td { background: #e8f5ea; }
 
     .badge-regular {
         background: #fef3c7;
@@ -240,10 +244,12 @@
 
             <div class="client-filter-actions">
                 <button type="submit" class="btn btn-filter">
+                    <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
                     Filter
                 </button>
 
                 <a href="{{ route('owner.clients') }}" class="btn btn-outline-secondary btn-reset">
+                    <i data-lucide="rotate-ccw" aria-hidden="true"></i>
                     Reset
                 </a>
             </div>

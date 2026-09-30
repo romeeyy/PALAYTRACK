@@ -5,12 +5,12 @@
     .audit-back{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;min-height:36px;padding:6px 11px;border:1px solid color-mix(in srgb,var(--user-accent,#168344) 28%,#cbd5e1);border-radius:10px;background:#fff;color:var(--user-accent-dark,#334155);font-size:.84rem;font-weight:800;text-decoration:none;transition:.2s ease}
     .audit-back svg{width:17px;height:17px}
     .audit-back:hover{border-color:var(--user-accent,#168344);background:var(--user-accent-soft,#f8fafc);color:var(--user-accent-dark,#2f5d1e);text-decoration:none}
-    .audit-card{overflow:hidden;border:1px solid #e2e8f0;border-radius:18px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.05)}
-    .audit-card-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid #e2e8f0;background:linear-gradient(135deg,#fff 0%,#f8fbf7 100%)}
+    .audit-card{overflow:hidden;border:1px solid #b9d2bd;border-radius:18px;background:linear-gradient(135deg,#f9fdf9 0%,#eaf5ec 100%);box-shadow:0 14px 30px rgba(24,65,35,.10)}
+    .audit-card-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid #cbdccf;background:linear-gradient(135deg,#fff 0%,#edf7ef 100%)}
     .audit-card-header h2{margin:0 0 3px;color:#0f172a;font-size:1.08rem;font-weight:900}
     .audit-card-header p{margin:0;color:#64748b;font-size:.84rem}
     .audit-count{padding:7px 11px;border:1px solid color-mix(in srgb,var(--user-accent,#168344) 24%,#dbe5df);border-radius:999px;background:var(--user-accent-soft,#f8fbf8);color:var(--user-accent-dark,#166534);font-size:.78rem;font-weight:800;white-space:nowrap}
-    .audit-filter{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;padding:13px 18px;border-bottom:1px solid #e2e8f0;background:#f8fafc}
+    .audit-filter{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;padding:13px 18px;border-bottom:1px solid #cbdccf;background:#eef7f0}
     .audit-filter-group{display:flex;flex-direction:column;gap:7px}
     .audit-filter-label{color:#334155;font-size:.82rem;font-weight:900}
     .audit-filter-select{min-width:230px;min-height:40px;padding:7px 12px;border:1px solid #cbd5e1;border-radius:11px;background:#fff;color:#334155;font-weight:700}
@@ -20,11 +20,11 @@
     .audit-button-secondary{border:1px solid #cbd5e1;background:#fff;color:#475569}
     .audit-table-scroll{overflow-x:auto}
     .audit-table{width:100%;margin:0;border-collapse:collapse}
-    .audit-table th{padding:13px 16px;border-bottom:1px solid #dbe3ec;background:#f8fafc;color:#475569;font-size:.76rem;font-weight:800;letter-spacing:.02em;text-align:left;text-transform:uppercase;white-space:nowrap}
-    .audit-table td{padding:13px 16px;border-bottom:1px solid #eef2f7;color:#334155;font-size:.86rem;vertical-align:middle}
+    .audit-table th{padding:13px 16px;border-bottom:1px solid #cbdccf;background:#edf5ef;color:#244c2d;font-size:.76rem;font-weight:800;letter-spacing:.02em;text-align:left;text-transform:uppercase;white-space:nowrap}
+    .audit-table td{padding:13px 16px;border-bottom:1px solid #dce9df;background:rgba(255,255,255,.42);color:#334155;font-size:.86rem;vertical-align:middle}
     .audit-table tbody tr:last-child td{border-bottom:0}
     .audit-table tbody tr:hover{background:#fbfdfb}
-    .audit-table tbody tr:nth-child(even){background:#fcfefd}
+    .audit-table tbody tr:nth-child(even) td{background:rgba(245,251,246,.72)}
     .audit-pill{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:.74rem;font-weight:900;white-space:nowrap}
     .audit-pill-type,.audit-pill-action{background:#eff6ff;color:#1d4ed8}
     .audit-pill-created{background:#ecfdf5;color:#047857}

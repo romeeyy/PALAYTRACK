@@ -6,10 +6,10 @@
         max-width: 1100px;
         margin: 18px auto 24px;
         padding: 24px;
-        border: 1px solid #edf2f7;
+        border: 1px solid #b9d2bd;
         border-radius: 24px;
-        background: linear-gradient(135deg, #ffffff 0%, #f8fbf7 100%);
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+        background: linear-gradient(135deg, #f9fdf9 0%, #eaf5ec 100%);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
     }
 
     .page-header {
@@ -52,18 +52,18 @@
     .back-btn:hover { border-color:#2f5d1e; background:#f8fafc; color:#2f5d1e; }
 
     .staff-card {
-        background: #ffffff;
-        border: 1px solid #dfe8de;
+        background: #f9fdf9;
+        border: 1px solid #cbdccf;
         border-top: 4px solid #2f7d32;
         border-radius: 22px;
-        box-shadow: 0 16px 38px rgba(15, 23, 42, 0.07);
+        box-shadow: 0 16px 34px rgba(24, 65, 35, 0.10);
         overflow: hidden;
     }
 
     .staff-card-header {
         padding: 22px 26px;
-        border-bottom: 1px solid #eef2f7;
-        background: linear-gradient(135deg, #f3faf1 0%, #ffffff 72%);
+        border-bottom: 1px solid #cbdccf;
+        background: linear-gradient(135deg, #eaf5ec 0%, #f9fdf9 72%);
         display: flex;
         align-items: center;
         gap: 14px;
@@ -103,8 +103,8 @@
     .form-control-custom {
         border-radius: 11px;
         min-height: 48px;
-        border: 1px solid #d1d5db;
-        background: #ffffff;
+        border: 1px solid #cbdccf;
+        background: #f4faf5;
         padding: 11px 13px;
         font-size: 0.92rem;
         color: #111827;
@@ -122,8 +122,8 @@
 
     .security-box {
         margin-top: 6px;
-        background: #f7faf7;
-        border: 1px solid #dfe8de;
+        background: #edf7ef;
+        border: 1px solid #cbdccf;
         border-radius: 16px;
         padding: 18px 18px 0;
     }

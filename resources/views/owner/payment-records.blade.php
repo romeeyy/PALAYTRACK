@@ -63,22 +63,22 @@
 
     .filter-panel {
         margin-top: 15px;
-        background: #ffffff;
-        border: 1px solid #dfe7df;
+        background: linear-gradient(135deg, #fbfefb 0%, #eef7f0 100%);
+        border: 1px solid #cbdccf;
         border-radius: 18px;
-        padding: 16px 18px 14px;
+        padding: 12px 14px 11px;
         box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
     }
 
     .filter-row {
         display: grid;
-        gap: 14px;
+        gap: 10px;
         align-items: end;
     }
 
     .filter-row-top {
         grid-template-columns: minmax(0, 1.5fr) minmax(180px, 0.7fr);
-        margin-bottom: 16px;
+        margin-bottom: 10px;
     }
 
     .filter-row-bottom {
@@ -96,7 +96,7 @@
         font-size: 0.92rem;
         font-weight: 700;
         color: #475569;
-        margin-bottom: 7px;
+        margin-bottom: 4px;
     }
 
     .filter-label i {
@@ -151,8 +151,8 @@
         align-items: center;
         justify-content: center;
         gap: 7px;
-        min-height: 46px;
-        padding: 8px 16px;
+        min-height: 44px;
+        padding: 7px 14px;
         border-radius: 12px;
         font-weight: 800;
         font-size: 0.96rem;
@@ -173,8 +173,8 @@
     .table-shell {
         background: #ffffff;
         border-radius: 24px;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-        border: 1px solid #edf2f7;
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.09);
+        border: 1px solid #cbdccf;
         overflow: hidden;
     }
 
@@ -186,7 +186,7 @@
         gap: 12px;
         flex-wrap: wrap;
         border-bottom: 1px solid #eef2f7;
-        background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
+        background: #ffffff;
     }
 
     .table-shell-title {
@@ -223,13 +223,13 @@
 
     .custom-table thead th {
         border-bottom: 1px solid #dbe3ec;
-        color: #0f172a;
+        color: #244c2d;
         font-size: 0.9rem;
         font-weight: 800;
         letter-spacing: -0.01em;
         padding-top: 16px;
         padding-bottom: 16px;
-        background: #ffffff;
+        background: #edf5ef;
         white-space: nowrap;
     }
 
@@ -250,6 +250,10 @@
     .custom-table tbody tr:nth-child(even) {
         background: #fcfdfc;
     }
+
+    .table-wrap { border-radius: 14px; overflow-x: auto; }
+    .custom-table thead th:first-child { border-top-left-radius: 14px; }
+    .custom-table thead th:last-child { border-top-right-radius: 14px; }
 
     .custom-table .numeric-cell {
         font-variant-numeric: tabular-nums;
@@ -399,8 +403,7 @@
             <div class="filter-row filter-row-top">
                 <div class="filter-search-group">
                     <label for="search" class="filter-label">
-                        <i data-lucide="search"></i>
-                        Search
+                        Search Transactions
                     </label>
 
                     <input
@@ -414,8 +417,7 @@
 
                 <div>
                     <label for="date" class="filter-label">
-                        <i data-lucide="calendar-days"></i>
-                        Date
+                        Filter by Date
                     </label>
 
                     <input
@@ -430,7 +432,6 @@
             <div class="filter-row filter-row-bottom">
                 <div>
                     <label for="milling_type" class="filter-label">
-                        <i data-lucide="sliders-horizontal"></i>
                         Milling Type
                     </label>
 
@@ -446,7 +447,6 @@
 
                 <div>
                     <label for="payment_method" class="filter-label">
-                        <i data-lucide="wallet-cards"></i>
                         Payment Method
                     </label>
 
@@ -463,7 +463,6 @@
 
                 <div>
                     <label for="staff_id" class="filter-label">
-                        <i data-lucide="user-round"></i>
                         Cashier
                     </label>
 
@@ -482,7 +481,7 @@
 
                 <div class="filter-actions">
                     <button type="submit" class="btn btn-success filter-btn">
-                        <i data-lucide="search"></i>
+                        <i data-lucide="sliders-horizontal"></i>
                         Filter
                     </button>
                     <a href="{{ route('owner.payment-records', ['date' => now()->toDateString()]) }}"

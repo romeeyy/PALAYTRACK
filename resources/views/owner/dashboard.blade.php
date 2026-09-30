@@ -22,30 +22,30 @@
     }
 
     .summary-card {
-        border: none;
+        border: 1px solid #cbdccf;
         border-radius: 22px;
         padding: 18px 18px 16px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
         height: 100%;
         position: relative;
         overflow: hidden;
-        background: linear-gradient(135deg, #ffffff 0%, #f4faf3 100%);
+        background: linear-gradient(135deg, #fbfefb 0%, #eaf7ec 100%);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
         border-top: 5px solid #15803d;
     }
 
     .summary-card.orange {
-        background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%);
+        background: linear-gradient(135deg, #fffdf8 0%, #fff5dc 100%);
         border-top-color: #f59e0b;
     }
 
     .summary-card.yellow {
-        background: linear-gradient(135deg, #ffffff 0%, #fffdf0 100%);
+        background: linear-gradient(135deg, #fffef5 0%, #fff8d9 100%);
         border-top-color: #eab308;
     }
 
     .summary-card.blue {
-        background: linear-gradient(135deg, #ffffff 0%, #f3f7ff 100%);
+        background: linear-gradient(135deg, #fbfdff 0%, #eaf2ff 100%);
         border-top-color: #3b82f6;
     }
 
@@ -155,11 +155,11 @@
     }
 
     .insight-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8fbf7 100%);
-        border: 1px solid #edf2f7;
+        background: linear-gradient(135deg, #f9fcfa 0%, #eaf5ec 100%);
+        border: 1px solid #cbdccf;
         border-radius: 24px;
         padding: 24px;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
         margin-bottom: 28px;
     }
 
@@ -182,7 +182,7 @@
     }
 
     .last-updated {
-        background: #f1f5f9;
+        background: #e1eee3;
         color: #475569;
         font-size: 0.82rem;
         font-weight: 800;
@@ -192,11 +192,11 @@
 
     .revenue-panel {
         background: #ffffff;
-        border: 1px solid #e5e7eb;
+        border: 1px solid #cbdccf;
         border-radius: 20px;
         padding: 20px;
         height: 100%;
-        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 8px 18px rgba(24, 65, 35, 0.08);
     }
 
     .revenue-panel-header {
@@ -248,15 +248,15 @@
     }
 
     .quick-insight-item {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
+        background: #f9fcfa;
+        border: 1px solid #cbdccf;
         border-radius: 18px;
         padding: 17px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 14px;
-        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 8px 18px rgba(24, 65, 35, 0.08);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
@@ -333,13 +333,13 @@
     }
 
     .chart-card {
-        border: none;
+        border: 1px solid #cbdccf;
         border-radius: 24px;
         overflow: hidden;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
         height: 100%;
         transition: transform 0.25s ease, box-shadow 0.25s ease;
-        background: #ffffff;
+        background: #f9fcfa;
     }
 
     .chart-card:hover {
@@ -348,10 +348,10 @@
     }
 
     .chart-card-header {
-        background: linear-gradient(135deg, #ffffff 0%, #f8fbf7 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #edf7ef 100%);
         color: #111827;
         padding: 20px 22px 14px;
-        border-bottom: 1px solid #eef2f7;
+        border-bottom: 1px solid #cbdccf;
     }
 
     .chart-card-header h5 {

@@ -299,13 +299,17 @@ $inactiveRiceTypes = $riceTypes->where('status', 'inactive')->count();
 
     /* Modern visual treatment */
     .summary-card {
-        border: none;
+        border: 1px solid #cbdccf;
         border-top: none;
         border-radius: 18px;
         padding: 14px 16px 12px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, .08);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, .10);
     }
 
+    .summary-card.green { background: linear-gradient(135deg, #fbfefb 0%, #eaf7ec 100%); }
+    .summary-card.orange { background: linear-gradient(135deg, #fffdf8 0%, #fff5dc 100%); }
+    .summary-card.yellow { background: linear-gradient(135deg, #fffef5 0%, #fff8d9 100%); }
+    .summary-card.gray { background: linear-gradient(135deg, #fbfcfe 0%, #edf1f6 100%); }
     .summary-card.green,
     .summary-card.orange,
     .summary-card.yellow,
@@ -319,13 +323,17 @@ $inactiveRiceTypes = $riceTypes->where('status', 'inactive')->count();
     .summary-card.gray .summary-value { color: #0f172a; }
 
     .section-card {
-        border-radius: 14px;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, .05);
+        border-radius: 18px;
+        border-color: #b9d2bd;
+        background: linear-gradient(135deg, #f9fdf9 0%, #eaf5ec 100%);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, .10);
     }
 
-    .rice-table thead th { background: #f8fafc; color: #64748b; font-size: .82rem; font-weight: 800; }
+    .rice-table thead th { background: #edf5ef; color: #244c2d; font-size: .82rem; font-weight: 800; }
     .rice-table thead th:first-child { border-top-left-radius: 10px; }
     .rice-table thead th:last-child { border-top-right-radius: 10px; }
+    .rice-table tbody td { background: rgba(255,255,255,.44); }
+    .rice-table tbody tr:nth-child(even) td { background: rgba(245,251,246,.72); }
 
     .variety-cell {
         display: flex;
@@ -493,11 +501,11 @@ $inactiveRiceTypes = $riceTypes->where('status', 'inactive')->count();
         max-width: 680px;
         max-height: calc(100vh - 32px);
         overflow-y: auto;
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
+        background: linear-gradient(135deg, #ffffff 0%, #f1f8f2 100%);
+        border: 1px solid #b9d2bd;
         border-radius: 22px;
         padding: 26px 28px 24px;
-        box-shadow: 0 22px 54px rgba(15, 23, 42, 0.22);
+        box-shadow: 0 22px 54px rgba(24, 65, 35, 0.24);
         animation: modalFade 0.2s ease;
     }
 
@@ -520,7 +528,7 @@ $inactiveRiceTypes = $riceTypes->where('status', 'inactive')->count();
         gap: 16px;
         margin-bottom: 14px;
         padding-bottom: 14px;
-        border-bottom: 1px solid #eef2f7;
+        border-bottom: 1px solid #cbdccf;
     }
 
     .modal-title-custom {
@@ -540,8 +548,8 @@ $inactiveRiceTypes = $riceTypes->where('status', 'inactive')->count();
         width: 36px;
         height: 36px;
         border-radius: 10px;
-        border: 1px solid #e5e7eb;
-        background: #ffffff;
+        border: 1px solid #b9d2bd;
+        background: #f9fcf9;
         color: #111827;
         font-size: 1.4rem;
         line-height: 1;
@@ -563,8 +571,8 @@ $inactiveRiceTypes = $riceTypes->where('status', 'inactive')->count();
     .custom-input,
     .custom-select,
     .custom-textarea {
-        border: 1px solid #dfe7ef;
-        background: #f8fafc;
+        border: 1px solid #cbdccf;
+        background: #f4faf5;
         border-radius: 11px;
         min-height: 46px;
         padding: 10px 13px;
@@ -614,8 +622,8 @@ $inactiveRiceTypes = $riceTypes->where('status', 'inactive')->count();
     }
 
     .preview-box {
-        background: #f0fdf4;
-        border: 1px solid #86efac;
+        background: linear-gradient(135deg, #effcf2 0%, #e2f7e8 100%);
+        border: 1px solid #38b866;
         border-radius: 11px;
         padding: 13px 15px;
         min-height: 76px;

@@ -62,6 +62,102 @@
             var(--user-sidebar-start) 100%) !important;
     }
 
+    /* Keep navigation-back actions consistent across modules. */
+    html[data-accent] .main-content :is(.back-btn, .audit-back, .receipt-actions .btn-outline-secondary, .claim-ticket-action:not(.primary)) {
+        min-height: 40px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        padding: 8px 13px !important;
+        border: 1px solid color-mix(in srgb, var(--user-accent) 30%, #d1d5db) !important;
+        border-radius: 10px !important;
+        background: #fff !important;
+        color: var(--user-accent-dark) !important;
+        font-size: .88rem !important;
+        font-weight: 800 !important;
+        text-decoration: none !important;
+        box-shadow: none !important;
+        transition: background .2s ease, border-color .2s ease, color .2s ease !important;
+    }
+
+    html[data-accent] .main-content :is(.back-btn, .audit-back, .receipt-actions .btn-outline-secondary, .claim-ticket-action:not(.primary)):hover {
+        background: var(--user-accent-soft) !important;
+        border-color: var(--user-accent) !important;
+        color: var(--user-accent-dark) !important;
+    }
+
+    html[data-accent] .main-content :is(.back-btn, .audit-back) svg { width: 20px; height: 20px; }
+
+    html[data-accent] .main-content :is(.filter-btn, .filter-reset, .btn-filter, .btn-reset, .audit-button, .btn-main) {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+    }
+    html[data-accent] .main-content :is(.filter-btn, .filter-reset, .btn-filter, .btn-reset, .audit-button, .btn-main) :is(svg, i) {
+        width: 17px;
+        height: 17px;
+        flex: 0 0 17px;
+    }
+
+    html[data-accent] .main-content :is(.alert-custom.alert-success, .alert-success-custom, .alert.alert-success, .alert-soft) {
+        background: var(--user-accent-soft) !important;
+        border: 1px solid color-mix(in srgb, var(--user-accent) 18%, #ffffff) !important;
+        color: var(--user-accent-dark) !important;
+    }
+
+    /* Warm harvest amber keeps warnings distinct without the harsh orange tone. */
+    html[data-accent] .main-content :is(.helper-warning, .difference-box, .result-helper-warning, .alert-custom.alert-warning) {
+        background: #fff8e6 !important;
+        border-color: #e6c875 !important;
+        color: #8a5a00 !important;
+    }
+    html[data-accent] .main-content :is(.alert.alert-danger, .alert-error-custom) {
+        background: #fff1f2 !important;
+        border: 1px solid #fecdd3 !important;
+        color: #b42318 !important;
+    }
+    html[data-accent] .main-content :is(.alert.alert-info, .alert-info-custom) {
+        background: var(--user-accent-soft) !important;
+        border: 1px solid color-mix(in srgb, var(--user-accent) 18%, #ffffff) !important;
+        color: var(--user-accent-dark) !important;
+    }
+    html[data-accent] .main-content .delivery-actions-grid .action-card:nth-child(3) {
+        border-top-color: #c9942f !important;
+    }
+    html[data-accent] .main-content .result-helper-warning .result-icon {
+        background: #fff1c7 !important;
+        color: #a66a00 !important;
+    }
+    html[data-accent] .main-content .workflow-hint svg {
+        color: #c9942f !important;
+    }
+
+    /* Shared light surfaces keep every module on the same visual system. */
+    html[data-accent] .main-content :is(
+        .filter-card, .table-card, .report-card, .section-card,
+        .form-card, .operations-card
+    ) {
+        background: linear-gradient(135deg, #ffffff 0%, #f1f8f2 100%);
+        border-color: color-mix(in srgb, var(--user-accent) 18%, #d5e1d8);
+        box-shadow: 0 14px 30px color-mix(in srgb, var(--user-accent) 10%, transparent);
+    }
+
+    html[data-accent] .main-content :is(
+        .filter-card, .table-card, .report-card, .section-card,
+        .form-card, .operations-card
+    ) :is(.table-responsive, .table-scroll, .logs-wrapper) {
+        border-radius: 14px;
+    }
+
+    html[data-accent] .main-content :is(
+        .soft-table thead th, .inventory-table thead th
+    ) {
+        background: color-mix(in srgb, var(--user-accent-soft) 72%, #ffffff) !important;
+        color: var(--user-accent-dark) !important;
+    }
+
     /*
      * Primary actions must follow the selected accent. Module-specific views
      * historically used different class names and fixed green values.
@@ -71,6 +167,7 @@
         .btn-success, .btn-save, .save-theme,
         .quick-btn.btn-success, button.btn-success,
         .btn-main, .btn-print, .btn-filter, .add-btn,
+        .claim-ticket-action.primary,
         .submit-btn, .modal-save, .audit-button-primary,
         .system-confirm-submit:not(.danger),
         .filter-btn:not(.btn-outline-secondary),
@@ -96,6 +193,7 @@
         .btn-success, .btn-save, .save-theme,
         .quick-btn.btn-success, button.btn-success,
         .btn-main, .btn-print, .btn-filter, .add-btn,
+        .claim-ticket-action.primary,
         .submit-btn, .modal-save, .audit-button-primary,
         .system-confirm-submit:not(.danger),
         .filter-btn:not(.btn-outline-secondary),

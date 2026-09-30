@@ -26,11 +26,11 @@
     }
 
     .settings-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
+        background: linear-gradient(135deg, #f9fdf9 0%, #eaf5ec 100%);
+        border: 1px solid #b9d2bd;
         border-radius: 18px;
         padding: 20px 22px;
-        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.05);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
     }
 
     .settings-card-header {
@@ -102,7 +102,8 @@
     .custom-input {
         min-height: 46px;
         border-radius: 11px;
-        border: 1px solid #d1d5db;
+        border: 1px solid #cbdccf;
+        background: #f4faf5;
         padding: 10px 13px;
         font-size: 0.92rem;
         box-shadow: none;
@@ -230,10 +231,10 @@
     }
 
     .history-table-wrap {
-        border: 1px solid #e5e7eb;
+        border: 1px solid #b9d2bd;
         border-radius: 15px;
         overflow: hidden;
-        background: #ffffff;
+        background: #f9fdf9;
     }
 
     .history-table-scroll {
@@ -252,25 +253,29 @@
         position: sticky;
         top: 0;
         z-index: 2;
-        background: #f8fafc;
-        color: #475569;
+        background: #edf5ef;
+        color: #244c2d;
         font-size: 0.78rem;
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 0.04em;
         padding: 14px 16px;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid #cbdccf;
         white-space: nowrap;
     }
 
     .history-table tbody td {
         padding: 12px 16px;
-        border-bottom: 1px solid #f1f5f9;
+        border-bottom: 1px solid #dce9df;
         color: #334155;
         font-size: 0.9rem;
         vertical-align: middle;
         white-space: nowrap;
+        background: rgba(255,255,255,.42);
     }
+
+    .history-table tbody tr:nth-child(even) td { background: rgba(245,251,246,.72); }
+    .history-table tbody tr:hover td { background: #e8f5ea; }
 
     .history-table tbody tr:last-child td {
         border-bottom: none;

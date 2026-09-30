@@ -23,16 +23,16 @@
     .summary-card,
     .section-card {
         background: #ffffff;
-        border: none;
+        border: 1px solid #d9e5dc;
         border-radius: 22px;
-        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
     }
 
     .summary-card {
         padding: 16px 18px 14px;
         height: 100%;
         border-top: none;
-        background: linear-gradient(135deg, #ffffff 0%, #f4faf3 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #eef8ed 100%);
         position: relative;
         overflow: hidden;
         transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -40,23 +40,23 @@
 
     .summary-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 18px 32px rgba(15, 23, 42, 0.12);
+        box-shadow: 0 18px 34px rgba(24, 65, 35, 0.16);
     }
 
     .summary-card.pending {
-        background: linear-gradient(135deg, #ffffff 0%, #fffdf0 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #fff8dc 100%);
     }
 
     .summary-card.processing {
-        background: linear-gradient(135deg, #ffffff 0%, #f3f7ff 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #edf4ff 100%);
     }
 
     .summary-card.completed {
-        background: linear-gradient(135deg, #ffffff 0%, #f4faf3 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #eaf8ee 100%);
     }
 
     .summary-card.claimed {
-        background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #e7f8f5 100%);
     }
 
     .summary-card::after {
@@ -165,14 +165,16 @@
     .section-card {
         padding: 18px;
         height: 100%;
-        background: linear-gradient(135deg, #ffffff 0%, #fbfdf9 100%);
+        background: linear-gradient(135deg, #f9fcfa 0%, #eef7f0 100%);
+        border: 1px solid #d9e5dc;
     }
 
     .operations-card {
         padding: 18px;
         height: auto;
         min-height: 0;
-        background: linear-gradient(135deg, #ffffff 0%, #fbfdf9 100%);
+        background: linear-gradient(135deg, #f9fcfa 0%, #eef7f0 100%);
+        border: 1px solid #d9e5dc;
     }
 
     .operations-grid {
@@ -185,10 +187,10 @@
     .operations-trend {
         min-width: 0;
         padding: 20px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid #cbdccf;
         border-radius: 20px;
         background: #ffffff;
-        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+        box-shadow: 0 8px 20px rgba(24, 65, 35, 0.08);
     }
 
     .operations-today {
@@ -210,7 +212,7 @@
     }
 
     .updated-pill {
-        background: #f1f5f9;
+        background: #e7f1e8;
         color: #475569;
         font-size: 0.78rem;
         font-weight: 800;
@@ -236,8 +238,8 @@
         gap: 8px;
         padding: 10px 14px;
         border-radius: 999px;
-        background: #eef6ea;
-        color: #2f5d1e;
+        background: var(--user-accent-soft, #eef6ea);
+        color: var(--user-accent-dark, #2f5d1e);
         font-size: 0.9rem;
         font-weight: 900;
     }
@@ -253,8 +255,8 @@
         padding: 15px 16px;
         border-radius: 16px;
         background: #ffffff;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+        border: 1px solid #cbdccf;
+        box-shadow: 0 6px 16px rgba(24, 65, 35, 0.08);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -264,7 +266,7 @@
 
     .today-summary-item:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.07);
+        box-shadow: 0 10px 20px rgba(24, 65, 35, 0.12);
     }
 
     .today-summary-value {
@@ -677,6 +679,10 @@ $peakLabel = $peakIndex !== null && isset($safeTrendLabels[$peakIndex]) ? $safeT
     const deliveryTrendChart = document.getElementById('deliveryTrendChart');
 
     if (deliveryTrendChart) {
+        const themeStyles = getComputedStyle(document.documentElement);
+        const chartAccent = themeStyles.getPropertyValue('--user-accent').trim() || '#168344';
+        const chartAccentSoft = themeStyles.getPropertyValue('--user-accent-soft').trim() || '#eaf7ef';
+
         new Chart(deliveryTrendChart, {
             type: 'line',
             data: {
@@ -684,12 +690,12 @@ $peakLabel = $peakIndex !== null && isset($safeTrendLabels[$peakIndex]) ? $safeT
                 datasets: [{
                     label: 'Deliveries',
                     data: trendCounts,
-                    borderColor: '#2f5d1e',
-                    backgroundColor: 'rgba(47, 93, 30, 0.10)',
+                    borderColor: chartAccent,
+                    backgroundColor: chartAccentSoft,
                     borderWidth: 3,
                     tension: 0.4,
                     fill: true,
-                    pointBackgroundColor: '#2f5d1e',
+                    pointBackgroundColor: chartAccent,
                     pointBorderColor: '#ffffff',
                     pointBorderWidth: 2,
                     pointRadius: 4,

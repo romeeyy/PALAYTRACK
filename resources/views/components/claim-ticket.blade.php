@@ -45,11 +45,11 @@
         box-sizing: border-box;
         overflow: hidden;
         padding: 22px 20px 18px;
-        border: 1px solid #d6dce5;
+        border: 1px solid color-mix(in srgb, var(--user-accent, #168344) 24%, #d6dce5);
         border-radius: 14px;
-        background: #fff;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fcf9 100%);
         color: #111827;
-        box-shadow: 0 12px 32px rgba(15, 23, 42, .10);
+        box-shadow: 0 14px 32px color-mix(in srgb, var(--user-accent, #168344) 12%, transparent);
         font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -289,12 +289,12 @@
         }
 
         .claim-ticket-brand { font-size: 8px; }
-        .claim-ticket-title { margin-top: 6px; font-size: 15px; }
-        .claim-ticket-rule { margin: 7px 0; }
+        .claim-ticket-title { margin-top: 5px; font-size: 15px; }
+        .claim-ticket-rule { margin: 5px 0; }
         .claim-ticket-queue-label { font-size: 8px; margin-bottom: 3px; }
         .claim-ticket-queue { padding: 4px; font-size: 30px; }
         .claim-ticket-section-title {
-            margin-top: 8px;
+            margin-top: 6px;
             padding-bottom: 3px;
             font-size: 8px;
         }
@@ -302,21 +302,22 @@
         .claim-ticket-row {
             gap: 4px;
             min-height: 0;
-            padding: 3px 0;
+            padding: 2px 0;
+            border-bottom: 1px dashed #172033;
             font-size: 9px;
             break-inside: avoid;
         }
 
         .claim-ticket-row strong { min-width: 0; font-size: 9px; }
-        .claim-ticket-estimate { margin-top: 8px; padding: 5px; }
+        .claim-ticket-estimate { margin-top: 6px; padding: 4px 5px; }
         .claim-ticket-estimate-label { font-size: 8px; }
         .claim-ticket-estimate-value { font-size: 20px; }
         .claim-ticket-estimate-note { font-size: 8px; }
         .claim-ticket .claim-ticket-reminder {
             break-inside: avoid !important;
             page-break-inside: avoid !important;
-            margin: 8px 0 0;
-            padding-top: 6px;
+            margin: 6px 0 0;
+            padding-top: 5px;
             color: #000;
             font-size: 8px;
         }

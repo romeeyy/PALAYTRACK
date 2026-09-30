@@ -6,7 +6,7 @@
     .appearance-header { margin-bottom: 16px; }
     .appearance-title { margin: 0 0 6px; font-size: 2rem; font-weight: 900; color: var(--text-dark); }
     .appearance-subtitle { margin: 0; color: var(--text-muted); }
-    .appearance-card { background: #fff; border: 1px solid var(--border-soft); border-radius: 20px; padding: 20px 24px; box-shadow: var(--shadow-soft); }
+    .appearance-card { background: linear-gradient(135deg, #f9fdf9 0%, #e6f3e8 100%) !important; border: 1px solid #b9d2bd; border-radius: 20px; padding: 20px 24px; box-shadow: 0 16px 34px rgba(24, 65, 35, .14); }
     .appearance-card h2 { margin: 0 0 5px; font-size: 1.25rem; font-weight: 850; }
     .appearance-card > p { margin: 0 0 22px; color: var(--text-muted); }
     .appearance-section + .appearance-section { margin-top: 18px; padding-top: 18px; border-top: 1px solid #e5e7eb; }
@@ -15,7 +15,7 @@
     .mode-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .mode-option { position: relative; cursor: pointer; }
     .mode-option input { position: absolute; opacity: 0; pointer-events: none; }
-    .mode-choice { position: relative; min-height: 70px; padding: 12px 42px 12px 14px; border: 2px solid #e2e8f0; border-radius: 14px; display: flex; gap: 11px; align-items: flex-start; background: #fff; }
+    .mode-choice { position: relative; min-height: 70px; padding: 12px 42px 12px 14px; border: 2px solid #b9d2bd; border-radius: 14px; display: flex; gap: 11px; align-items: flex-start; background: #f4faf5; }
     .mode-choice svg { width: 20px; height: 20px; color: var(--user-accent); flex: 0 0 auto; margin-top: 1px; }
     .mode-option input:checked + .mode-choice { border-color: var(--user-accent); box-shadow: 0 0 0 3px var(--user-accent-ring); }
     .mode-copy strong { display: block; color: #0f172a; }
@@ -23,7 +23,7 @@
     .theme-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
     .theme-option { position: relative; cursor: pointer; }
     .theme-option input { position: absolute; opacity: 0; pointer-events: none; }
-    .theme-choice { position: relative; display: grid; grid-template-columns: 132px minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: 14px; align-items: center; height: 100%; min-height: 112px; padding: 12px; border: 2px solid #e2e8f0; border-radius: 16px; background: #fff; transition: .18s ease; }
+    .theme-choice { position: relative; display: grid; grid-template-columns: 132px minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: 14px; align-items: center; height: 100%; min-height: 112px; padding: 12px; border: 2px solid #b9d2bd; border-radius: 16px; background: #f4faf5; transition: .18s ease; }
     .theme-option input:checked + .theme-choice { border-color: var(--user-accent); box-shadow: 0 0 0 3px var(--user-accent-ring); }
     .mode-option input:checked + .mode-choice::after,
     .theme-option input:checked + .theme-choice::after { content: '✓'; position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 999px; background: var(--user-accent); color: #fff; font-size: .82rem; font-weight: 900; }
@@ -42,7 +42,7 @@
     .theme-name { align-self: end; display: flex; align-items: center; gap: 8px; font-weight: 850; color: #0f172a; }
     .theme-name svg { width: 17px; height: 17px; color: var(--user-accent); }
     .theme-description { align-self: start; display: block; margin-top: 4px; color: #64748b; font-size: .8rem; line-height: 1.35; }
-    .appearance-actions { display: flex; justify-content: flex-end; margin-top: 16px; padding-top: 14px; border-top: 1px solid #e5e7eb; }
+    .appearance-actions { display: flex; justify-content: flex-end; margin-top: 16px; padding-top: 14px; border-top: 1px solid #cbdccf; }
     .save-theme { min-height: 46px; padding: 0 20px; border: 0; border-radius: 11px; background: #168344; color: #fff; font-weight: 850; }
     .appearance-success { margin-bottom: 18px; padding: 13px 16px; border-radius: 12px; background: #ecfdf3; color: #166534; border: 1px solid #bbf7d0; font-weight: 700; }
     @media (max-width: 1150px) { .theme-choice { grid-template-columns: 105px minmax(0, 1fr); } .theme-preview { width: 105px; } }

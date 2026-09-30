@@ -30,11 +30,12 @@
     }
 
     .form-card {
-        background: #ffffff;
+        background: linear-gradient(135deg, #f9fdf9 0%, #eaf5ec 100%);
         border: none;
         border-radius: 20px;
         padding: 30px 30px 26px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        border: 1px solid #b9d2bd;
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
     }
 
     .form-title {
@@ -61,8 +62,8 @@
     .custom-input,
     .custom-select,
     .custom-textarea {
-        border: 1px solid #e5e7eb;
-        background: #f8fafc;
+        border: 1px solid #cbdccf;
+        background: #f4faf5;
         border-radius: 14px;
         min-height: 52px;
         padding: 14px 16px;
@@ -92,8 +93,8 @@
 
     .preview-box {
         margin-top: 10px;
-        background: #f0fdf4;
-        border: 2px solid #22c55e;
+        background: linear-gradient(135deg, #effcf2 0%, #e2f7e8 100%);
+        border: 2px solid #38b866;
         border-radius: 16px;
         padding: 18px 20px 16px;
     }

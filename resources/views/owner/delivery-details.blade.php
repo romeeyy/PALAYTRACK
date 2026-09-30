@@ -46,12 +46,12 @@
     }
 
     .section-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
+        background: linear-gradient(135deg, #f9fdf9 0%, #eaf5ec 100%);
+        border: 1px solid #b9d2bd;
         border-radius: 18px;
         padding: 20px;
         margin-bottom: 18px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 14px 30px rgba(24, 65, 35, 0.10);
     }
 
 
@@ -72,8 +72,8 @@
     }
 
     .info-box {
-        background: #f8fafc;
-        border: 1px solid #e5e7eb;
+        background: #f4faf5;
+        border: 1px solid #cbdccf;
         border-radius: 12px;
         padding: 12px 14px;
         min-height: 74px;
@@ -107,8 +107,8 @@
     }
 
     .note-box {
-        background: #f8fafc;
-        border: 1px solid #e5e7eb;
+        background: #f4faf5;
+        border: 1px solid #cbdccf;
         border-radius: 12px;
         padding: 12px 14px;
         color: #111827;
@@ -278,7 +278,7 @@
             View the complete delivery and milling record.
         </p>
     </div>
-    <a href="/owner/deliveries" class="back-btn">
+    <a href="{{ route('owner.deliveries', ['view' => request('view', 'active')]) }}" class="back-btn">
         <i data-lucide="arrow-left"></i>
         <span>Back to Deliveries</span>
     </a>

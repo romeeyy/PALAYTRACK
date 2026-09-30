@@ -22,8 +22,8 @@
             </select>
         </div>
         <div class="audit-filter-actions">
-            <button type="submit" class="audit-button audit-button-primary">Apply Filter</button>
-            <a href="{{ route('owner.milling-fee-history') }}" class="audit-button audit-button-secondary">Reset</a>
+            <button type="submit" class="audit-button audit-button-primary"><i data-lucide="sliders-horizontal" aria-hidden="true"></i>Apply Filter</button>
+            <a href="{{ route('owner.milling-fee-history') }}" class="audit-button audit-button-secondary"><i data-lucide="rotate-ccw" aria-hidden="true"></i>Reset</a>
         </div>
     </form>
 

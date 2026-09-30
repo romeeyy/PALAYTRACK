@@ -161,7 +161,7 @@
 }
 
 .page-title {
-    font-size: 32px;
+    font-size: 1.65rem;
     font-weight: 800;
     color: #071739;
     margin: 0;
@@ -169,8 +169,8 @@
 
 .page-subtitle {
     color: #64748b;
-    margin-top: 6px;
-    font-size: 15px;
+    margin-top: 4px;
+    font-size: 14px;
 }
 
 .alert {
@@ -194,19 +194,19 @@
 .profile-workspace {
     display: grid;
     grid-template-columns: 230px minmax(0, 1fr);
-    background: #ffffff;
+    background: linear-gradient(135deg, #ffffff 0%, #f2f8f3 100%);
     border-radius: 22px;
     overflow: hidden;
-    box-shadow: 0 14px 36px rgba(15, 23, 42, 0.07);
-    border: 1px solid #e8edf3;
+    box-shadow: 0 14px 36px rgba(24, 65, 35, 0.10);
+    border: 1px solid #cbdccf;
 }
 
 .profile-summary {
     position: relative;
     text-align: center;
     padding: 22px 18px 18px;
-    background: linear-gradient(180deg, var(--user-accent-soft, #f5faf4) 0%, #fbfdfb 100%);
-    border-right: 1px solid #e4ece3;
+    background: linear-gradient(180deg, var(--user-accent-soft, #edf7ef) 0%, #f8fcf8 100%);
+    border-right: 1px solid #cbdccf;
 }
 
 .summary-accent {
@@ -220,6 +220,7 @@
 
 .profile-main {
     padding: 18px 24px 20px;
+    background: rgba(255, 255, 255, .46);
 }
 
 .profile-section {
@@ -332,12 +333,12 @@
     width: 100%;
     height: 38px;
     border-radius: 10px;
-    border: 1px solid #dbe3ef;
+    border: 1px solid #d5e1d8;
     padding: 0 14px;
     font-size: 15px;
     color: #0f172a;
     outline: none;
-    background: #ffffff;
+    background: #f8fbf9;
 }
 
 .form-group input:focus {
@@ -359,7 +360,7 @@
 .profile-divider {
     height: 1px;
     margin: 12px 0;
-    background: #e8edf3;
+    background: #cbdccf;
 }
 
 .photo-controls {
