@@ -114,7 +114,7 @@
         background: rgba(255,255,255,.42);
     }
 
-    .table tbody tr:nth-child(even) td { background: rgba(245,251,246,.72); }
+    .table tbody tr:nth-child(even) td { background: rgba(255,255,255,.42); }
     .table tbody tr:hover td { background: #e8f5ea; }
 
     .badge-regular {
