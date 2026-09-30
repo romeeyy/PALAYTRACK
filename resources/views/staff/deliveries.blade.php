@@ -427,7 +427,7 @@
     .soft-table tbody tr:hover { background: #f0f8f1; }
 
     .table-card .soft-table tbody td { background: rgba(255, 255, 255, .42); }
-    .table-card .soft-table tbody tr:nth-child(even) td { background: rgba(245, 251, 246, .72); }
+    .table-card .soft-table tbody tr:nth-child(even) td { background: rgba(255, 255, 255, .42); }
     .table-card .soft-table tbody tr:hover td { background: #e8f5ea; }
 
     .empty-state {
