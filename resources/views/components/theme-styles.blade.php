@@ -594,6 +594,51 @@
     html[data-theme="dark"] .print-paper * { color: inherit; }
 }
 
+/* Shared mobile layout corrections for every owner and staff module. */
+@media (max-width: 768px) {
+    html, body {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+    }
+
+    .main-content {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .topbar {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .main-content > * {
+        max-width: 100% !important;
+    }
+
+    .main-content :is(.filter-grid, .filter-row, .report-meta) {
+        grid-template-columns: 1fr !important;
+    }
+
+    .main-content :is(.summary-grid, .collection-summary-grid) {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .main-content :is(.table-responsive, .table-scroll, .table-wrap) {
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content :is(.summary-grid, .collection-summary-grid) {
+        grid-template-columns: 1fr !important;
+    }
+}
+
 @media print {
     html, body { background: #fff !important; color: #000 !important; color-scheme: light !important; }
 }

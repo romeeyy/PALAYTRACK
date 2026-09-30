@@ -70,6 +70,18 @@
     .notification-list::-webkit-scrollbar{width:8px}.notification-list::-webkit-scrollbar-track{background:#f1f5f9}.notification-list::-webkit-scrollbar-thumb{background:var(--user-accent,#86a98d);border-radius:999px}
     .notification-item{display:flex!important;align-items:flex-start;gap:11px;padding:13px 16px!important;text-decoration:none!important;border-bottom:1px solid #dce9df;color:inherit!important;position:relative}
     .notification-item:hover{background:#eaf6ec}.notification-item.is-unread{background:#e5f5e8}.notification-item.is-danger.is-unread{background:#fff1f2}.notification-item.is-danger:hover{background:#ffe4e6}
+
+    @media (max-width: 768px) {
+        .notification-menu {
+            position: fixed !important;
+            top: 72px !important;
+            left: 8px !important;
+            right: 8px !important;
+            width: auto !important;
+            max-width: none !important;
+            z-index: 12000 !important;
+        }
+    }
     .notification-item-icon{flex:0 0 34px;width:34px;height:34px;border-radius:10px;background:var(--user-accent-soft,#eaf7ef);color:var(--user-accent-dark,#15803d);display:flex;align-items:center;justify-content:center}
     .notification-item-icon.is-danger{background:#fff1f2;color:#dc2626}.notification-item-icon svg{width:17px;height:17px}
     .notification-item-copy{min-width:0;display:flex;flex-direction:column;line-height:1.35}.notification-item-copy strong{font-size:13px;color:#0f172a}.notification-item-copy span{font-size:12px;color:#475569;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.notification-item-copy small{font-size:11px;color:#94a3b8;margin-top:3px}

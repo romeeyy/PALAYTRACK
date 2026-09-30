@@ -384,7 +384,7 @@
                 overflow-y: auto;
             }
 
-            .sidebar.mobile-open { transform: translateX(0); }
+            .sidebar.mobile-open { transform: translateX(0) !important; }
             .sidebar-backdrop {
                 position: fixed;
                 inset: 0;
@@ -409,7 +409,7 @@
                 padding: 8px 10px;
             }
 
-            .mobile-menu-toggle { display: inline-flex; position: absolute; left: 10px; }
+            .mobile-menu-toggle { display: inline-flex !important; position: absolute; left: 10px; }
             .topbar-actions { gap: 8px; }
             .main-content h1, .main-content .h1 { font-size: clamp(1.65rem, 7vw, 2.2rem); }
             .main-content h2, .main-content .h2 { font-size: clamp(1.3rem, 5.5vw, 1.75rem); }
@@ -417,6 +417,7 @@
             .filter-card, .report-card, .section-card, .form-card, .operations-card { padding: 16px !important; }
             .table-responsive, .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
             .notification-menu, .profile-menu { max-width: calc(100vw - 24px); }
+            .profile-menu { position: fixed; top: 72px; right: 8px; width: min(220px, calc(100vw - 16px)); z-index: 12000; }
         }
 
         @media (max-width: 480px) {
